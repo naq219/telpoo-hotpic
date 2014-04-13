@@ -30,8 +30,11 @@
     <dimen name="sl_icon_w">20dp</dimen>
     <dimen name="sl_icon_h">40dp</dimen>
     <dimen name="sl_item_h">50dp</dimen>
-    
     <dimen name="item_h">54dp</dimen>
     <dimen name="item_w">95dp</dimen>
+
+    <!-- new -->
+    <dimen name="menu_space1">10dp</dimen>
+    <dimen name="menu_icon">35dp</dimen>
 
 </resources>
