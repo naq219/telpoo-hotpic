@@ -50,7 +50,6 @@
         android:id="@+id/elv"
         style="@style/form_ff"
         android:cacheColorHint="#000000"
-        android:groupIndicator="@drawable/expand_indicator"
         android:layout_below="@+id/temp1" >
     </ExpandableListView>
 
