@@ -2,11 +2,18 @@ package com.telpoo.hotpic.task;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+
 import android.content.Context;
+import android.util.Log;
 
 import com.telpoo.frame.model.BaseTask;
 import com.telpoo.frame.model.TaskListener;
 import com.telpoo.frame.model.TaskParams;
+import com.telpoo.frame.object.BaseObject;
+import com.telpoo.hotpic.db.DbSupport;
+import com.telpoo.hotpic.db.TableDb;
+import com.telpoo.hotpic.net.Netsupport;
 
 public class TaskMinh extends BaseTask implements TaskType{
 
@@ -23,14 +30,22 @@ public class TaskMinh extends BaseTask implements TaskType{
 			
 			
 			// get data
-			
-			//parse json
-			
-			//save database
-			
-			// return data;
-			break;
-
+			try {
+				//parse json
+				ArrayList<BaseObject> jsonArrayList = Netsupport.getMenu();
+				Log.d("testjsonsize", jsonArrayList.size()+"" );
+				//save database
+				DbSupport.removeTable(TableDb.TABLE_VIEW_MENU, context);
+				DbSupport.AddData(jsonArrayList, TableDb.TABLE_VIEW_MENU);
+				// return data;
+				dataReturn = jsonArrayList;
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				msg="no tasktype";
+				return TASK_FAILED;
+			}
+			return TASK_DONE;
 		default:
 			break;
 		}

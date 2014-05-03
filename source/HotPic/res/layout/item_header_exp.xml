@@ -1,25 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"   
     android:orientation="horizontal"
     android:padding="4dp" >
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_important" />
-
     <TextView
         android:id="@+id/tvHeader"
         style="@style/text"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
+        
+        android:text="Chua cap nhat"
         android:textColor="@android:color/white"
-        android:text="Chua cap nhat"        
         android:textSize="18sp"
-        android:textStyle="bold" /> 
+        android:textStyle="bold" />
 
-</LinearLayout>
+    
