@@ -14,14 +14,14 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-public class ExLvAdapter extends BaseExpandableListAdapter {
+public class CopyOfExLvAdapter extends BaseExpandableListAdapter {
 
 	private Context _context;
 	private List<String> _listDataHeader; // header titles
 	// child data in format of header title, child title
 	private HashMap<String, List<BaseObject>> _listDataChild;
 
-	public ExLvAdapter(Context context, List<String> listDataHeader, HashMap<String, List<BaseObject>> listChildData) {
+	public CopyOfExLvAdapter(Context context, List<String> listDataHeader, HashMap<String, List<BaseObject>> listChildData) {
 		this._context = context;
 		this._listDataHeader = listDataHeader;
 		this._listDataChild = listChildData;
