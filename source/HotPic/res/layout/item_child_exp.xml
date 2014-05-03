@@ -1,18 +1,30 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="4dp" >
+    android:orientation="horizontal"    
+    android:padding="4dp"
+     >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/ic_action_view_as_grid" />
 
     <TextView
-        android:id="@+id/tv"
-        style="@style/text"
-        android:layout_marginLeft="15sp"
+        android:id="@+id/tv"        
+        android:layout_width="match_parent"        
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5sp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
-        android:text="Xo so mien bac"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="@android:color/white"
+        android:text="Chua cap nhat"
         android:textSize="18sp"
-        android:textStyle="bold" />
+         />
 
-</RelativeLayout>
+</LinearLayout>
