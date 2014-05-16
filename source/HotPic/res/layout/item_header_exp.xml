@@ -10,11 +10,11 @@
         style="@style/text"
         android:layout_marginLeft="10dp"
         android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        
+        android:paddingTop="5dp"        
         android:text="Chua cap nhat"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold" />
+    </RelativeLayout>
 
     
