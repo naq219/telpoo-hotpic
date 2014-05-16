@@ -99,7 +99,7 @@ public class ViewMenu {
 		// get width of v
 		int width =  v.getWidth();
 		// set indicatorGroupWidth
-		if( Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN )
+		if( Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 )
 		{
 			elv.setIndicatorBounds(width - (int)(50 * v.getResources().getDisplayMetrics().density + 0.5f) ,
 					width - (int)(10 * v.getResources().getDisplayMetrics().density + 0.5f) );

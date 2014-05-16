@@ -1,6 +1,9 @@
 package com.telpoo.hotpic.net;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +18,7 @@ import com.telpoo.hotpic.object.MenuOj;
 public class Netsupport {
 	
 	public static ArrayList<BaseObject> getMenu() throws JSONException{
-		String res= BaseNetSupportBeta.getInstance().method_GET("http://naq.name.vn/ws/hotpic/menu.php");
+		String res= BaseNetSupportBeta.getInstance().method_GET("http://naq.name.vn/f/menu.json");
 		ArrayList<BaseObject> ojs=new ArrayList<BaseObject>(); // mang nay se co 6 phan tu
 		// root cua no la 1 array
 		JSONArray arRoot= new JSONArray(res);
@@ -48,16 +51,45 @@ public class Netsupport {
 				}
 				// lay them 2 cai key phia tren con thieu nua 
 				oj.set(MenuOj.GROUP_ID, groupId);
-				oj.set(MenuOj.GROUP_NAME, groupName); // ok ?da dc
-				
+				oj.set(MenuOj.GROUP_NAME, groupName); // ok ?da dc				
 				ojs.add(oj);
 				
 			}
 			
 		}
 		
-		return ojs;
-		
+		return ojs;		
+	}
+	public static LinkedHashMap<String, ArrayList<String>> getMetroView(int positionGet) throws JSONException
+	{
+		String res = BaseNetSupportBeta.getInstance().method_GET("http://naq.name.vn/f/minh.json");
+		//Link<String, ArrayList<String> > hashMapDes = new HashMap<String, ArrayList<String>>();
+		LinkedHashMap<String, ArrayList<String>> hashMapDes = new LinkedHashMap<String, ArrayList<String>>();
+		JSONArray jsonArray = new JSONArray(res);
+		JSONObject  objectRootJson = jsonArray.getJSONObject(positionGet);
+//		String groupName = "";
+//		groupName = objectRootJson.getString("name");
+		JSONArray itemList  = objectRootJson.getJSONArray("item");
+		for(int j =0; j < itemList.length(); j++)
+		{
+			String name = "";
+			ArrayList<String> urlList = new ArrayList<String>();
+			JSONObject itemObject = itemList.getJSONObject(j);
+			name = itemObject.getString("name");
+			JSONArray urlJsonArray = itemObject.getJSONArray("url");
+			for(int count = 0; count < urlJsonArray.length(); count++)
+			{
+				JSONObject itemJoj = urlJsonArray.getJSONObject(count);
+				urlList.add(itemJoj.getString("urlimage"));
+			}
+			Log.d("mmetroname", name);
+			hashMapDes.put(name, urlList);
+		}
+		for(String key: hashMapDes.keySet())
+		{
+			Log.d("mmetroname", key);
+		}
+		return hashMapDes;
 	}
 
 }

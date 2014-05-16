@@ -1,6 +1,9 @@
 package com.telpoo.hotpic.task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.json.JSONException;
 
@@ -43,6 +46,23 @@ public class TaskMinh extends BaseTask implements TaskType{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				msg="no tasktype";
+				return TASK_FAILED;
+			}
+			return TASK_DONE;
+		case TASK_GET_METRO:
+			//
+			try {
+				LinkedHashMap<String, ArrayList<String>> metroReturn = Netsupport.getMetroView(0);
+				Log.d("testmetrojson", metroReturn.size()+"");
+				//List<E>
+				ArrayList<LinkedHashMap<String, ArrayList<String>>> arrayList = new ArrayList<LinkedHashMap<String,ArrayList<String>>>();
+				arrayList.add(metroReturn);
+				dataReturn = arrayList;
+				Log.d("testmetrojson", dataReturn.size()+"");
+				//return TASK_DONE;
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 				return TASK_FAILED;
 			}
 			return TASK_DONE;
