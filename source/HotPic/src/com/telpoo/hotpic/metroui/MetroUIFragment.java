@@ -14,16 +14,20 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.telpoo.frame.ui.BaseFragment;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.object.MetroViewObject;
+import com.telpoo.hotpic.staggeredgridviewui.StaggeredGridViewFragment;
 import com.telpoo.hotpic.task.TaskMinh;
 import com.telpoo.hotpic.task.TaskType;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.transition.Scene;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,8 +38,8 @@ import android.widget.ImageView.ScaleType;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-@SuppressLint("ValidFragment")
-public class MetroUIFragment extends BaseFragment implements TaskType{
+
+public class MetroUIFragment extends BaseFragment implements TaskType, android.view.View.OnClickListener {
 	
 	
 	int screenWidth, halfScreenwidth, quaterScreenWidth;
@@ -49,11 +53,7 @@ public class MetroUIFragment extends BaseFragment implements TaskType{
 	String[] chandai ={"ngaunhien","nguoimau","hotnhat","xiteen","nusinh","sexy",
 			"diudang","aodai","vongmot","bikini","chandai","bannude","hangngoai"};
 	boolean flag;
-	public MetroUIFragment(int screenWidth, LinkedHashMap<String, ArrayList<String>> srcUrl )
-	{
-		this.screenWidth = screenWidth;
-		this.srcUrl = srcUrl;
-	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -76,27 +76,7 @@ public class MetroUIFragment extends BaseFragment implements TaskType{
 			url = new ArrayList<String>();
 			//
 			
-			// cachedir image
-			File cacheDir = new File(getActivity().getCacheDir(), "imgcachedir");			
-			 if ( !cacheDir.exists() )
-			        cacheDir.mkdir();	
-			 // lazy image loder
-			ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity())
-			//.memoryCache(new WeakMemoryCache())
-			.threadPoolSize(5)
-			.memoryCacheSize(1048576 * 10)
-			.discCache(new UnlimitedDiscCache(cacheDir))
-			//.discCache(discCache)
-			.denyCacheImageMultipleSizesInMemory()					
-			.build();
-			ImageLoader.getInstance().init(config);
-			displayImageOptions = new DisplayImageOptions.Builder()
-										.cacheInMemory(true)
-										.bitmapConfig(Bitmap.Config.RGB_565)										
-										.showImageForEmptyUri(R.drawable.ic_launcher)
-										.showImageOnFail(R.drawable.ic_launcher)
-										//.imageScaleType(ImageScaleType.EXACTLY)										
-										.cacheOnDisc(true).build();
+
 			//
 			Log.d("testtask", srcUrl.size()+"");
 			for(String s:srcUrl.keySet())
@@ -108,6 +88,10 @@ public class MetroUIFragment extends BaseFragment implements TaskType{
 			CreateImageMap(getActivity());
 			AddImageView();
 			(new MyMetroTask()).execute();
+			for(int i =0 ; i< viewFlipperList.size(); i++)
+			{
+				viewFlipperList.get(i).setOnClickListener(this);
+			}
 		}	
 		/////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////
@@ -115,30 +99,25 @@ public class MetroUIFragment extends BaseFragment implements TaskType{
 		
 		return rootView;
 	}
-//	//@SuppressWarnings("unchecked")
-//	@SuppressWarnings("unchecked")
-//	@Override
-//	public void onSuccess(int taskType, ArrayList<?> list, String msg) {
-//		// TODO Auto-generated method stub
-//		super.onSuccess(taskType, list, msg);
-//		switch (taskType) {
-//		case TASK_GET_METRO:
-//		{
-//			Log.d("testtask", "------------------------------------------------------------------------------");
-//			Log.d("testtask", "dang chay task metro");
-//			srcUrl = (HashMap<String, ArrayList<String>>) list.get(0);
-//			Log.d("testmetrotask", srcUrl.size()+"");
-//			CreateImageMap(getActivity());
-//			AddImageView();
-//			(new MyMetroTask()).execute();
-//			break;
-//		}
-//
-//		default:
-//			break;
-//		}
-//		
-//	}
+public int getScreenWidth() {
+		return screenWidth;
+	}
+	public void setScreenWidth(int screenWidth) {
+		this.screenWidth = screenWidth;
+	}
+	public DisplayImageOptions getDisplayImageOptions() {
+		return displayImageOptions;
+	}
+	public void setDisplayImageOptions(DisplayImageOptions displayImageOptions) {
+		this.displayImageOptions = displayImageOptions;
+	}
+	public LinkedHashMap<String, ArrayList<String>> getSrcUrl() {
+		return srcUrl;
+	}
+	public void setSrcUrl(LinkedHashMap<String, ArrayList<String>> srcUrl) {
+		this.srcUrl = srcUrl;
+	}
+
 	@Override
 	public void onFail(int taskType, String msg) {
 		// TODO Auto-generated method stub
@@ -266,6 +245,7 @@ public class MetroUIFragment extends BaseFragment implements TaskType{
 			count++;
 		}
 	}
+	
 	public class MyMetroTask extends AsyncTask<Void, Integer, Void>
 	{
 
@@ -332,5 +312,103 @@ public class MetroUIFragment extends BaseFragment implements TaskType{
 		// TODO Auto-generated method stub
 		super.onStop();
 		flag = false;
+	}	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+		StaggeredGridViewFragment gridViewFragment = new StaggeredGridViewFragment();
+		switch (v.getId()) {
+		case R.id.ngaunhien_cd:
+			
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/random");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+			
+			break;
+		case R.id.hotnhat_cd:
+			
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/hot");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+			
+			break;
+		case R.id.nguoimau_cd:
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/models");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+			
+			break;
+		case R.id.xiteen_cd:
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/xi-tin");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+			
+			break;
+		case R.id.nusinh_cd:
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/nu-sinh");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+			
+			break;
+		case R.id.diudang_cd:			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/diu-dang");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+			
+			break;
+		case R.id.aodai_cd:
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/ao-dai");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+			
+			break;
+		case R.id.sexy_cd:
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/sexy");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+		
+		case R.id.vongmot_cd:
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/vong-1");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+			
+			break;
+		case R.id.chandai_cd:
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/chan-dai");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+		case R.id.bikini_cd:
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/bikini");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();
+			
+			break;
+		case R.id.bannude_cd:
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/ban-nude");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();	
+			break;
+		case R.id.hangngoai_cd:
+			
+			gridViewFragment.setDisplayImageOptions(displayImageOptions);
+			gridViewFragment.setSrcUrl("http://chandai.tv/hang-ngoai");
+			fragmentManager.beginTransaction().replace(R.id.realTabContent, gridViewFragment, "stag").addToBackStack(null).commit();	
+			break;
+
+		default:
+			break;
+		}
+ 		
 	}	
 }

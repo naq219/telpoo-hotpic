@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    
     android:padding="4dp" >
 
     <ImageView
@@ -20,7 +20,7 @@
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
         android:text="Chua cap nhat"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/white"        
         android:textSize="18sp" />
 
 </LinearLayout>

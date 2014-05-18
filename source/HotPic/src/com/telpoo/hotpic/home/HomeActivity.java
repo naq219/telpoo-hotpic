@@ -1,9 +1,15 @@
 package com.telpoo.hotpic.home;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.db.DbSupport;
@@ -12,6 +18,7 @@ import com.telpoo.hotpic.metroui.MetroUIFragment;
 import com.telpoo.hotpic.task.TaskMinh;
 import com.telpoo.hotpic.task.TaskType;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
@@ -22,6 +29,7 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 	//ViewMenu viewMenu;
 	LinkedHashMap<String, ArrayList<String>> srcUrl;
 	int screenWidthMetro;
+	DisplayImageOptions displayImageOptions;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,12 +42,37 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 		
 		///////////////////
 		///////////////////
+		File cacheDir = new File(getCacheDir(), "imgcachedir");			
+		 if ( !cacheDir.exists() )
+		        cacheDir.mkdir();	
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+		.memoryCache(new WeakMemoryCache())
+		.threadPoolSize(5)
+		//.memoryCacheSize(1048576 * 10)
+		.discCache(new UnlimitedDiscCache(cacheDir))
+		//.discCache(discCache)
+		.denyCacheImageMultipleSizesInMemory()					
+		.build();
+		//
+		ImageLoader.getInstance().init(config);
+		//////////////////////
+		displayImageOptions = new DisplayImageOptions.Builder()
+		.cacheInMemory(true)
+		.resetViewBeforeLoading(true)
+		.bitmapConfig(Bitmap.Config.RGB_565)										
+		.showImageForEmptyUri(R.drawable.ic_launcher)
+		.showImageOnFail(R.drawable.ic_launcher)
+		
+		//.imageScaleType(ImageScaleType.EXACTLY)										
+		.cacheOnDisc(true).build();
+		//
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		screenWidthMetro = displayMetrics.widthPixels - 10; 
 		//pushFragments(TabId.metro, MetroUIFragment.newInstance(screenWidth), true, null);
 		taskMinh =  new TaskMinh(model, TASK_GET_METRO, null, this);
 		model.exeTask(null, taskMinh);
 		//
+		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -52,7 +85,9 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 			
 			//update vao menu 
 			viewMenu.LoadData();			
+			viewMenu.setClickItemExpandLV(getSupportFragmentManager(), R.id.realTabContent, displayImageOptions);
 			viewMenu.setIndicatorGroupELV(); 	
+			
 			
 			break;
 		case TASK_GET_METRO:
@@ -67,7 +102,13 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 					Log.d("mmetroname", key);
 				}
 				FragmentManager fragmentManager = getSupportFragmentManager();
-				fragmentManager.beginTransaction().add(R.id.realTabContent, new MetroUIFragment(screenWidthMetro, srcUrl), TabId.metro ).addToBackStack(null).commit();
+				//
+				MetroUIFragment metroUIFragment = new MetroUIFragment();
+				metroUIFragment.setSrcUrl(srcUrl);
+				metroUIFragment.setDisplayImageOptions(displayImageOptions);
+				metroUIFragment.setScreenWidth(screenWidthMetro);
+				//
+				fragmentManager.beginTransaction().add(R.id.realTabContent,metroUIFragment, TabId.metro ).addToBackStack(null).commit();
 				break;
 				
 
