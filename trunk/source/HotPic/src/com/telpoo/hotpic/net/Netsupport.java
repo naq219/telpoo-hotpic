@@ -65,30 +65,35 @@ public class Netsupport {
 		String res = BaseNetSupportBeta.getInstance().method_GET("http://naq.name.vn/f/minh.json");
 		//Link<String, ArrayList<String> > hashMapDes = new HashMap<String, ArrayList<String>>();
 		LinkedHashMap<String, ArrayList<String>> hashMapDes = new LinkedHashMap<String, ArrayList<String>>();
-		JSONArray jsonArray = new JSONArray(res);
-		JSONObject  objectRootJson = jsonArray.getJSONObject(positionGet);
-//		String groupName = "";
-//		groupName = objectRootJson.getString("name");
-		JSONArray itemList  = objectRootJson.getJSONArray("item");
-		for(int j =0; j < itemList.length(); j++)
+		if(res != null)
 		{
-			String name = "";
-			ArrayList<String> urlList = new ArrayList<String>();
-			JSONObject itemObject = itemList.getJSONObject(j);
-			name = itemObject.getString("name");
-			JSONArray urlJsonArray = itemObject.getJSONArray("url");
-			for(int count = 0; count < urlJsonArray.length(); count++)
+			
+			JSONArray jsonArray = new JSONArray(res);
+			JSONObject  objectRootJson = jsonArray.getJSONObject(positionGet);
+//			String groupName = "";
+//			groupName = objectRootJson.getString("name");
+			JSONArray itemList  = objectRootJson.getJSONArray("item");
+			for(int j =0; j < itemList.length(); j++)
 			{
-				JSONObject itemJoj = urlJsonArray.getJSONObject(count);
-				urlList.add(itemJoj.getString("urlimage"));
+				String name = "";
+				ArrayList<String> urlList = new ArrayList<String>();
+				JSONObject itemObject = itemList.getJSONObject(j);
+				name = itemObject.getString("name");
+				JSONArray urlJsonArray = itemObject.getJSONArray("url");
+				for(int count = 0; count < urlJsonArray.length(); count++)
+				{
+					JSONObject itemJoj = urlJsonArray.getJSONObject(count);
+					urlList.add(itemJoj.getString("urlimage"));
+				}
+				Log.d("mmetroname", name);
+				hashMapDes.put(name, urlList);
 			}
-			Log.d("mmetroname", name);
-			hashMapDes.put(name, urlList);
+			for(String key: hashMapDes.keySet())
+			{
+				Log.d("mmetroname", key);
+			}
 		}
-		for(String key: hashMapDes.keySet())
-		{
-			Log.d("mmetroname", key);
-		}
+			
 		return hashMapDes;
 	}
 

@@ -9,21 +9,30 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.adapter.ExLvAdapter;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.db.TableDb;
+import com.telpoo.hotpic.object.AlbulmOj;
 import com.telpoo.hotpic.object.MenuOj;
+import com.telpoo.hotpic.staggeredgridviewui.StaggeredGridViewFragment;
 
 public class ViewMenu {
 	Context context;
@@ -41,7 +50,6 @@ public class ViewMenu {
 		v = inflater.inflate(R.layout.layout_menu, null);
 		
 		elv=(ExpandableListView) v.findViewById(R.id.elv);
-		
 		
 	}
 	
@@ -109,6 +117,26 @@ public class ViewMenu {
 			elv.setIndicatorBoundsRelative(width - (int)(50 * v.getResources().getDisplayMetrics().density + 0.5f) ,
 					width - (int)(10 * v.getResources().getDisplayMetrics().density + 0.5f) );
 		}
+	}
+	public void setClickItemExpandLV(final FragmentManager fragmentManager, final int LayoutId, final DisplayImageOptions displayImageOptions)
+	{
+		elv.setOnChildClickListener(new OnChildClickListener() {
+			
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				// TODO Auto-generated method stub
+				
+				String urlSrc = ((BaseObject)adapter.getChild(groupPosition, childPosition)).get(MenuOj.URL);
+				StaggeredGridViewFragment fragment = new StaggeredGridViewFragment();
+				fragment.setSrcUrl(urlSrc);
+				fragment.setDisplayImageOptions(displayImageOptions);
+				fragmentManager.beginTransaction().replace( LayoutId, fragment).addToBackStack(null).commit();
+				
+				return true;
+			}
+		});
+		
 	}
 
 	public View getView() {
