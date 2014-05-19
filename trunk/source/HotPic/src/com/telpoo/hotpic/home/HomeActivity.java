@@ -58,7 +58,7 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 		//////////////////////
 		displayImageOptions = new DisplayImageOptions.Builder()
 		.cacheInMemory(true)
-		//.resetViewBeforeLoading(true)
+		.resetViewBeforeLoading(false)
 		.bitmapConfig(Bitmap.Config.RGB_565)										
 		.showImageForEmptyUri(R.drawable.ic_launcher)
 		.showImageOnFail(R.drawable.ic_launcher)
