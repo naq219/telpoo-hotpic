@@ -10,6 +10,7 @@ import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.db.DbSupport;
@@ -40,14 +41,14 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 		taskMinh = new TaskMinh(model, TASK_UPDATE_MENU, null, this);
 		model.exeTask(null, taskMinh);
 		
-		///////////////////
-		///////////////////
+		///////////////////------------------------------------------------------------------------------------
+		///////////////////------------------------------------------------------------------------------------
 		File cacheDir = new File(getCacheDir(), "imgcachedir");			
 		 if ( !cacheDir.exists() )
 		        cacheDir.mkdir();	
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
 		.memoryCache(new WeakMemoryCache())
-		.threadPoolSize(5)
+		.threadPoolSize(4)
 		//.memoryCacheSize(1048576 * 10)
 		.discCache(new UnlimitedDiscCache(cacheDir))
 		//.discCache(discCache)
@@ -57,14 +58,14 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 		ImageLoader.getInstance().init(config);
 		//////////////////////
 		displayImageOptions = new DisplayImageOptions.Builder()
-		.cacheInMemory(true)
+		.cacheInMemory(false)
+		.cacheOnDisc(true)		
 		.resetViewBeforeLoading(false)
 		.bitmapConfig(Bitmap.Config.RGB_565)										
 		.showImageForEmptyUri(R.drawable.ic_launcher)
-		.showImageOnFail(R.drawable.ic_launcher)
-		
-		//.imageScaleType(ImageScaleType.EXACTLY)										
-		.cacheOnDisc(true).build();
+		.showImageOnFail(R.drawable.ic_launcher)		
+		.imageScaleType(ImageScaleType.EXACTLY)										
+		.build();
 		//
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		screenWidthMetro = displayMetrics.widthPixels - 10; 
