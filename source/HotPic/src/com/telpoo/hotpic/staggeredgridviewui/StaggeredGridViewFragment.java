@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 
 
+
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,8 @@ import android.widget.AdapterView;
 
 import com.etsy.android.grid.StaggeredGridView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 import com.telpoo.frame.ui.BaseFragment;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.adapter.HotStaggeredGridViewAdapter;
@@ -72,7 +76,13 @@ public class StaggeredGridViewFragment extends BaseFragment implements AbsListVi
 			albulmArrayList = chanDaiParse.getAlbulmOjList(srcUrl, getActivity());
 			isLoading = false;
 		}
-		
+		//listtenner onscrooll 
+		boolean pauseOnScroll = false; // flag
+		boolean pauseOnFling = true; // flag
+		PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(), pauseOnScroll, pauseOnFling);
+		staggeredGridView.setOnScrollListener(listener);
+		//
+		//
 		//trimCache(getActivity());
 		Log.d("testSTG", albulmArrayList.size()+"");
 		hotStaggeredGridViewAdapter = new HotStaggeredGridViewAdapter( this.getActivity() , R.layout.image_item_grid, albulmArrayList, displayImageOptions);		
