@@ -10,6 +10,6 @@ public class PicOj extends MyObject {
 	public static final String COMMENT = keys[3];
 	public static final String LIKE = keys[4];
 	public static final String URL = keys[5];
-	public static final String THUMBNAIL = keys[6];
+	public static final String URL_THUMBNAIL = keys[6];
 
 }
