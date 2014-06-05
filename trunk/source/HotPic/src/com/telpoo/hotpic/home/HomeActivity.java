@@ -68,17 +68,12 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 		}
 	}
 
-	public void toggle() {
-		getSlidingMenu().toggle(true);
-	}
+	
 
 	/**
 	 * Class ViewMenu se set listener nay de lang nghe su kien khi menu da dong
 	 * lai khi click vao 1 row trong ViewMenu
-	 * 
 	 * @author naq
-	 * 
-	 * 
 	 * @param iOnMenuClosed
 	 */
 	public void setDelegateOnMenuClosed(IOnMenuClosed iOnMenuClosed) {

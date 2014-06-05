@@ -1,0 +1,76 @@
+package com.telpoo.hotpic.detail;
+
+import java.util.ArrayList;
+
+import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher.OnViewTapListener;
+import android.graphics.Bitmap;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager.LayoutParams;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.telpoo.frame.delegate.Idelegate;
+import com.telpoo.frame.object.BaseObject;
+import com.telpoo.frame.utils.Mlog;
+import com.telpoo.hotpic.object.AlbulmOj;
+
+public class PhoToViewAdapter extends PagerAdapter {
+	PhotoView photoView;
+	ArrayList<BaseObject> ojs;
+	ViewGroup container1;
+	Idelegate idelegate;
+
+	public PhoToViewAdapter(ArrayList<BaseObject> ojs) {
+		this.ojs = ojs;
+	}
+
+	public void setDelegate(Idelegate idelegate) {
+		this.idelegate = idelegate;
+	}
+
+	@Override
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return ojs.size();
+	}
+
+	@Override
+	public Object instantiateItem(ViewGroup container, final int position) {
+		// TODO Auto-generated method stub
+		photoView = new PhotoView(container.getContext());
+
+		Bitmap bn = ImageLoader.getInstance().loadImageSync(ojs.get(position).get(AlbulmOj.URL_THUMBNAIL));
+		
+		Mlog.T(""+ojs.get(position).get(AlbulmOj.URL_THUMBNAIL));
+		photoView.setImageBitmap(bn);
+
+		container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+		photoView.setOnViewTapListener(new OnViewTapListener() {
+
+			@Override
+			public void onViewTap(View view, float x, float y) {
+				Mlog.T("click1");
+
+			}
+		});
+
+		return photoView;
+	}
+
+	@Override
+	public void destroyItem(ViewGroup container, int position, Object object) {
+		// TODO Auto-generated method stub
+
+		container.removeView((View) object);
+	}
+
+	@Override
+	public boolean isViewFromObject(View view, Object object) {
+		// TODO Auto-generated method stub
+		return view == object;
+	}
+
+}

@@ -1,6 +1,7 @@
 package com.telpoo.hotpic.adapter;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,21 +17,21 @@ import android.widget.TextView;
 import com.etsy.android.grid.util.DynamicHeightImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.object.AlbulmOj;
 
-public class HotStaggeredGridViewAdapter extends ArrayAdapter<AlbulmOj>{
+public class HotStaggeredGridViewAdapter extends ArrayAdapter<BaseObject>{
 
 	
 	Context context;
 	 int resource;
-	 List<AlbulmOj> objects;
+	 ArrayList<BaseObject> objects;
 	 Random random;
 	 LayoutInflater inflater;
-	 DisplayImageOptions displayImageOptions;
 	 private static final SparseArray<Double> sPositionHeightRatios = new SparseArray<Double>();
 	 public HotStaggeredGridViewAdapter(Context context, int resource,
-				List<AlbulmOj> objects, DisplayImageOptions displayImageOptions) {
+			 ArrayList<BaseObject> objects) {
 			super(context, resource, objects);
 			// TODO Auto-generated constructor stub
 			this.context = context;
@@ -38,8 +39,7 @@ public class HotStaggeredGridViewAdapter extends ArrayAdapter<AlbulmOj>{
 			this.objects = objects;
 			this.inflater =  LayoutInflater.from(context);
 			this.random = new Random();
-			this.displayImageOptions = displayImageOptions;
-			for(AlbulmOj albulmOj: objects)
+			for(BaseObject albulmOj: objects)
 			{
 				Log.d("testSTG", albulmOj.get(AlbulmOj.URL_THUMBNAIL));
 			}
@@ -49,7 +49,6 @@ public class HotStaggeredGridViewAdapter extends ArrayAdapter<AlbulmOj>{
 		// TODO Auto-generated method stub
 		final ViewHolder holder;
 		//View v = convertView;
-		Log.d("testSTG", "run STG adapter");
 		if( convertView == null )
 		{
 						
@@ -75,7 +74,7 @@ public class HotStaggeredGridViewAdapter extends ArrayAdapter<AlbulmOj>{
 		else
 			holder.textViewTittle.setVisibility(View.GONE);
 		Log.d("testSTG", imgLink);
-		ImageLoader.getInstance().displayImage( imgLink, holder.dynamicHeightImageView, displayImageOptions );
+		ImageLoader.getInstance().displayImage( imgLink, holder.dynamicHeightImageView );
 		holder.dynamicHeightImageView.setHeightRatio(positionHeight);
 		//notifyDataSetChanged();		
 		return convertView;
@@ -101,12 +100,16 @@ public class HotStaggeredGridViewAdapter extends ArrayAdapter<AlbulmOj>{
 		DynamicHeightImageView dynamicHeightImageView;
 		TextView textViewTittle;
 	}
-	public void Adds(List<AlbulmOj> items) {
+	public void Adds(List<BaseObject> items) {
 		if (items != null) {
-			for (AlbulmOj item : items) {
+			for (BaseObject item : items) {
 				add(item);
 			}
 		}
+	}
+	
+	public ArrayList<BaseObject> getAll(){
+		return objects;
 	}
 	
 

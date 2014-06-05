@@ -30,7 +30,7 @@ import com.telpoo.hotpic.delegate.IOnMenuClosed;
 import com.telpoo.hotpic.home.HomeActivity;
 import com.telpoo.hotpic.home.TabId;
 import com.telpoo.hotpic.object.MenuOj;
-import com.telpoo.hotpic.staggeredgridviewui.StaggeredGridViewFragment;
+import com.telpoo.hotpic.staggeredgridviewui.GridviewFm;
 
 public class ViewMenu implements IOnMenuClosed {
 	Context context;
@@ -38,8 +38,7 @@ public class ViewMenu implements IOnMenuClosed {
 	View v;
 	ExpandableListAdapter adapter;
 	ExpandableListView elv;
-	String urlSrc;
-	DisplayImageOptions displayImageOptions1;
+	BaseObject ojClick;
 
 	public ViewMenu(Context context1, Idelegate idelegate1) {
 		this.context = context1;
@@ -49,17 +48,8 @@ public class ViewMenu implements IOnMenuClosed {
 		v = inflater.inflate(R.layout.layout_menu, null);
 
 		elv = (ExpandableListView) v.findViewById(R.id.elv);
-		
-		IOnMenuClosed abc= new IOnMenuClosed() {
-			
-			@Override
-			public void onMenuClosed() {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		
-		((HomeActivity)context1).setDelegateOnMenuClosed(this);
+
+		((HomeActivity) context1).setDelegateOnMenuClosed(this);
 
 	}
 
@@ -127,8 +117,7 @@ public class ViewMenu implements IOnMenuClosed {
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-				urlSrc = ((BaseObject) adapter.getChild(groupPosition, childPosition)).get(MenuOj.URL);
-				displayImageOptions1 = displayImageOptions;
+				ojClick = ((BaseObject) adapter.getChild(groupPosition, childPosition));
 				HomeActivity.getInstance().toggle();
 
 				return true;
@@ -144,11 +133,8 @@ public class ViewMenu implements IOnMenuClosed {
 
 	@Override
 	public void onMenuClosed() {
-		StaggeredGridViewFragment fragment = new StaggeredGridViewFragment();
-		fragment.setSrcUrl(urlSrc);
-		fragment.setDisplayImageOptions(displayImageOptions1);
-		// fragmentManager.beginTransaction().replace( LayoutId,
-		// fragment).addToBackStack(null).commit();
+		GridviewFm fragment=new GridviewFm();
+		fragment.setData(ojClick);
 
 		HomeActivity.getInstance().pushFragments(TabId.home, fragment, true, null);
 

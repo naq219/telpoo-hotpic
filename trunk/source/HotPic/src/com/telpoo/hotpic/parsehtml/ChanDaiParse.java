@@ -2,131 +2,129 @@ package com.telpoo.hotpic.parsehtml;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
+
+import com.telpoo.frame.object.BaseObject;
+import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.object.AlbulmOj;
+import com.telpoo.hotpic.object.MenuOj;
+import com.telpoo.hotpic.object.PicOj;
+import com.telpoo.hotpic.utils.Constant;
 
 public class ChanDaiParse {
-	
-	public static final String  urlPath = "http://chandai.tv";
+
+	public static final String urlPath = "http://chandai.tv";
 	public static final String TAG_CHANDAI = "PARSE_CHANDAI";
-	public ChanDaiParse() {
-		// TODO Auto-generated constructor stub
+
+	public static ArrayList<BaseObject> Parse(BaseObject oj) throws IOException {
+		int typeCut = oj.getInt(MenuOj.TYPE_CUT);
+		String url = oj.get(MenuOj.URL);
+
+		if (typeCut == Constant.TYPE_CUT_ALBULM) { // cắt lấy ra albulm
+
+			return getAlbulmOjList(url);
+		}
+
+		if (typeCut == Constant.TYPE_CUT_PICTURE) {
+			return getPicList(url);
+		}
+
+		else
+			return null;
 	}
-	public ArrayList<AlbulmOj> getAlbulmOjList( String url, Context context )
-	{
+
+	public static ArrayList<BaseObject> getAlbulmOjList(String url) throws IOException {
 		// add a progress bar de bat buoc user phai cho de load du lieu
 		// add demo
-		Log.d(TAG_CHANDAI,"dang chay get image dang chay get image dang chay get image");
-		ProgressDialog progressDialog = new ProgressDialog(context);
-		progressDialog.setTitle("Loadding....");
-		progressDialog.show();		
 		//
-		ArrayList<AlbulmOj> albulmOjs = new ArrayList<AlbulmOj>();
-		//to do code
+		ArrayList<BaseObject> albulmOjs = new ArrayList<BaseObject>();
+		// to do code
 		String html = "";
-		try {
-			html = (new nAsyncTaskChanDai()).execute(url).get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// cai nay chay dat vao asynctask ma khi nay dat roi
+		html = Jsoup.connect(url).get().toString();
 		Document document = null;
-		// neu html co noi dung 
-		if( !html.equals(""))
-		{			
+		// neu html co noi dung
+		if (!html.equals("")) {
 			// parse noi dung html vao doccument
-			 document = Jsoup.parse(html);
-			 // cat cac the <a trong html
-			 Elements elementsList = document.select("a");
-			 for(Element itemRoot : elementsList)
-			 {
-				 String linkThumbnail ="", title ="", linkWeb = "", countSpan = ""; 
-				 Elements imgAndTitle = itemRoot.select("img");
-		
-				
-				 if( imgAndTitle != null )
-				 {
-		//-------------------------------------IMG-THUMBNAIL &  TITLE-----------------------------------------------------------
-					 String tempImg = imgAndTitle.attr("src");
-					 if(tempImg != null && !tempImg.equals(""))
-					 {
-						 linkThumbnail = urlPath+tempImg;
-						 Log.d(TAG_CHANDAI,linkThumbnail);
-					 }
-					 String tempTitle = imgAndTitle.attr("alt");
-					 if(tempTitle != null && !tempTitle.equals(""))
-					 {
-						 title = tempTitle;
-						 Log.d(TAG_CHANDAI,title);
-					 }
-		//--------------------------------------------------------------------------------------------------------
-		//---------------------------------------------LINKWEB------------------------------------------------------
-					 String templinkWeb = itemRoot.attr("href");
-					 if( templinkWeb != null )
-						 linkWeb = urlPath+templinkWeb;
-					 Log.d(TAG_CHANDAI,linkWeb);
-		//--------------------------------------------------------------------------------------------------------
-		//---------------------------------------------SpanCount------------------------------------------------------
-					 Elements spanCount = itemRoot.select("span");
-					 String tempSpan = spanCount.text();
-					 if(tempSpan != null)
-					 {
-						 countSpan = tempSpan;
-					 }
-					 Log.d(TAG_CHANDAI,countSpan);
-		//-------------------------------------------------------------------------------------------------------
-					 if( !linkThumbnail.equals("") && !linkWeb.equals("") )
-					 {
-						 AlbulmOj albulmOj = new AlbulmOj();
-						 albulmOj.set(AlbulmOj.URL_THUMBNAIL, linkThumbnail);
-						 albulmOj.set(AlbulmOj.URL, linkWeb);
-						 albulmOj.set(AlbulmOj.NAME, title);
-						 albulmOj.set(AlbulmOj.COUNT, countSpan);
-						 albulmOjs.add(albulmOj);
-					 }
-					 else
-						 continue;
-					 
-				 }
-				 else
-					 continue;
-		
-			 }
-		}		
-		progressDialog.dismiss();
+			document = Jsoup.parse(html);
+			// cat cac the <a trong html
+			Elements elementsList = document.select("a"); // chay den day hinh
+															// nhu ok, de anh
+															// debug cho xem
+			for (Element itemRoot : elementsList) {
+				String linkThumbnail = "", title = "", linkWeb = "", countSpan = "";
+				Elements imgAndTitle = itemRoot.select("img");
+
+				if (imgAndTitle != null) // sao o day em check null trong khi ko
+											// co du lieu thi no van la "[]"
+				{
+					// -------------------------------------IMG-THUMBNAIL &
+					// TITLE-----------------------------------------------------------
+					String tempImg = imgAndTitle.attr("src");
+					if (tempImg != null && !tempImg.equals("")) {
+						linkThumbnail = urlPath + tempImg;
+					}
+					String tempTitle = imgAndTitle.attr("alt");
+					if (tempTitle != null && !tempTitle.equals("")) {
+						title = tempTitle;
+					}
+					// --------------------------------------------------------------------------------------------------------
+					// ---------------------------------------------LINKWEB------------------------------------------------------
+					String templinkWeb = itemRoot.attr("href");
+					if (templinkWeb != null)
+						linkWeb = urlPath + templinkWeb;
+					// --------------------------------------------------------------------------------------------------------
+					// ---------------------------------------------SpanCount------------------------------------------------------
+					Elements spanCount = itemRoot.select("span");
+					String tempSpan = spanCount.text();
+					if (tempSpan != null) {
+						countSpan = tempSpan;
+					}
+					// -------------------------------------------------------------------------------------------------------
+					if (!linkThumbnail.equals("") && !linkWeb.equals("")) {
+						AlbulmOj albulmOj = new AlbulmOj();
+						albulmOj.set(AlbulmOj.URL_THUMBNAIL, linkThumbnail);
+						albulmOj.set(AlbulmOj.URL, linkWeb);
+						albulmOj.set(AlbulmOj.NAME, title);
+						albulmOj.set(AlbulmOj.COUNT, countSpan);
+						albulmOjs.add(albulmOj);
+					} else
+						continue;
+
+
+				} else
+					continue;
+
+			}
+		}
 		return albulmOjs;
 	}
-	//
-	public class nAsyncTaskChanDai extends AsyncTask<String, Void, String>{
 
-		@Override
-		protected String doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			Document document = null;
-			try {
-				document = Jsoup.connect(params[0]).get();
-				
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return document.toString();
+	public static ArrayList<BaseObject> getPicList(String url) throws IOException {
+		ArrayList<BaseObject> res = getAlbulmOjList(url);
+
+		ArrayList<BaseObject> ojs = new ArrayList<BaseObject>();
+
+		for (BaseObject baseObject : res) {
+
+			PicOj picOj = new PicOj();
+
+			picOj.set(PicOj.NAME, baseObject.get(AlbulmOj.NAME));
+			picOj.set(PicOj.URL, baseObject.get(AlbulmOj.URL));
+			picOj.set(PicOj.URL_THUMBNAIL, baseObject.get(AlbulmOj.URL_THUMBNAIL));
+
+			ojs.add(picOj);
+
 		}
-		
+
+		return ojs;
+
 	}
 
 }
