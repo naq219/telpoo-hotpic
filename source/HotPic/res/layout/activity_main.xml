@@ -7,8 +7,44 @@
 
     <RelativeLayout
         android:id="@+id/fm_top"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/top_height" />
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/top_height"
+        android:paddingRight="7dp"
+        android:background="#0b6bff" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingBottom="5dp"
+            android:paddingLeft="3dp"
+            android:id="@+id/btnMenu"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/menu" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="chan dai"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" >
+
+            <TextView
+                style="@style/text"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle"
+                android:padding="7dp"
+                android:text="13" />
+        </RelativeLayout>
+    </RelativeLayout>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

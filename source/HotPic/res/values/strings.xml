@@ -16,6 +16,7 @@
     <string name="no_network_try_again">Hiện tại không có kết nối mạng. Hãy thử lại sau.</string>
     <string name="thulai">Thử lại</string>
     <string name="no_network">Không có kết nối internet</string>
+    <string name="khong_co_anh_nao">Không có ảnh nào</string>
     
 
 </resources>
