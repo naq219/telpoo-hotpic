@@ -2,22 +2,23 @@ package com.telpoo.hotpic.detail;
 
 import java.util.ArrayList;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.R;
+import com.telpoo.hotpic.object.PicOj;
 
 public class DetailFm extends DetailFmLayout implements Idelegate {
 	PhoToViewAdapter phoToViewAdapter;
 	private ArrayList<BaseObject> ojs;
 	ViewPager viewPager;
+	BaseObject ojPage=new BaseObject();
 
 	public static DetailFm newInstance(int sectionNumber) {
 		DetailFm fragment = new DetailFm();
@@ -45,11 +46,45 @@ public class DetailFm extends DetailFmLayout implements Idelegate {
 		phoToViewAdapter.setDelegate(this);
 
 		viewPager.setAdapter(phoToViewAdapter);
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				
+			}
+			
+			@Override
+			public void onPageScrolled(int position, float arg1, int arg2) {
+				
+				ojPage = ojs.get(position);
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int state) {
+				
+				switch (state) {
+				case 0:
+					name.setText(ojPage.get(PicOj.NAME));
+					break;
+
+				default:
+					break;
+				}
+				
+				
+			}
+		});
+		
 	}
 
 	@Override
 	public void callBack(Object value, int where) {
-		Toast.makeText(getActivity(), "call back", 1).show();
+		
+		if(popup.getVisibility()==View.VISIBLE){
+			popup.setVisibility(View.GONE);
+		}
+		else popup.setVisibility(View.VISIBLE);
 		/*
 		 * viewPager.setCurrentItem(1); phoToViewAdapter.notifyDataSetChanged();
 		 */

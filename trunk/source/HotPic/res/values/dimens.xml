@@ -36,5 +36,9 @@
     <!-- new -->
     <dimen name="menu_space1">10dp</dimen>
     <dimen name="menu_icon">35dp</dimen>
+    <dimen name="progress_wid">30dp</dimen>
+    
+    <dimen name="space">7dp</dimen>
+    
 
 </resources>

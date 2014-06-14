@@ -151,5 +151,17 @@ public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate
 	public void toggle() {
 		getSlidingMenu().toggle(true);
 	}
+	
+	public void showLoadingBar(){
+		View v= findViewById(R.id.progress);
+		if(v!=null) v.setVisibility(View.VISIBLE);
+		
+	}
+	
+	public void closeLoadingBar(){
+		View v= findViewById(R.id.progress);
+		if(v!=null) v.setVisibility(View.GONE);
+		
+	}
 
 }
