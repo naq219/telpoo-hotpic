@@ -1,7 +1,6 @@
 package com.telpoo.hotpic.home;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import android.os.Bundle;
 
@@ -16,7 +15,6 @@ import com.telpoo.hotpic.task.TaskType;
 public class HomeActivity extends MyHomeActivity implements TaskType {
 	TaskMinh taskMinh;
 	// ViewMenu viewMenu;
-	LinkedHashMap<String, ArrayList<String>> srcUrl;
 
 	private static HomeActivity me;
 	IOnMenuClosed iOnMenuClosed;

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.home.MyFragment;
@@ -13,6 +14,10 @@ import com.telpoo.hotpic.home.MyFragment;
 public class DetailFmLayout extends MyFragment {
 	ImageView like, favorite, comment, download, setting, share;
 	ViewPager viewPager ;
+	View popup;
+	TextView name;
+	
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,6 +33,8 @@ public class DetailFmLayout extends MyFragment {
 		download = (ImageView) v.findViewById(R.id.download);
 		setting = (ImageView) v.findViewById(R.id.setting);
 		share = (ImageView) v.findViewById(R.id.share);
+		popup= (View) v.findViewById(R.id.popup);
+		name= (TextView) v.findViewById(R.id.name);
 	}
 
 }

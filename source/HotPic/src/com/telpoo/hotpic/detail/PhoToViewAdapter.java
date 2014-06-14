@@ -32,27 +32,29 @@ public class PhoToViewAdapter extends PagerAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return ojs.size();
 	}
 
 	@Override
 	public Object instantiateItem(ViewGroup container, final int position) {
-		// TODO Auto-generated method stub
 		photoView = new PhotoView(container.getContext());
 
 		Bitmap bn = ImageLoader.getInstance().loadImageSync(ojs.get(position).get(AlbulmOj.URL_THUMBNAIL));
 		
 		Mlog.T(""+ojs.get(position).get(AlbulmOj.URL_THUMBNAIL));
 		photoView.setImageBitmap(bn);
-
 		container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
+		
+		
+		
 		photoView.setOnViewTapListener(new OnViewTapListener() {
 
 			@Override
 			public void onViewTap(View view, float x, float y) {
 				Mlog.T("click1");
+				
+				idelegate.callBack(1, 1);
+				
 
 			}
 		});
@@ -62,14 +64,12 @@ public class PhoToViewAdapter extends PagerAdapter {
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		// TODO Auto-generated method stub
 
 		container.removeView((View) object);
 	}
 
 	@Override
 	public boolean isViewFromObject(View view, Object object) {
-		// TODO Auto-generated method stub
 		return view == object;
 	}
 

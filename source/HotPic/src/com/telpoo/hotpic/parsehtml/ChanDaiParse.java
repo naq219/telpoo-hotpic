@@ -14,6 +14,7 @@ import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.object.AlbulmOj;
 import com.telpoo.hotpic.object.MenuOj;
+import com.telpoo.hotpic.object.MyObject;
 import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.utils.Constant;
 
@@ -89,14 +90,16 @@ public class ChanDaiParse {
 					// -------------------------------------------------------------------------------------------------------
 					if (!linkThumbnail.equals("") && !linkWeb.equals("")) {
 						AlbulmOj albulmOj = new AlbulmOj();
+						albulmOj.set(AlbulmOj.TAG, AlbulmOj.TAG_ALBULM);
 						albulmOj.set(AlbulmOj.URL_THUMBNAIL, linkThumbnail);
 						albulmOj.set(AlbulmOj.URL, linkWeb);
 						albulmOj.set(AlbulmOj.NAME, title);
 						albulmOj.set(AlbulmOj.COUNT, countSpan);
+						albulmOj.set(AlbulmOj.COUNT, countSpan);
+						albulmOj.set(AlbulmOj.TYPE_CUT, Constant.TYPE_CUT_ALBULM);
 						albulmOjs.add(albulmOj);
 					} else
 						continue;
-
 
 				} else
 					continue;
@@ -114,10 +117,11 @@ public class ChanDaiParse {
 		for (BaseObject baseObject : res) {
 
 			PicOj picOj = new PicOj();
-
+			picOj.set(MyObject.TAG, MyObject.TAG_PIC);
 			picOj.set(PicOj.NAME, baseObject.get(AlbulmOj.NAME));
 			picOj.set(PicOj.URL, baseObject.get(AlbulmOj.URL));
 			picOj.set(PicOj.URL_THUMBNAIL, baseObject.get(AlbulmOj.URL_THUMBNAIL));
+			picOj.set(AlbulmOj.TYPE_CUT, Constant.TYPE_CUT_PICTURE);
 
 			ojs.add(picOj);
 

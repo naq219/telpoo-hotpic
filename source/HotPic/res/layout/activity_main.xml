@@ -41,7 +41,7 @@
                 style="@style/text"
                 android:layout_centerInParent="true"
                 android:background="@drawable/circle"
-                android:padding="7dp"
+                android:padding="3dp"
                 android:text="13" />
         </RelativeLayout>
     </RelativeLayout>

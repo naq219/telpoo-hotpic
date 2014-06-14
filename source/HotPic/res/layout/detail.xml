@@ -14,12 +14,15 @@
 
     <LinearLayout
         style="@style/form_fw"
+        android:id="@+id/popup"
+        
         android:layout_alignParentBottom="true"
         android:background="#60000000"
         android:orientation="vertical" >
 
         <TextView
             style="@style/text_white"
+            android:id="@+id/name"
             android:padding="5dp"
             android:text="Hiep em di :)) Hiep em di :))" />
 
