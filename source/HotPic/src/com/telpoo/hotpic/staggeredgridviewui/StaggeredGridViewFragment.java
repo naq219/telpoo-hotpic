@@ -25,7 +25,6 @@ import com.telpoo.hotpic.detail.DetailFm;
 import com.telpoo.hotpic.home.HomeActivity;
 import com.telpoo.hotpic.home.MyFragment;
 import com.telpoo.hotpic.home.TabId;
-import com.telpoo.hotpic.object.AlbulmOj;
 import com.telpoo.hotpic.parsehtml.ChanDaiParse;
 
 @SuppressLint("NewApi")
@@ -70,8 +69,6 @@ public class StaggeredGridViewFragment extends MyFragment implements AbsListView
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		Log.d("testSTG", "vao staggeredgrid");
-		Log.d("testSTG", ""+srcUrl);
 		count = 1;
 		staggeredGridView = (StaggeredGridView) getView().findViewById(R.id.grid_view);
 		loadMoreStgFooter = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
@@ -179,7 +176,7 @@ public class StaggeredGridViewFragment extends MyFragment implements AbsListView
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		DetailFm fm = new DetailFm();
-		fm.setData(hotStaggeredGridViewAdapter.getAll());
+		fm.setData(hotStaggeredGridViewAdapter.getAll(),position);
 		HomeActivity.getInstance().pushFragments(TabId.home, fm, true, null);
 
 	}

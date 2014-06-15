@@ -51,10 +51,7 @@ public class PhoToViewAdapter extends PagerAdapter {
 
 			@Override
 			public void onViewTap(View view, float x, float y) {
-				Mlog.T("click1");
-				
 				idelegate.callBack(1, 1);
-				
 
 			}
 		});
