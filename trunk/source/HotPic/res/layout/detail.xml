@@ -13,18 +13,17 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
-        style="@style/form_fw"
         android:id="@+id/popup"
-        
+        style="@style/form_fw"
         android:layout_alignParentBottom="true"
         android:background="#60000000"
         android:orientation="vertical" >
 
         <TextView
-            style="@style/text_white"
             android:id="@+id/name"
+            style="@style/text_white"
             android:padding="5dp"
-            android:text="Hiep em di :)) Hiep em di :))" />
+           />
 
         <View
             android:layout_width="match_parent"
@@ -41,14 +40,15 @@
                 style="@style/form_ww"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:scaleType="fitEnd"
+                android:padding="5dp"
                 android:src="@drawable/ic_chitiet_favprite_normal" />
 
             <ImageView
                 android:id="@+id/like"
                 style="@style/form_ww"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="1"
+                android:padding="5dp"
                 android:src="@drawable/ic_chitiet_like_normal" />
 
             <ImageView
@@ -56,14 +56,14 @@
                 style="@style/form_ww"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:scaleType="fitStart"
+                android:padding="5dp"
                 android:src="@drawable/ic_chitiet_comment_normal" />
         </LinearLayout>
 
         <LinearLayout
             style="@style/form_fw"
-            android:layout_marginTop="20dp"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             android:padding="2dp" >
 
             <ImageView
@@ -71,14 +71,15 @@
                 style="@style/form_ww"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:scaleType="fitEnd"
+                android:padding="5dp"
                 android:src="@drawable/ic_chitiet_down_normal" />
 
             <ImageView
                 android:id="@+id/setting"
                 style="@style/form_ww"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="1"
+                android:padding="5dp"
                 android:src="@drawable/ic_chitiet_setting_normal" />
 
             <ImageView
@@ -86,7 +87,7 @@
                 style="@style/form_ww"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:scaleType="fitStart"
+                android:padding="5dp"
                 android:src="@drawable/ic_chitiet_share_normal" />
         </LinearLayout>
     </LinearLayout>

@@ -108,6 +108,12 @@ public class HotStaggeredGridViewAdapter extends ArrayAdapter<BaseObject>{
 		}
 	}
 	
+	public void setData(List<BaseObject> items){
+		clear();
+		Adds(items);
+		
+	}
+	
 	public ArrayList<BaseObject> getAll(){
 		return objects;
 	}

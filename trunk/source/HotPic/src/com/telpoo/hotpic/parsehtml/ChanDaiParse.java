@@ -90,7 +90,8 @@ public class ChanDaiParse {
 					// -------------------------------------------------------------------------------------------------------
 					if (!linkThumbnail.equals("") && !linkWeb.equals("")) {
 						AlbulmOj albulmOj = new AlbulmOj();
-						albulmOj.set(AlbulmOj.TAG, AlbulmOj.TAG_ALBULM);
+						albulmOj.set(AlbulmOj.TYPE_CUT, Constant.TYPE_CUT_ALBULM);
+						albulmOj.set(MenuOj.GROUP_ID, Constant.GroupSource.GROUP_CHANDAITV);
 						albulmOj.set(AlbulmOj.URL_THUMBNAIL, linkThumbnail);
 						albulmOj.set(AlbulmOj.URL, linkWeb);
 						albulmOj.set(AlbulmOj.NAME, title);
@@ -117,7 +118,8 @@ public class ChanDaiParse {
 		for (BaseObject baseObject : res) {
 
 			PicOj picOj = new PicOj();
-			picOj.set(MyObject.TAG, MyObject.TAG_PIC);
+			picOj.set(MenuOj.GROUP_ID, Constant.GroupSource.GROUP_CHANDAITV);
+			picOj.set(PicOj.TYPE_CUT, Constant.TYPE_CUT_PICTURE);
 			picOj.set(PicOj.NAME, baseObject.get(AlbulmOj.NAME));
 			picOj.set(PicOj.URL, baseObject.get(AlbulmOj.URL));
 			picOj.set(PicOj.URL_THUMBNAIL, baseObject.get(AlbulmOj.URL_THUMBNAIL));

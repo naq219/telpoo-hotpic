@@ -12,6 +12,7 @@ import com.telpoo.hotpic.home.MyFragment;
 public class GridviewFmLayout extends MyFragment {
 	StaggeredGridView staggeredGridView;
 	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.stg_fragment, container, false);

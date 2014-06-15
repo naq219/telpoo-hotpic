@@ -37,7 +37,6 @@ public class TaskNaq extends BaseTask implements TaskType {
 			try {
 				ojStrageList = ParseSupport.parse(ojList);  // vao parsesupport di 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

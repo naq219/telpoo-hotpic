@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/top_height"
         android:paddingRight="7dp"
-        android:background="#0b6bff" >
+        android:background="#3873af" >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -39,9 +39,9 @@
 
             <TextView
                 style="@style/text"
+                android:gravity="center"
                 android:layout_centerInParent="true"
                 android:background="@drawable/circle"
-                android:padding="3dp"
                 android:text="13" />
         </RelativeLayout>
     </RelativeLayout>
