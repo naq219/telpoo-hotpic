@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <include layout="@layout/loading"
-        android:padding="@dimen/space"
-         />
+    <include
+        layout="@layout/loading"
+        android:padding="@dimen/space" />
+
+    <LinearLayout
+        android:id="@+id/loadMore"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <ProgressBar
+            android:layout_width="@dimen/progress_wid"
+            android:layout_height="@dimen/progress_wid"
+            android:layout_gravity="center_horizontal" >
+        </ProgressBar>
+
+        <TextView
+            style="@style/text"
+            android:layout_gravity="center_vertical"
+            android:text="@string/loading_more" />
+    </LinearLayout>
 
     <com.etsy.android.grid.StaggeredGridView
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/loadMore"
+        android:layout_below="@+id/progress"
         app:column_count="2"
         app:item_margin="8dp" />
 
-</LinearLayout>
+</RelativeLayout>

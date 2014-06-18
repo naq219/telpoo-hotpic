@@ -17,6 +17,8 @@
     <string name="thulai">Thử lại</string>
     <string name="no_network">Không có kết nối internet</string>
     <string name="khong_co_anh_nao">Không có ảnh nào</string>
+    <string name="loading_more">Đang tải thêm</string>
+    <string name="dang_tai_anh">Đang tải ảnh</string>
     
 
 </resources>

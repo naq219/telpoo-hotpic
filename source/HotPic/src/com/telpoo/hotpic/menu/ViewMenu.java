@@ -22,6 +22,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
+import com.telpoo.frame.ui.BaseFragment;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.adapter.ExLvAdapter;
 import com.telpoo.hotpic.db.DbSupport;
@@ -39,6 +40,7 @@ public class ViewMenu implements IOnMenuClosed {
 	ExpandableListAdapter adapter;
 	ExpandableListView elv;
 	BaseObject ojClick;
+	private BaseFragment fmPush;
 
 	public ViewMenu(Context context1, Idelegate idelegate1) {
 		this.context = context1;
@@ -65,7 +67,7 @@ public class ViewMenu implements IOnMenuClosed {
 		List<String> listDataHeader = new ArrayList<String>();
 		HashMap<String, List<BaseObject>> listChildData = new HashMap<String, List<BaseObject>>();
 		ArrayList<BaseObject> menuObjects = new ArrayList<BaseObject>();
-		menuObjects = DbSupport.getAllOfTable(TableDb.TABLE_VIEW_MENU);
+		menuObjects = DbSupport.getMenu();
 		Log.d("test", menuObjects.size() + "");
 		//
 		// get listdataheader
@@ -110,14 +112,21 @@ public class ViewMenu implements IOnMenuClosed {
 		}
 	}
 
-	public void setClickItemExpandLV(final FragmentManager fragmentManager, final int LayoutId,
-			final DisplayImageOptions displayImageOptions) {
+	public void setClickItemExpandLV(final FragmentManager fragmentManager, final int LayoutId) {
 		elv.setOnChildClickListener(new OnChildClickListener() {
 
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
 				ojClick = ((BaseObject) adapter.getChild(groupPosition, childPosition));
+
+				if (ojClick != null) {
+
+					GridviewFm fragment = new GridviewFm();
+					fragment.setData(ojClick);
+					setupBeforeClose(fragment);
+				} else
+					setupBeforeClose(null);
 				HomeActivity.getInstance().toggle();
 
 				return true;
@@ -133,11 +142,14 @@ public class ViewMenu implements IOnMenuClosed {
 
 	@Override
 	public void onMenuClosed() {
-		GridviewFm fragment=new GridviewFm();
-		fragment.setData(ojClick);
 
-		HomeActivity.getInstance().pushFragments(TabId.home, fragment, true, null);
+		if (fmPush != null)
+			HomeActivity.getInstance().pushFragments(TabId.home, fmPush, true, null);
 
+	}
+
+	private void setupBeforeClose(BaseFragment fmPush) {
+		this.fmPush = fmPush;
 	}
 
 }

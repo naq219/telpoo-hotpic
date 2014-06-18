@@ -11,7 +11,5 @@ public class MenuOj {
 	public static final String URL = keys[4];
 	public static final String TYPE_CUT = keys[5];
 	//key db
-	public static String keys_db[] = { "group_name", "group_id", "name",
-		"category", "url", "type_cut" };
 
 }

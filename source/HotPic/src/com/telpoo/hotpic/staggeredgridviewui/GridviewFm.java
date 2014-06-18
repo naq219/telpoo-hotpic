@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.telpoo.frame.object.BaseObject;
+import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.adapter.HotStaggeredGridViewAdapter;
 import com.telpoo.hotpic.detail.DetailFm;
@@ -26,37 +29,36 @@ import com.telpoo.hotpic.task.TaskType;
 import com.telpoo.hotpic.utils.Constant;
 
 public class GridviewFm extends GridviewFmLayout implements TaskType {
-	BaseObject oj;
+	BaseObject ojToParse;
 	HotStaggeredGridViewAdapter adapter;
-
+	boolean isLoadingMore = false;
+	int page = 0; // tra da load
 	@SuppressLint("NewApi")
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		ArrayList<BaseObject> list = new ArrayList<BaseObject>();
-		list.add(oj);
-		showProgress();
-		TaskNaq taskNaq = new TaskNaq(getModel(), TASK_GET_LIST_IMAGE, list, getActivity());
-		getModel().exeTask(null, taskNaq);
-		adapter = new HotStaggeredGridViewAdapter(getActivity(), R.layout.image_item_grid, new ArrayList<BaseObject>());
-		staggeredGridView.setAdapter(adapter);
+		runTaskGetImage(ojToParse);
 
-		staggeredGridView.setOnItemClickListener(new OnItemClickListener() {
+		adapter = new HotStaggeredGridViewAdapter(getActivity(), R.layout.image_item_grid, new ArrayList<BaseObject>());
+		gridView.setAdapter(adapter);
+
+		gridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				BaseObject oj = (BaseObject) arg0.getAdapter().getItem(position);
 
 				int typeCut = oj.getInt(PicOj.TYPE_CUT);
-				if (typeCut ==Constant.TYPE_CUT_ALBULM) { // albulm oj , tiep tuc parse
-					
-					oj.set(PicOj.TYPE_CUT, Constant.TYPE_CUT_PICTURE);// chuyen sang cat picture
-					ArrayList<BaseObject> list = new ArrayList<BaseObject>();
-					list.add(oj);
-					showProgress();
-					TaskNaq taskNaq = new TaskNaq(getModel(), TASK_GET_LIST_IMAGE, list, getActivity());
-					getModel().exeTask(null, taskNaq);
+				if (typeCut == Constant.TYPE_CUT_ALBULM) { // albulm oj , tiep
+															// tuc parse
+					// chuyen sang cat picture
+					oj.set(PicOj.TYPE_CUT, Constant.TYPE_CUT_PICTURE);
+
+					GridviewFm gridviewFm = new GridviewFm();
+					gridviewFm.setData(oj);
+					HomeActivity.getInstance().pushFragments(TabId.home, gridviewFm, true, null);
+
 				} else { // picoj
 					DetailFm fm = new DetailFm();
 					fm.setData(adapter.getAll(), position);
@@ -65,6 +67,54 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 
 			}
 		});
+
+		gridView.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+				if (totalItemCount - firstVisibleItem - visibleItemCount < 1) {
+					if (!isLoadingMore) { // khong co task loadmore nao ca
+						runTaskLoadMore(ojToParse);
+					}
+				}
+				
+
+			}
+		});
+
+	}
+
+	protected void runTaskLoadMore(BaseObject oj2) {
+		isLoadingMore = true;
+		loadMore.setVisibility(View.VISIBLE);
+		page++;
+		oj2.set(MyObject.PAGE, page);
+		ArrayList<BaseObject> list = new ArrayList<BaseObject>();
+		list.add(oj2);
+
+		TaskNaq taskNaq = new TaskNaq(getModel(), TASK_GET_LIST_IMAGE_LOADMORE, list, getActivity());
+		getModel().exeTask(null, taskNaq);
+
+	}
+
+	private void runTaskGetImage(BaseObject oj2) {
+		page = 1;
+		oj2.set(MyObject.PAGE, 1); // chuyen ve trang dau tien
+		ArrayList<BaseObject> list = new ArrayList<BaseObject>();
+
+		list.add(oj2);
+
+		showProgress();
+		TaskNaq taskNaq = new TaskNaq(getModel(), TASK_GET_LIST_IMAGE, list, getActivity());
+		getModel().exeTask(null, taskNaq);
+
 	}
 
 	/**
@@ -73,7 +123,7 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 	 * @param oj
 	 */
 	public void setData(BaseObject oj) {
-		this.oj = oj;
+		this.ojToParse = oj;
 
 	}
 
@@ -90,6 +140,19 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 
 			break;
 
+		case TASK_GET_LIST_IMAGE_LOADMORE:
+			isLoadingMore = false;
+			
+			loadMore.setVisibility(View.GONE);
+			Mlog.T("list.size()=" + list.size());
+			if (list.size() == 0) {
+				isLoadingMore = true; // khong con anh de loadmore nua
+				return;
+			}
+			adapter.Adds((ArrayList<BaseObject>) list);
+			adapter.notifyDataSetChanged();
+			break;
+
 		default:
 			break;
 		}
@@ -103,6 +166,12 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 		case TASK_GET_LIST_IMAGE:
 			closeProgress();
 			showToast("" + msg);
+			break;
+
+		case TASK_GET_LIST_IMAGE_LOADMORE:
+			isLoadingMore = false;
+			loadMore.setVisibility(View.GONE);
+			page--;
 			break;
 
 		default:

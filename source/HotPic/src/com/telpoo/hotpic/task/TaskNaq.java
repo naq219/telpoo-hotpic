@@ -24,6 +24,7 @@ public class TaskNaq extends BaseTask implements TaskType {
 	protected Boolean doInBackground(TaskParams... params) {
 
 		switch (taskType) {
+		case TASK_GET_LIST_IMAGE_LOADMORE:
 		case TASK_GET_LIST_IMAGE:
 			if (!BaseNetSupportBeta.isNetworkAvailable(context)) {
 				msg = context.getString(R.string.no_network);
@@ -35,15 +36,13 @@ public class TaskNaq extends BaseTask implements TaskType {
 
 			ArrayList<BaseObject> ojStrageList = null;
 			try {
-				ojStrageList = ParseSupport.parse(ojList);  // vao parsesupport di 
+				ojStrageList = ParseSupport.parse(ojList);  
 			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			if (ojStrageList == null || ojStrageList.size() == 0) {
 				msg = context.getString(R.string.khong_co_anh_nao);
 				return TASK_FAILED;
 			}
+
+			
 
 			dataReturn = ojStrageList;
 			return TASK_DONE;

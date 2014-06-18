@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher.OnViewTapListener;
+import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.LayoutParams;
@@ -21,11 +22,12 @@ public class PhoToViewAdapter extends PagerAdapter {
 	ArrayList<BaseObject> ojs;
 	ViewGroup container1;
 	Idelegate idelegate;
-
+	Bitmap bn;
 	public PhoToViewAdapter(ArrayList<BaseObject> ojs) {
 		this.ojs = ojs;
 	}
 
+	
 	public void setDelegate(Idelegate idelegate) {
 		this.idelegate = idelegate;
 	}
@@ -39,7 +41,8 @@ public class PhoToViewAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup container, final int position) {
 		photoView = new PhotoView(container.getContext());
 
-		Bitmap bn = ImageLoader.getInstance().loadImageSync(ojs.get(position).get(AlbulmOj.URL_THUMBNAIL));
+		 bn = ImageLoader.getInstance().loadImageSync(ojs.get(position).get(AlbulmOj.URL_THUMBNAIL));
+			
 		
 		Mlog.T(""+ojs.get(position).get(AlbulmOj.URL_THUMBNAIL));
 		photoView.setImageBitmap(bn);
@@ -69,5 +72,9 @@ public class PhoToViewAdapter extends PagerAdapter {
 	public boolean isViewFromObject(View view, Object object) {
 		return view == object;
 	}
+	
+	
+	
+	
 
 }

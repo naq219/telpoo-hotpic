@@ -9,18 +9,8 @@
         android:id="@+id/fm_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/top_height"
-        android:paddingRight="7dp"
-        android:background="#3873af" >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:paddingBottom="5dp"
-            android:paddingLeft="3dp"
-            android:id="@+id/btnMenu"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp"
-            android:src="@drawable/menu" />
+        android:background="@color/bg_top"
+        android:paddingRight="7dp" >
 
         <TextView
             android:id="@+id/tvTitle"
@@ -38,13 +28,16 @@
             android:layout_centerVertical="true" >
 
             <TextView
+                android:id="@+id/notifi"
                 style="@style/text"
-                android:gravity="center"
                 android:layout_centerInParent="true"
                 android:background="@drawable/circle"
+                android:gravity="center"
                 android:text="13" />
         </RelativeLayout>
     </RelativeLayout>
+
+  
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -69,6 +62,22 @@
         android:layout_below="@+id/fm_top"
         android:background="#000000"
         android:visibility="gone" >
+    </RelativeLayout>
+    
+      <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/top_height"
+        android:paddingRight="7dp" >
+
+        <ImageView
+            android:id="@+id/btnMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingBottom="5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/menu" />
     </RelativeLayout>
 
 </RelativeLayout>

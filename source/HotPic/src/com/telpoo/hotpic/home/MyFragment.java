@@ -6,14 +6,21 @@ import android.widget.ProgressBar;
 
 import com.telpoo.frame.ui.BaseFragment;
 import com.telpoo.hotpic.R;
+import com.telpoo.hotpic.utils.LoadingView;
 
 public class MyFragment extends BaseFragment{
 	ProgressBar progress;
+	protected View loadingView;
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		progress=(ProgressBar) view.findViewById(R.id.progress);
+	}
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		loadingView= new LoadingView(getActivity());
 	}
 	
 	protected void showProgress(){

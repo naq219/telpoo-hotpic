@@ -10,7 +10,8 @@ import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.home.MyFragment;
 
 public class GridviewFmLayout extends MyFragment {
-	StaggeredGridView staggeredGridView;
+	StaggeredGridView gridView;
+	View loadMore;
 	
 	
 	@Override
@@ -21,7 +22,8 @@ public class GridviewFmLayout extends MyFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		staggeredGridView = (StaggeredGridView) view.findViewById(R.id.grid_view);
+		gridView = (StaggeredGridView) view.findViewById(R.id.grid_view);
+		loadMore= view.findViewById(R.id.loadMore);
 		
 	}
 	

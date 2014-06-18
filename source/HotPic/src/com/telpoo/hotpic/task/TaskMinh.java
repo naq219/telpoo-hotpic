@@ -1,9 +1,7 @@
 package com.telpoo.hotpic.task;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.json.JSONException;
 
@@ -15,7 +13,6 @@ import com.telpoo.frame.model.TaskListener;
 import com.telpoo.frame.model.TaskParams;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.db.DbSupport;
-import com.telpoo.hotpic.db.TableDb;
 import com.telpoo.hotpic.net.Netsupport;
 
 public class TaskMinh extends BaseTask implements TaskType{
@@ -36,10 +33,10 @@ public class TaskMinh extends BaseTask implements TaskType{
 			try {
 				//parse json
 				ArrayList<BaseObject> jsonArrayList = Netsupport.getMenu();
-				Log.d("testjsonsize", jsonArrayList.size()+"" );
 				//save database
-				DbSupport.removeTable(TableDb.TABLE_VIEW_MENU, context);
-				DbSupport.AddData(jsonArrayList, TableDb.TABLE_VIEW_MENU);
+
+				DbSupport.updateMenu(jsonArrayList);	
+				
 				// return data;
 				dataReturn = jsonArrayList;
 			} catch (JSONException e) {
