@@ -8,10 +8,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.util.Log;
-
+import com.telpoo.frame.net.BaseNetSupportBeta;
+import com.telpoo.frame.net.NetConfig;
+import com.telpoo.frame.net.NetUtils;
 import com.telpoo.frame.object.BaseObject;
-import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.object.AlbulmOj;
 import com.telpoo.hotpic.object.MenuOj;
 import com.telpoo.hotpic.object.MyObject;
@@ -26,6 +26,11 @@ public class ChanDaiParse {
 	public static ArrayList<BaseObject> Parse(BaseObject oj) throws IOException {
 		int typeCut = oj.getInt(MenuOj.TYPE_CUT);
 		String url = oj.get(MenuOj.URL);
+		int page= oj.getInt(MyObject.PAGE);
+		if(page>1) {// chen them trang de dung url (truong hop loadmore)
+			url=url+"/"+page;
+			url.replace("//", "/");  
+		}
 
 		if (typeCut == Constant.TYPE_CUT_ALBULM) { // cắt lấy ra albulm
 
@@ -80,6 +85,7 @@ public class ChanDaiParse {
 					String templinkWeb = itemRoot.attr("href");
 					if (templinkWeb != null)
 						linkWeb = urlPath + templinkWeb;
+						linkWeb= parseUrlImg(linkWeb);
 					// --------------------------------------------------------------------------------------------------------
 					// ---------------------------------------------SpanCount------------------------------------------------------
 					Elements spanCount = itemRoot.select("span");
@@ -106,8 +112,22 @@ public class ChanDaiParse {
 					continue;
 
 			}
+			
 		}
 		return albulmOjs;
+	}
+
+	private static String parseUrlImg(String linkWeb) {
+		try {
+			Document document= Jsoup.connect(linkWeb).userAgent(NetUtils.UserAgent.IPHONE4).get();
+			Elements links = document.select("img");
+			String url= links.attr("src");
+			return "http://chandai.tv/"+url;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public static ArrayList<BaseObject> getPicList(String url) throws IOException {

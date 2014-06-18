@@ -1,39 +1,36 @@
 package com.telpoo.hotpic.home;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import android.graphics.Bitmap;
+import android.R.color;
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.ui.BaseFragmentActivity;
+import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.menu.ViewMenu;
 
 public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate, OnClickListener {
-	DisplayImageOptions displayImageOptions;
-	int screenWidthMetro;
+
 	int resource_home;
 	String toastAskExit;
 	static String[] tabids = { TabId.home };
 	ViewMenu viewMenu;
 	ImageView btnMenu;
+	View fm_top;
+	TextView tvTitle, tvnotifi;
 
 	AdView adView;
 
@@ -48,14 +45,6 @@ public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate
 		initView();
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 		StrictMode.setThreadPolicy(policy);
-
-		// displayImageOptions=new DisplayImageOptions.Builder().
-		//
-		// ImageLoaderConfiguration configuration = new
-		// ImageLoaderConfiguration.Builder(getBaseContext())
-		// .defaultDisplayImageOptions(displayImageOptions).build();
-		// ;
-		// ImageLoader.getInstance().init(configuration);
 
 	}
 
@@ -80,6 +69,16 @@ public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		btnMenu = (ImageView) findViewById(R.id.btnMenu);
 		btnMenu.setOnClickListener(this);
+		fm_top = findViewById(R.id.fm_top);
+		tvTitle = (TextView) findViewById(R.id.tvTitle);
+		tvnotifi = (TextView) findViewById(R.id.notifi);
+
+		int a = 3;
+		int b = 3;
+		b += 1;
+		if ((a > b ? a > b : a < b))
+			a++;
+		Mlog.E("a=" + a);
 
 	}
 
@@ -111,28 +110,6 @@ public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate
 
 	}
 
-	protected void setupImageLoader() {
-		File cacheDir = new File(getCacheDir(), "imgcachedir");
-		if (!cacheDir.exists())
-			cacheDir.mkdir();
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).memoryCache(new WeakMemoryCache())
-				.threadPoolSize(4)
-				// .memoryCacheSize(1048576 * 10)
-				.discCache(new UnlimitedDiscCache(cacheDir))
-				// .discCache(discCache)
-				.denyCacheImageMultipleSizesInMemory().build();
-		//
-		ImageLoader.getInstance().init(config);
-		// ////////////////////
-		displayImageOptions = new DisplayImageOptions.Builder().cacheInMemory(false).cacheOnDisc(true)
-				.resetViewBeforeLoading(false).bitmapConfig(Bitmap.Config.RGB_565).showImageForEmptyUri(R.drawable.ic_launcher)
-				.showImageOnFail(R.drawable.ic_launcher).imageScaleType(ImageScaleType.EXACTLY).build();
-		//
-		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-		screenWidthMetro = displayMetrics.widthPixels - 10;
-
-	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -151,17 +128,28 @@ public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate
 	public void toggle() {
 		getSlidingMenu().toggle(true);
 	}
-	
-	public void showLoadingBar(){
-		View v= findViewById(R.id.progress);
-		if(v!=null) v.setVisibility(View.VISIBLE);
-		
+
+	public void showLoadingBar() {
+		View v = findViewById(R.id.progress);
+		if (v != null)
+			v.setVisibility(View.VISIBLE);
+
 	}
-	
-	public void closeLoadingBar(){
-		View v= findViewById(R.id.progress);
-		if(v!=null) v.setVisibility(View.GONE);
-		
+
+	public void closeLoadingBar() {
+		View v = findViewById(R.id.progress);
+		if (v != null)
+			v.setVisibility(View.GONE);
+
+	}
+
+	@SuppressLint("ResourceAsColor")
+	public void showtop() {
+		fm_top.setVisibility(View.VISIBLE);
+	}
+
+	public void hidetop() {
+		fm_top.setVisibility(View.GONE);
 	}
 
 }

@@ -21,6 +21,7 @@ public class Netsupport {
 		String res= BaseNetSupportBeta.getInstance().method_GET("http://naq.name.vn/f/menu.json");
 		ArrayList<BaseObject> ojs=new ArrayList<BaseObject>(); // mang nay se co 6 phan tu
 		// root cua no la 1 array
+		if(res==null) return null;
 		JSONArray arRoot= new JSONArray(res);
 		
 		for (int i = 0; i < arRoot.length(); i++) 

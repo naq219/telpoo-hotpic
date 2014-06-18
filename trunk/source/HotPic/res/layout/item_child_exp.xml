@@ -2,25 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    
     android:padding="4dp" >
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_view_as_grid" 
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/ic_action_view_as_grid" />
 
     <TextView
         android:id="@+id/tv"
+        style="@style/textMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15sp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
-        android:text="Chua cap nhat"
-        android:textColor="@android:color/white"        
-        android:textSize="18sp" />
+        android:text="Chua cap nhat" />
 
 </LinearLayout>

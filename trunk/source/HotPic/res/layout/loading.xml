@@ -8,8 +8,8 @@
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="@dimen/progress_wid"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="@dimen/progress_wid" >
+        android:layout_height="@dimen/progress_wid"
+        android:layout_gravity="center_horizontal" >
     </ProgressBar>
 
 </LinearLayout>
