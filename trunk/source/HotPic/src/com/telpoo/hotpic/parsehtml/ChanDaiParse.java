@@ -2,6 +2,7 @@ package com.telpoo.hotpic.parsehtml;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,14 +10,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-import com.telpoo.frame.net.BaseNetSupportBeta;
-import com.telpoo.frame.net.NetConfig;
 import com.telpoo.frame.net.NetUtils;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.object.AlbulmOj;
@@ -123,23 +118,58 @@ public class ChanDaiParse {
 		return albulmOjs;
 	}
 
-	private static String parseUrlImg(String linkWeb) {
+	public static String parseUrlImg(String urlImg) {
+		String html = null;
 		try {
-			Document document= Jsoup.connect(linkWeb).userAgent(NetUtils.UserAgent.IPHONE4).get();
-			Elements links = document.select("img");
-			String url= links.attr("src");
-			return "http://chandai.tv/"+url;
-		} catch (IOException e) {
+			html = new exeTask().execute(urlImg).get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		if(html==null)return null;
+		Document document= Jsoup.parse(html);
+		Elements links = document.select("img");
+		String url= links.attr("src");
+		return "http://chandai.tv/"+url;
+		
 	}
 	
-	public static String getUrlImgSync(BaseObject oj, Context ct){
+	public static String getUrlImgSync(String urlImg){
+		String html = "";
+		try {
+			 html=(new exeTask()).execute(urlImg).get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		return null;
+		return html;
 	}
+	
+	  public static class exeTask extends AsyncTask<String, Void, String>{
+
+          @Override
+          protected String doInBackground(String... params) {
+                  // TODO Auto-generated method stub
+                  Document document = null;
+                  try {
+                          document = Jsoup.connect(params[0]).userAgent(NetUtils.UserAgent.IPHONE4).get();
+                          
+                          
+                  } catch (IOException e) {
+                          // TODO Auto-generated catch block
+                          e.printStackTrace();
+                  }
+                  return document.toString();
+          }
+          
+  }
 
 	public static ArrayList<BaseObject> getPicList(String url) throws IOException {
 		ArrayList<BaseObject> res = getAlbulmOjList(url);
