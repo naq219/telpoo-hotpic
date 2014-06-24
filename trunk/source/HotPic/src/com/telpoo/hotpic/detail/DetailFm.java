@@ -17,6 +17,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response.Listener;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -159,6 +163,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 
 		switch (v.getId()) {
 		case R.id.setting:
+
 			ImageLoader.getInstance().loadImage(ojPage.get(PicOj.URL), new SimpleImageLoadingListener() {
 
 				@Override
@@ -200,9 +205,9 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 					super.onLoadingComplete(imageUri, view, loadedImage);
 					File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-					//File imagesFolder = new File(pictureFolder, "/hotpic");
-					FileSupport.copyfile(imageUri, pictureFolder.getAbsolutePath()+"/hot");
-					showToast("Ảnh đã được lưu vào: "+pictureFolder.getAbsolutePath()+"/abc.png");
+					// File imagesFolder = new File(pictureFolder, "/hotpic");
+					FileSupport.copyfile(imageUri, pictureFolder.getAbsolutePath() + "/hot");
+					showToast("Ảnh đã được lưu vào: " + pictureFolder.getAbsolutePath() + "/abc.png");
 				}
 
 				@Override
