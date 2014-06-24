@@ -8,6 +8,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.content.Context;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.telpoo.frame.net.BaseNetSupportBeta;
 import com.telpoo.frame.net.NetConfig;
 import com.telpoo.frame.net.NetUtils;
@@ -85,7 +92,6 @@ public class ChanDaiParse {
 					String templinkWeb = itemRoot.attr("href");
 					if (templinkWeb != null)
 						linkWeb = urlPath + templinkWeb;
-						linkWeb= parseUrlImg(linkWeb);
 					// --------------------------------------------------------------------------------------------------------
 					// ---------------------------------------------SpanCount------------------------------------------------------
 					Elements spanCount = itemRoot.select("span");
@@ -127,6 +133,11 @@ public class ChanDaiParse {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
+	}
+	
+	public static String getUrlImgSync(BaseObject oj, Context ct){
+		
 		return null;
 	}
 
