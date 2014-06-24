@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.object.MenuOj;
+import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.utils.Constant;
 
 public class ParseSupport {
@@ -32,7 +33,7 @@ public class ParseSupport {
 		int groupId = oj.getInt(MenuOj.GROUP_ID);
 		switch (groupId) {
 		case Constant.GroupSource.GROUP_CHANDAITV:  // cắt trang chandai.tv
-			return ChanDaiParse.getUrlImgSync(oj,context);
+			return ChanDaiParse.parseUrlImg(oj.get(PicOj.URL));
 
 		default:
 			break;

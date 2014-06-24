@@ -17,10 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response.Listener;
-import com.android.volley.request.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
