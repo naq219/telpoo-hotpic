@@ -76,6 +76,9 @@ public class PhoToViewAdapter extends PagerAdapter {
 
 		return photoView;
 	}
+	
+	
+	
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
