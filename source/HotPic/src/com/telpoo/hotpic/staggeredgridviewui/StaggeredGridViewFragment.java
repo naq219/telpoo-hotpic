@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import com.etsy.android.grid.StaggeredGridView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.adapter.HotStaggeredGridViewAdapter;
@@ -89,8 +88,6 @@ public class StaggeredGridViewFragment extends MyFragment implements AbsListView
 		// listtenner onscrooll
 		boolean pauseOnScroll = false; // flag
 		boolean pauseOnFling = true; // flag
-		PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(), pauseOnScroll, pauseOnFling);
-		staggeredGridView.setOnScrollListener(listener);
 		//
 		//
 		// trimCache(getActivity());
