@@ -3,7 +3,6 @@ package com.telpoo.hotpic.detail;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -11,15 +10,30 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.Session.StatusCallback;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.FacebookDialog;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.FacebookDialog.PendingCall;
+import com.facebook.widget.WebDialog.OnCompleteListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.FileSupport;
@@ -34,6 +48,8 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	ViewPager viewPager;
 	BaseObject ojPage = new BaseObject();
 	private Integer positionFirst;
+	ImageView sharebtn;
+	private UiLifecycleHelper mUiFaceLifecycleHelper;
 
 	public static DetailFm newInstance(int sectionNumber) {
 		DetailFm fragment = new DetailFm();
@@ -45,12 +61,17 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	public DetailFm() {
 
 	}
-
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.detail, container, false);
 		viewPager = (MyPhotoViewPager) rootView.findViewById(R.id.photoView);
-
+		sharebtn = (ImageView) rootView.findViewById(R.id.share);
+		//
+		//
+		mUiFaceLifecycleHelper = new UiLifecycleHelper(getActivity(), callback);
+		mUiFaceLifecycleHelper.onCreate(savedInstanceState);
 		return rootView;
 	}
 
@@ -76,6 +97,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	@Override
 	public void onResume() {
 		super.onResume();
+		mUiFaceLifecycleHelper.onResume();
 
 		phoToViewAdapter = new PhoToViewAdapter(ojs);
 		phoToViewAdapter.setDelegate(this);
@@ -117,6 +139,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 		}
 
 		viewPager.setCurrentItem(positionFirst, true);
+		sharebtn.setOnClickListener(this);
 
 	}
 
@@ -151,7 +174,21 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	@Override
 	public void onStop() {
 		super.onStop();
+		mUiFaceLifecycleHelper.onStop();
 		HomeActivity.getInstance().showtop();
+	}
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		
+		super.onDestroy();
+		mUiFaceLifecycleHelper.onDestroy();
+	}
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		mUiFaceLifecycleHelper.onSaveInstanceState(outState);
 	}
 
 	@Override
@@ -182,7 +219,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 				@Override
 				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 					super.onLoadingFailed(imageUri, view, failReason);
-					showToast("Lỗi kết nối");
+					showToast("Lá»—i káº¿t ná»‘i");
 				}
 			});
 
@@ -203,16 +240,48 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 					File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 					// File imagesFolder = new File(pictureFolder, "/hotpic");
 					FileSupport.copyfile(imageUri, pictureFolder.getAbsolutePath() + "/hot");
-					showToast("Ảnh đã được lưu vào: " + pictureFolder.getAbsolutePath() + "/abc.png");
+					showToast("áº¢nh Ä‘Ã£ Ä‘Æ°á»£c lÆ°u vÃ o: " + pictureFolder.getAbsolutePath() + "/abc.png");
 				}
 
 				@Override
 				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 					super.onLoadingFailed(imageUri, view, failReason);
-					showToast("Lỗi kết nối");
+					showToast("Lá»—i káº¿t ná»‘i");
 				}
 			});
 
+			break;
+		case R.id.share:
+			final String linkImage = ojs.get(viewPager.getCurrentItem()).get(PicOj.URL_THUMBNAIL); 
+			final String urlAppPlayStore = "https://play.google.com/store/apps/details?id=" + getActivity().getApplicationContext().getPackageName();  
+			if(linkImage != null)
+			{
+				Session.openActiveSession(getActivity(),DetailFm.this, true, new Session.StatusCallback() {
+
+				      // callback when session changes state
+				      @Override
+				      public void call(Session session, SessionState state, Exception exception) {
+				        if (session.isOpened()) {
+
+				          // make request to the /me API
+				          Request.newMeRequest(session, new Request.GraphUserCallback() {
+
+				            // callback after Graph API response with user object	            
+
+							@Override
+							public void onCompleted(GraphUser user, Response response) {
+								// TODO Auto-generated method stub
+								 if (user != null) {
+						                //ShareFaceDialog("via Viet Foodie", data.getTitle(), faceShare, "", "");
+						                publishFeedDialog("HOT PIC-Vẻ đẹp tạo hóa", "HOTPIC", "Pramaticteam", linkImage, urlAppPlayStore);
+						              }
+							}
+				          }).executeAsync();
+				        }
+				      }
+				    });
+			}
+			
 			break;
 
 		default:
@@ -220,5 +289,88 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 		}
 
 	}
+	//--------------------------------------------------------------------------------------------------------------------------
+	//    													FACEBOOK SHARE
+	//--------------------------------------------------------------------------------------------------------------------------
 
+	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+	    if (state.isOpened()) {
+	        Log.i("FaceBookDT", "Logged in...");
+	    } else if (state.isClosed()) {
+	        Log.i("FaceBookDT", "Logged out...");
+	    }
+	}
+	private Session.StatusCallback callback = new StatusCallback() {
+		
+		@Override
+		public void call(Session session, SessionState state, Exception exception) {
+			// TODO Auto-generated method stub
+			onSessionStateChange(session, state, exception);
+			
+		}
+	};
+	public void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Session.getActiveSession().onActivityResult(getActivity(), requestCode, resultCode, data);
+		mUiFaceLifecycleHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+			
+			@Override
+			public void onError(PendingCall pendingCall, Exception error, Bundle data) {
+				// TODO Auto-generated method stub
+				Log.e("Activity", String.format("Error: %s", error.toString()));
+			}
+			
+			@Override
+			public void onComplete(PendingCall pendingCall, Bundle data) {
+				// TODO Auto-generated method stub
+				Log.i("Activity", "Success!");
+			}
+		});
+	};
+	private void publishFeedDialog( String name, String caption ,String description, String pictureLink, String link ) {
+	    Bundle params = new Bundle();
+	    params.putString("name", name);
+	    params.putString("caption", caption);
+	    params.putString("description", description);
+	    params.putString("picture", pictureLink);
+	    params.putString("link", link);
+	   
+
+	    WebDialog feedDialog = (
+	        new WebDialog.FeedDialogBuilder(getActivity(),
+	            Session.getActiveSession(),
+	            params))
+	        .setOnCompleteListener(new OnCompleteListener() {          
+
+				@Override
+				public void onComplete(Bundle values, FacebookException error) {
+					// TODO Auto-generated method stub
+					if (error == null) {
+	                    // When the story is posted, echo the success
+	                    // and the post Id.
+	                    final String postId = values.getString("post_id");
+	                    if (postId != null) {
+	                        Toast.makeText(getActivity(),
+	                            "Shared ",
+	                            Toast.LENGTH_SHORT).show();	                        
+	                        
+	                    } else {
+	                        // User clicked the Cancel button
+	                        Toast.makeText(getActivity().getApplicationContext(), 
+	                            "Publish cancelled", 
+	                            Toast.LENGTH_SHORT).show();	                      
+	                    }
+	                } else if (error instanceof FacebookOperationCanceledException) {
+	                    // User clicked the "x" button
+	                  
+	                } else {
+	                    // Generic, ex: network error	                 
+	                }
+					
+				}
+
+	        })
+	        .build();
+	    feedDialog.show();
+	}
 }

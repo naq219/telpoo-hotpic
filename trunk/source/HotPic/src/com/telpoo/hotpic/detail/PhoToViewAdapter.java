@@ -13,7 +13,6 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.RequestQueue;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
@@ -29,7 +28,6 @@ public class PhoToViewAdapter extends PagerAdapter {
 	Idelegate idelegate;
 	Bitmap bn;
 	private Context context;
-	RequestQueue queue;
 	SparseArray<String> sparseRealUrl = new SparseArray<String>();
 
 	public PhoToViewAdapter(ArrayList<BaseObject> ojs) {
@@ -44,7 +42,6 @@ public class PhoToViewAdapter extends PagerAdapter {
 	public int getCount() {
 		return ojs.size();
 	}
-
 	@Override
 	public Object instantiateItem(ViewGroup container, final int position) {
 
@@ -70,10 +67,8 @@ public class PhoToViewAdapter extends PagerAdapter {
 			@Override
 			public void onViewTap(View view, float x, float y) {
 				idelegate.callBack(1, 1);
-
 			}
 		});
-
 		return photoView;
 	}
 	
