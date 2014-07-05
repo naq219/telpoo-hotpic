@@ -3,7 +3,7 @@ package com.telpoo.hotpic.adapter;
 import java.util.HashMap;
 import java.util.List;
 import com.telpoo.frame.object.BaseObject;
-import com.telpoo.hotpic.R;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.object.MenuOj;
 import android.content.Context;
 import android.graphics.Typeface;

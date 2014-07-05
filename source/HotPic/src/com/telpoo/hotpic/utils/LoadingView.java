@@ -1,6 +1,6 @@
 package com.telpoo.hotpic.utils;
 
-import com.telpoo.hotpic.R;
+import com.telpoo.anhnong.hotgirl.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

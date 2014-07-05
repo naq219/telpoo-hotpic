@@ -10,7 +10,7 @@ import com.telpoo.frame.model.TaskListener;
 import com.telpoo.frame.model.TaskParams;
 import com.telpoo.frame.net.BaseNetSupportBeta;
 import com.telpoo.frame.object.BaseObject;
-import com.telpoo.hotpic.R;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.parsehtml.ParseSupport;
 
 public class TaskNaq extends BaseTask implements TaskType {

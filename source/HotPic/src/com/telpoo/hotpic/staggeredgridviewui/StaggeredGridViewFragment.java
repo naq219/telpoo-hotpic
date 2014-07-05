@@ -18,7 +18,7 @@ import com.etsy.android.grid.StaggeredGridView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.telpoo.frame.object.BaseObject;
-import com.telpoo.hotpic.R;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.adapter.HotStaggeredGridViewAdapter;
 import com.telpoo.hotpic.detail.DetailFm;
 import com.telpoo.hotpic.home.HomeActivity;

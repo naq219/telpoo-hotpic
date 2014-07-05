@@ -17,7 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.Mlog;
-import com.telpoo.hotpic.R;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.adapter.HotStaggeredGridViewAdapter;
 import com.telpoo.hotpic.detail.DetailFm;
 import com.telpoo.hotpic.home.HomeActivity;
