@@ -1,5 +1,7 @@
 package com.telpoo.hotpic.detail;
 
+import java.util.ArrayList;
+
 import uk.co.senab.photoview.PhotoView;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -24,6 +26,7 @@ public class PhotoViewFragment extends MyFragment {
 	public static String KEY_OBJ = "KEYOBJ";
 	Bitmap bitmap ;
 	Idelegate idelegate;
+	
 
 	public static PhotoViewFragment newInstance( BaseObject oj, String mSparseRealUrl  )
 	{
@@ -47,38 +50,41 @@ public class PhotoViewFragment extends MyFragment {
 		//
 		if(bitmap == null)
 		{
-			(new MyAsynctask()).execute();
+			//(new MyAsynctask()).execute();
+			bitmap = ImageLoader.getInstance().loadImageSync(mSparseRealUrl);
+			photoView.setImageBitmap(bitmap);
 		}
 		else
 			photoView.setImageBitmap(bitmap);		
 		//
 		return rootView;
 	}
-	private class MyAsynctask extends AsyncTask<String, Void, Bitmap>
-	{		
-
-		@Override
-		protected Bitmap doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			String readUrl;
-			
-			if(mSparseRealUrl == null)
-			{
-				readUrl = ParseSupport.parseUrlDetail(oj, getActivity());
-				//mSparseRealUrl;
-				bitmap = ImageLoader.getInstance().loadImageSync(readUrl);
-			}		
-			
-			return bitmap;
-		}
-		@Override
-		protected void onPostExecute(Bitmap result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			//
-			//
-			
-			photoView.setImageBitmap(result);
-		}
-	}
+//	private class MyAsynctask extends AsyncTask<Void, Void, Bitmap>
+//	{		//
+//		@Override
+//		protected Bitmap doInBackground(Void... params) {
+//			// TODO Auto-generated method stub
+//			String readUrl;
+//			
+//			if(mSparseRealUrl == null)
+//			{
+//				readUrl = ParseSupport.parseUrlDetail(oj, getActivity());
+//				//mSparseRealUrl;
+//				bitmap = ImageLoader.getInstance().loadImageSync(readUrl);
+//			}		
+//			
+//			return bitmap;
+//		}
+//		@Override
+//		protected void onPostExecute(Bitmap result) {
+//			// TODO Auto-generated method stub
+//			super.onPostExecute(result);
+//			//
+//			//
+//			
+//			photoView.setImageBitmap(result);
+//		}
+//
+//		
+//	}
 }

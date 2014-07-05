@@ -3,6 +3,7 @@ package com.telpoo.hotpic.detail;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -41,6 +42,7 @@ import com.telpoo.frame.utils.ViewUtils;
 import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.home.HomeActivity;
 import com.telpoo.hotpic.object.PicOj;
+import com.telpoo.hotpic.parsehtml.ParseSupport;
 
 public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListener {
 	PhoToViewAdapter phoToViewAdapter;
@@ -49,7 +51,10 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	BaseObject ojPage = new BaseObject();
 	private Integer positionFirst;
 	ImageView sharebtn;
+	private ArrayList<String> mReadurl;
 	private UiLifecycleHelper mUiFaceLifecycleHelper;
+	private ArrayList<PhotoViewFragment> mListFragment;
+	private PTViewPageAdapter adapter;
 
 	public static DetailFm newInstance(int sectionNumber) {
 		DetailFm fragment = new DetailFm();
@@ -70,6 +75,8 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 		sharebtn = (ImageView) rootView.findViewById(R.id.share);
 		//
 		//
+		mReadurl = new ArrayList<String>();
+		mListFragment = new ArrayList<PhotoViewFragment>();
 		mUiFaceLifecycleHelper = new UiLifecycleHelper(getActivity(), callback);
 		mUiFaceLifecycleHelper.onCreate(savedInstanceState);
 		return rootView;
@@ -98,11 +105,19 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	public void onResume() {
 		super.onResume();
 		mUiFaceLifecycleHelper.onResume();
+		//
+		//----------------------------------set adapter---------------------------------------------------------
+		LoadDataUrl();
+		LoadListFragment();
+		adapter = new PTViewPageAdapter(getChildFragmentManager(), mListFragment);
+		//
+		//------------------------------------------------------------------------------------------------------
 
 		phoToViewAdapter = new PhoToViewAdapter(ojs);
 		phoToViewAdapter.setDelegate(this);
 
-		viewPager.setAdapter(phoToViewAdapter);
+		//viewPager.setAdapter(phoToViewAdapter);
+		viewPager.setAdapter(adapter);
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
@@ -151,6 +166,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 			name.setVisibility(View.VISIBLE);
 
 	}
+	
 
 	@Override
 	public void callBack(Object value, int where) {
@@ -372,5 +388,22 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	        })
 	        .build();
 	    feedDialog.show();
+	}
+	private void LoadDataUrl()
+	{
+		String temp;
+		for(int i = 0; i < ojs.size(); i++)
+		{
+			temp = ParseSupport.parseUrlDetail(ojs.get(i), getActivity());
+			mReadurl.add(temp);
+		}
+		
+	}
+	private void LoadListFragment()
+	{
+		for(int i = 0; i < ojs.size(); i++)
+		{
+			mListFragment.add(PhotoViewFragment.newInstance(ojs.get(i), mReadurl.get(i)));
+		}
 	}
 }
