@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.R;
@@ -51,8 +52,19 @@ public class PhotoViewFragment extends MyFragment {
 		if(bitmap == null)
 		{
 			//(new MyAsynctask()).execute();
-			bitmap = ImageLoader.getInstance().loadImageSync(mSparseRealUrl);
-			photoView.setImageBitmap(bitmap);
+			ImageLoader.getInstance().loadImage(mSparseRealUrl, new SimpleImageLoadingListener(){
+				@Override
+				public void onLoadingComplete(String imageUri, View view,
+						Bitmap loadedImage) {
+					// TODO Auto-generated method stub
+					super.onLoadingComplete(imageUri, view, loadedImage);
+					photoView.setImageBitmap(bitmap);
+					bitmap = loadedImage;
+					
+				}
+			});
+//			bitmap = ImageLoader.getInstance().loadImageSync(mSparseRealUrl);
+//			photoView.setImageBitmap(bitmap);
 		}
 		else
 			photoView.setImageBitmap(bitmap);		
