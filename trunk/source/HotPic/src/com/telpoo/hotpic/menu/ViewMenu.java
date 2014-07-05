@@ -23,7 +23,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.ui.BaseFragment;
-import com.telpoo.hotpic.R;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.adapter.ExLvAdapter;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.db.TableDb;

@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.telpoo.frame.object.BaseObject;
-import com.telpoo.hotpic.R;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.delegate.IOnMenuClosed;
 import com.telpoo.hotpic.menu.ViewMenu;

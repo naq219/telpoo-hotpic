@@ -1,22 +1,18 @@
 package com.telpoo.hotpic.detail;
 
-import java.util.ArrayList;
-
 import uk.co.senab.photoview.PhotoView;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
-import com.telpoo.hotpic.R;
 import com.telpoo.hotpic.home.MyFragment;
-import com.telpoo.hotpic.parsehtml.ParseSupport;
 
 public class PhotoViewFragment extends MyFragment {
 	

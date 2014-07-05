@@ -19,7 +19,7 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.ui.BaseFragmentActivity;
 import com.telpoo.frame.utils.Mlog;
-import com.telpoo.hotpic.R;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.menu.ViewMenu;
 
 public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate, OnClickListener {

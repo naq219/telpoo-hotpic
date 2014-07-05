@@ -5,7 +5,7 @@ import android.app.Application;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.telpoo.hotpic.R;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.utils.Utils;
 
 public class MyApplication extends Application {
