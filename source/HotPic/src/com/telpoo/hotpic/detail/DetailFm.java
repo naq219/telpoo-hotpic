@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,13 +23,13 @@ import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.facebook.Session.StatusCallback;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
-import com.facebook.widget.WebDialog;
 import com.facebook.widget.FacebookDialog.PendingCall;
+import com.facebook.widget.WebDialog;
 import com.facebook.widget.WebDialog.OnCompleteListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -42,19 +41,19 @@ import com.telpoo.frame.utils.FileSupport;
 import com.telpoo.frame.utils.ViewUtils;
 import com.telpoo.hotpic.home.HomeActivity;
 import com.telpoo.hotpic.object.PicOj;
-import com.telpoo.hotpic.parsehtml.ParseSupport;
+import com.telpoo.hotpic.task.TaskNaq;
+import com.telpoo.hotpic.task.TaskType;
 
 public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListener {
-	PhoToViewAdapter phoToViewAdapter;
+	// PhoToViewAdapter phoToViewAdapter;
 	private ArrayList<BaseObject> ojs;
-	ViewPager viewPager;
 	BaseObject ojPage = new BaseObject();
 	private Integer positionFirst;
 	ImageView sharebtn;
-	private ArrayList<String> mReadurl;
 	private UiLifecycleHelper mUiFaceLifecycleHelper;
 	private ArrayList<PhotoViewFragment> mListFragment;
 	private PTViewPageAdapter adapter;
+	private int loadDetailType;
 
 	public static DetailFm newInstance(int sectionNumber) {
 		DetailFm fragment = new DetailFm();
@@ -66,16 +65,12 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	public DetailFm() {
 
 	}
-	
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.detail, container, false);
 		viewPager = (MyPhotoViewPager) rootView.findViewById(R.id.photoView);
 		sharebtn = (ImageView) rootView.findViewById(R.id.share);
-		//
-		//
-		mReadurl = new ArrayList<String>();
 		mListFragment = new ArrayList<PhotoViewFragment>();
 		mUiFaceLifecycleHelper = new UiLifecycleHelper(getActivity(), callback);
 		mUiFaceLifecycleHelper.onCreate(savedInstanceState);
@@ -105,18 +100,9 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	public void onResume() {
 		super.onResume();
 		mUiFaceLifecycleHelper.onResume();
-		//
-		//----------------------------------set adapter---------------------------------------------------------
-		LoadDataUrl();
 		LoadListFragment();
 		adapter = new PTViewPageAdapter(getChildFragmentManager(), mListFragment);
-		//
-		//------------------------------------------------------------------------------------------------------
 
-		phoToViewAdapter = new PhoToViewAdapter(ojs);
-		phoToViewAdapter.setDelegate(this);
-
-		//viewPager.setAdapter(phoToViewAdapter);
 		viewPager.setAdapter(adapter);
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
@@ -137,6 +123,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 
 				switch (state) {
 				case 0:
+
 					setTextName(ojPage.get(PicOj.NAME));
 
 					break;
@@ -166,7 +153,6 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 			name.setVisibility(View.VISIBLE);
 
 	}
-	
 
 	@Override
 	public void callBack(Object value, int where) {
@@ -193,16 +179,16 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 		mUiFaceLifecycleHelper.onStop();
 		HomeActivity.getInstance().showtop();
 	}
+
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
-		
+
 		super.onDestroy();
 		mUiFaceLifecycleHelper.onDestroy();
 	}
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 		mUiFaceLifecycleHelper.onSaveInstanceState(outState);
 	}
@@ -212,92 +198,56 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 
 		switch (v.getId()) {
 		case R.id.setting:
+			loadDetailType = 0;
 
-			ImageLoader.getInstance().loadImage(ojPage.get(PicOj.URL), new SimpleImageLoadingListener() {
+			ArrayList<BaseObject> arrSend = new ArrayList<BaseObject>();
+			arrSend.add(ojPage);
 
-				@Override
-				public void onLoadingStarted(String imageUri, View view) {
-					super.onLoadingStarted(imageUri, view);
-					showToast(getContext().getString(R.string.dang_tai_anh));
-				}
-
-				@Override
-				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-					super.onLoadingComplete(imageUri, view, loadedImage);
-					try {
-						WallpaperManager.getInstance(getActivity()).setBitmap(loadedImage);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-
-				@Override
-				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-					super.onLoadingFailed(imageUri, view, failReason);
-					showToast("Lá»—i káº¿t ná»‘i");
-				}
-			});
+			TaskNaq taskNaq = new TaskNaq(getModel(), TaskType.TASK_PARSE_DETAIL, arrSend, getActivity());
+			getModel().exeTask(null, taskNaq);
 
 			break;
 
 		case R.id.download:
+			loadDetailType = 1;
+			ArrayList<BaseObject> arrSend1 = new ArrayList<BaseObject>();
+			arrSend1.add(ojPage);
 
-			ImageLoader.getInstance().loadImage(ojPage.get(PicOj.URL), new SimpleImageLoadingListener() {
-				@Override
-				public void onLoadingStarted(String imageUri, View view) {
-					super.onLoadingStarted(imageUri, view);
-					showToast(getContext().getString(R.string.dang_tai_anh));
-				}
-
-				@Override
-				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-					super.onLoadingComplete(imageUri, view, loadedImage);
-					File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-					// File imagesFolder = new File(pictureFolder, "/hotpic");
-					FileSupport.copyfile(imageUri, pictureFolder.getAbsolutePath() + "/hot");
-					showToast("áº¢nh Ä‘Ã£ Ä‘Æ°á»£c lÆ°u vÃ o: " + pictureFolder.getAbsolutePath() + "/abc.png");
-				}
-
-				@Override
-				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-					super.onLoadingFailed(imageUri, view, failReason);
-					showToast("Lá»—i káº¿t ná»‘i");
-				}
-			});
+			TaskNaq taskNaq1 = new TaskNaq(getModel(), TaskType.TASK_PARSE_DETAIL, arrSend1, getActivity());
+			getModel().exeTask(null, taskNaq1);
 
 			break;
 		case R.id.share:
-			final String linkImage = ojs.get(viewPager.getCurrentItem()).get(PicOj.URL_THUMBNAIL); 
-			final String urlAppPlayStore = "https://play.google.com/store/apps/details?id=" + getActivity().getApplicationContext().getPackageName();  
-			if(linkImage != null)
-			{
-				Session.openActiveSession(getActivity(),DetailFm.this, true, new Session.StatusCallback() {
+			final String linkImage = ojs.get(viewPager.getCurrentItem()).get(PicOj.URL_THUMBNAIL);
+			final String urlAppPlayStore = "https://play.google.com/store/apps/details?id=" + getActivity().getApplicationContext().getPackageName();
+			if (linkImage != null) {
+				Session.openActiveSession(getActivity(), DetailFm.this, true, new Session.StatusCallback() {
 
-				      // callback when session changes state
-				      @Override
-				      public void call(Session session, SessionState state, Exception exception) {
-				        if (session.isOpened()) {
+					// callback when session changes state
+					@Override
+					public void call(Session session, SessionState state, Exception exception) {
+						if (session.isOpened()) {
 
-				          // make request to the /me API
-				          Request.newMeRequest(session, new Request.GraphUserCallback() {
+							// make request to the /me API
+							Request.newMeRequest(session, new Request.GraphUserCallback() {
 
-				            // callback after Graph API response with user object	            
+								// callback after Graph API response with user
+								// object
 
-							@Override
-							public void onCompleted(GraphUser user, Response response) {
-								// TODO Auto-generated method stub
-								 if (user != null) {
-						                //ShareFaceDialog("via Viet Foodie", data.getTitle(), faceShare, "", "");
-						                publishFeedDialog("HOT PIC-Vẻ đẹp tạo hóa", "HOTPIC", "Pramaticteam", linkImage, urlAppPlayStore);
-						              }
-							}
-				          }).executeAsync();
-				        }
-				      }
-				    });
+								@Override
+								public void onCompleted(GraphUser user, Response response) {
+									if (user != null) {
+										// ShareFaceDialog("via Viet Foodie",
+										// data.getTitle(), faceShare, "", "");
+										publishFeedDialog("HOT PIC-Vẻ đẹp tạo hóa", "HOTPIC", "Pramaticteam", linkImage, urlAppPlayStore);
+									}
+								}
+							}).executeAsync();
+						}
+					}
+				});
 			}
-			
+
 			break;
 
 		default:
@@ -305,37 +255,97 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 		}
 
 	}
-	//--------------------------------------------------------------------------------------------------------------------------
-	//    													FACEBOOK SHARE
-	//--------------------------------------------------------------------------------------------------------------------------
+
+	@Override
+	public void onSuccess(int taskType, ArrayList<?> list, String msg) {
+		super.onSuccess(taskType, list, msg);
+
+		switch (taskType) {
+		case TaskType.TASK_PARSE_DETAIL:
+			String urlDetail = (String) list.get(0);
+			ImageLoader.getInstance().loadImage(urlDetail, new SimpleImageLoadingListener() {
+
+				@Override
+				public void onLoadingStarted(String imageUri, View view) {
+					super.onLoadingStarted(imageUri, view);
+					showToast(getContext().getString(R.string.dang_tai_anh));
+				}
+
+				@Override
+				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+					super.onLoadingComplete(imageUri, view, loadedImage);
+
+					if (loadDetailType == 0) {
+						try {
+							WallpaperManager.getInstance(getActivity()).setBitmap(loadedImage);
+							showToast(getContext().getString(R.string.da_cai_lam_hinh_nen));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} else if (loadDetailType == 1) {
+						File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+						// File imagesFolder = new File(pictureFolder,
+						// "/hotpic");
+						FileSupport.copyfile(imageUri, pictureFolder.getAbsolutePath() + "/hot");
+						showToast(getContext().getString(R.string.anh_da_duoc_luu_vao) + pictureFolder.getAbsolutePath() + "/abc.png");
+
+					}
+
+				}
+
+				@Override
+				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+					super.onLoadingFailed(imageUri, view, failReason);
+					showToast(getContext().getString(R.string.loi_ket_noi));
+				}
+			});
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void onFail(int taskType, String msg) {
+		// TODO Auto-generated method stub
+		super.onFail(taskType, msg);
+	}
+
+	// --------------------------------------------------------------------------------------------------------------------------
+	// FACEBOOK SHARE
+	// --------------------------------------------------------------------------------------------------------------------------
 
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-	    if (state.isOpened()) {
-	        Log.i("FaceBookDT", "Logged in...");
-	    } else if (state.isClosed()) {
-	        Log.i("FaceBookDT", "Logged out...");
-	    }
+		if (state.isOpened()) {
+			Log.i("FaceBookDT", "Logged in...");
+		} else if (state.isClosed()) {
+			Log.i("FaceBookDT", "Logged out...");
+		}
 	}
+
 	private Session.StatusCallback callback = new StatusCallback() {
-		
+
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
 			// TODO Auto-generated method stub
 			onSessionStateChange(session, state, exception);
-			
+
 		}
 	};
+
 	public void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		Session.getActiveSession().onActivityResult(getActivity(), requestCode, resultCode, data);
 		mUiFaceLifecycleHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
-			
+
 			@Override
 			public void onError(PendingCall pendingCall, Exception error, Bundle data) {
 				// TODO Auto-generated method stub
 				Log.e("Activity", String.format("Error: %s", error.toString()));
 			}
-			
+
 			@Override
 			public void onComplete(PendingCall pendingCall, Bundle data) {
 				// TODO Auto-generated method stub
@@ -343,67 +353,47 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 			}
 		});
 	};
-	private void publishFeedDialog( String name, String caption ,String description, String pictureLink, String link ) {
-	    Bundle params = new Bundle();
-	    params.putString("name", name);
-	    params.putString("caption", caption);
-	    params.putString("description", description);
-	    params.putString("picture", pictureLink);
-	    params.putString("link", link);
-	   
 
-	    WebDialog feedDialog = (
-	        new WebDialog.FeedDialogBuilder(getActivity(),
-	            Session.getActiveSession(),
-	            params))
-	        .setOnCompleteListener(new OnCompleteListener() {          
+	private void publishFeedDialog(String name, String caption, String description, String pictureLink, String link) {
+		Bundle params = new Bundle();
+		params.putString("name", name);
+		params.putString("caption", caption);
+		params.putString("description", description);
+		params.putString("picture", pictureLink);
+		params.putString("link", link);
 
-				@Override
-				public void onComplete(Bundle values, FacebookException error) {
-					// TODO Auto-generated method stub
-					if (error == null) {
-	                    // When the story is posted, echo the success
-	                    // and the post Id.
-	                    final String postId = values.getString("post_id");
-	                    if (postId != null) {
-	                        Toast.makeText(getActivity(),
-	                            "Shared ",
-	                            Toast.LENGTH_SHORT).show();	                        
-	                        
-	                    } else {
-	                        // User clicked the Cancel button
-	                        Toast.makeText(getActivity().getApplicationContext(), 
-	                            "Publish cancelled", 
-	                            Toast.LENGTH_SHORT).show();	                      
-	                    }
-	                } else if (error instanceof FacebookOperationCanceledException) {
-	                    // User clicked the "x" button
-	                  
-	                } else {
-	                    // Generic, ex: network error	                 
-	                }
-					
+		WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(getActivity(), Session.getActiveSession(), params)).setOnCompleteListener(new OnCompleteListener() {
+
+			@Override
+			public void onComplete(Bundle values, FacebookException error) {
+				// TODO Auto-generated method stub
+				if (error == null) {
+					// When the story is posted, echo the success
+					// and the post Id.
+					final String postId = values.getString("post_id");
+					if (postId != null) {
+						Toast.makeText(getActivity(), "Shared ", Toast.LENGTH_SHORT).show();
+
+					} else {
+						// User clicked the Cancel button
+						Toast.makeText(getActivity().getApplicationContext(), "Publish cancelled", Toast.LENGTH_SHORT).show();
+					}
+				} else if (error instanceof FacebookOperationCanceledException) {
+					// User clicked the "x" button
+
+				} else {
+					// Generic, ex: network error
 				}
 
-	        })
-	        .build();
-	    feedDialog.show();
+			}
+
+		}).build();
+		feedDialog.show();
 	}
-	private void LoadDataUrl()
-	{
-		String temp;
-		for(int i = 0; i < ojs.size(); i++)
-		{
-			temp = ParseSupport.parseUrlDetail(ojs.get(i), getActivity());
-			mReadurl.add(temp);
-		}
-		
-	}
-	private void LoadListFragment()
-	{
-		for(int i = 0; i < ojs.size(); i++)
-		{
-			mListFragment.add(PhotoViewFragment.newInstance(ojs.get(i), mReadurl.get(i)));
+
+	private void LoadListFragment() {
+		for (int i = 0; i < ojs.size(); i++) {
+			mListFragment.add(PhotoViewFragment.newInstance(ojs.get(i), this));
 		}
 	}
 }

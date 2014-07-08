@@ -47,6 +47,24 @@ public class TaskNaq extends BaseTask implements TaskType {
 			dataReturn = ojStrageList;
 			return TASK_DONE;
 
+			
+		case TASK_PARSE_DETAIL:
+			
+			BaseObject ojDetai=(BaseObject) dataFromModel.get(0);
+			
+			String realurl= ParseSupport.parseUrlDetail(ojDetai, context);
+			ArrayList<String> arr=new ArrayList<String>();
+			if(realurl!=null&&realurl.length()!=0)
+			{
+				arr.add(realurl);
+				dataReturn=arr;
+				return TASK_DONE;
+			}
+			
+			msg=context.getString(R.string.no_network);
+			return TASK_FAILED;
+			
+			
 
 		default:
 			break;

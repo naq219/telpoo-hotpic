@@ -1,11 +1,8 @@
 package com.telpoo.hotpic.utils;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.telpoo.anhnong.hotgirl.R;
-
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 
 public class Utils {
 	
@@ -15,10 +12,8 @@ public class Utils {
 		.cacheInMemory(false)
 		.showImageOnFail(R.drawable.no_image)
 		.showImageOnLoading(R.drawable.no_image)
+		.imageScaleType(ImageScaleType.IN_SAMPLE_INT)
 		.build();
-		
-
-		
 		return displayImageOptions;
 	}
 

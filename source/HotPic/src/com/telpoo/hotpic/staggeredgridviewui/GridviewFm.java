@@ -33,6 +33,7 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 	HotStaggeredGridViewAdapter adapter;
 	boolean isLoadingMore = false;
 	int page = 0; // tra da load
+
 	@SuppressLint("NewApi")
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -84,7 +85,6 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 						runTaskLoadMore(ojToParse);
 					}
 				}
-				
 
 			}
 		});
@@ -142,7 +142,7 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 
 		case TASK_GET_LIST_IMAGE_LOADMORE:
 			isLoadingMore = false;
-			
+
 			loadMore.setVisibility(View.GONE);
 			Mlog.T("list.size()=" + list.size());
 			if (list.size() == 0) {
@@ -171,6 +171,7 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 		case TASK_GET_LIST_IMAGE_LOADMORE:
 			isLoadingMore = false;
 			loadMore.setVisibility(View.GONE);
+			showToast("" + msg);
 			page--;
 			break;
 

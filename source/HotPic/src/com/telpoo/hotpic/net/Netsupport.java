@@ -14,11 +14,12 @@ import android.util.Log;
 import com.telpoo.frame.net.BaseNetSupportBeta;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.object.MenuOj;
+import com.telpoo.hotpic.utils.Constant;
 
 public class Netsupport {
 	
 	public static ArrayList<BaseObject> getMenu() throws JSONException{
-		String res= BaseNetSupportBeta.getInstance().method_GET("http://naq.name.vn/f/menu.json");
+		String res= BaseNetSupportBeta.getInstance().method_GET(Constant.URL_MENU);
 		ArrayList<BaseObject> ojs=new ArrayList<BaseObject>(); // mang nay se co 6 phan tu
 		// root cua no la 1 array
 		if(res==null) return null;

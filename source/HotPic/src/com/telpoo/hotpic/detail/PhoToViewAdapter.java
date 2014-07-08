@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher.OnViewTapListener;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.SparseArray;
 import android.view.View;
@@ -15,13 +16,16 @@ import android.view.ViewGroup;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.telpoo.frame.delegate.Idelegate;
+import com.telpoo.frame.model.BaseModel;
+import com.telpoo.frame.model.ModelListener;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.object.AlbulmOj;
-import com.telpoo.hotpic.parsehtml.ChanDaiParse;
 import com.telpoo.hotpic.parsehtml.ParseSupport;
+import com.telpoo.hotpic.task.TaskNaq;
+import com.telpoo.hotpic.task.TaskType;
 
-public class PhoToViewAdapter extends PagerAdapter {
+public class PhoToViewAdapter extends FragmentStatePagerAdapter{
 	PhotoView photoView;
 	ArrayList<BaseObject> ojs;
 	ViewGroup container1;
@@ -30,7 +34,8 @@ public class PhoToViewAdapter extends PagerAdapter {
 	private Context context;
 	SparseArray<String> sparseRealUrl = new SparseArray<String>();
 
-	public PhoToViewAdapter(ArrayList<BaseObject> ojs) {
+	public PhoToViewAdapter(FragmentManager fm,ArrayList<BaseObject> ojs) {
+		super(fm);
 		this.ojs = ojs;
 	}
 
@@ -85,5 +90,47 @@ public class PhoToViewAdapter extends PagerAdapter {
 	public boolean isViewFromObject(View view, Object object) {
 		return view == object;
 	}
+
+	@Override
+	public Fragment getItem(int arg0) {
+		
+		BaseModel baseModel= new BaseModel();
+		baseModel.setModelListener1(new ModelListener() {
+			
+			@Override
+			public void onSuccess(int taskType, ArrayList<?> list, String msg) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onProgress(int taskType, int progress) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFail(int taskType, String msg) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public Context getContext() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		});
+		
+		ArrayList<BaseObject> arrSend=new ArrayList<BaseObject>();
+		arrSend.add(ojs.get(arg0));
+		
+		TaskNaq taskNaq=new TaskNaq(baseModel, TaskType.TASK_PARSE_DETAIL, arrSend, context);
+		
+		return null;
+		
+		
+	}
+
 
 }
