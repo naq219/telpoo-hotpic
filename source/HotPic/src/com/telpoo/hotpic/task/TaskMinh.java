@@ -1,5 +1,6 @@
 package com.telpoo.hotpic.task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -14,6 +15,7 @@ import com.telpoo.frame.model.TaskParams;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.net.Netsupport;
+import com.telpoo.hotpic.parsehtml.DepvdParse;
 
 public class TaskMinh extends BaseTask implements TaskType{
 
@@ -39,6 +41,7 @@ public class TaskMinh extends BaseTask implements TaskType{
 				
 				// return data;
 				dataReturn = jsonArrayList;
+				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -44,6 +44,16 @@ public class PhotoViewFragment extends MyFragment {
 		oj = getArguments().getParcelable(KEY_OBJ);
 		//
 		photoView = (PhotoView) rootView.findViewById(R.id.myphotoview);
+		photoView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.no_image));
+		//
+		return rootView;
+	}
+	//
+	//
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();		
 		//
 		if(bitmap == null)
 		{
@@ -63,36 +73,8 @@ public class PhotoViewFragment extends MyFragment {
 //			photoView.setImageBitmap(bitmap);
 		}
 		else
-			photoView.setImageBitmap(bitmap);		
-		//
-		return rootView;
+			photoView.setImageBitmap(bitmap);
 	}
-//	private class MyAsynctask extends AsyncTask<Void, Void, Bitmap>
-//	{		//
-//		@Override
-//		protected Bitmap doInBackground(Void... params) {
-//			// TODO Auto-generated method stub
-//			String readUrl;
-//			
-//			if(mSparseRealUrl == null)
-//			{
-//				readUrl = ParseSupport.parseUrlDetail(oj, getActivity());
-//				//mSparseRealUrl;
-//				bitmap = ImageLoader.getInstance().loadImageSync(readUrl);
-//			}		
-//			
-//			return bitmap;
-//		}
-//		@Override
-//		protected void onPostExecute(Bitmap result) {
-//			// TODO Auto-generated method stub
-//			super.onPostExecute(result);
-//			//
-//			//
-//			
-//			photoView.setImageBitmap(result);
-//		}
-//
-//		
-//	}
+	
+
 }
