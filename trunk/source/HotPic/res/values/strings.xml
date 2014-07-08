@@ -20,6 +20,9 @@
     <string name="loading_more">Đang tải thêm</string>
     <string name="dang_tai_anh">Đang tải ảnh</string>
     <string name="APP_ID">496883337088413</string>
+    <string name="loi_ket_noi">Lỗi kết nối!</string>
+    <string name="anh_da_duoc_luu_vao">"Ảnh đã được lưu vào: "</string>
+    <string name="da_cai_lam_hinh_nen">Đã cài làm hình nền</string>
     
 
 </resources>

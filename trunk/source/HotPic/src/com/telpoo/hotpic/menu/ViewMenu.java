@@ -19,6 +19,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
+import com.google.android.gms.internal.go;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
@@ -95,6 +96,10 @@ public class ViewMenu implements IOnMenuClosed {
 		//
 		// set adapter view menu
 		setDataExpanableLv(listDataHeader, listChildData);
+		
+		//load default
+		ojClick = listChildData.get(listDataHeader.get(listChildData.size()-1)).get(0);
+		go();
 	}
 
 	// set indicator group expandlistview in right
@@ -120,19 +125,24 @@ public class ViewMenu implements IOnMenuClosed {
 
 				ojClick = ((BaseObject) adapter.getChild(groupPosition, childPosition));
 
-				if (ojClick != null) {
-
-					GridviewFm fragment = new GridviewFm();
-					fragment.setData(ojClick);
-					setupBeforeClose(fragment);
-				} else
-					setupBeforeClose(null);
-				HomeActivity.getInstance().toggle();
+				go();
 
 				return true;
 			}
 		});
 
+	}
+
+	protected void go() {
+		if (ojClick != null) {
+
+			GridviewFm fragment = new GridviewFm();
+			fragment.setData(ojClick);
+			setupBeforeClose(fragment);
+		} else
+			setupBeforeClose(null);
+		HomeActivity.getInstance().toggle();
+		
 	}
 
 	public View getView() {

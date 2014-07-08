@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import android.os.Bundle;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
-import com.telpoo.frame.object.BaseObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.delegate.IOnMenuClosed;
 import com.telpoo.hotpic.menu.ViewMenu;
-import com.telpoo.hotpic.object.MenuOj;
-import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.task.TaskMinh;
 import com.telpoo.hotpic.task.TaskType;
 
@@ -28,6 +26,10 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
+		
+		
+		
 		viewMenu = new ViewMenu(HomeActivity.this, this);
 		super.onCreate(savedInstanceState);
 		me = HomeActivity.this;
@@ -51,7 +53,7 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 	}
 
 	private void loadDefault() {
-
+		
 	}
 
 	@SuppressWarnings("unchecked")

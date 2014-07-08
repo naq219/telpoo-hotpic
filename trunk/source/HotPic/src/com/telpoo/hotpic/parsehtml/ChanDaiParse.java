@@ -2,18 +2,15 @@ package com.telpoo.hotpic.parsehtml;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.content.Context;
-import android.os.AsyncTask;
-
 import com.telpoo.frame.net.NetUtils;
 import com.telpoo.frame.object.BaseObject;
+import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.object.AlbulmOj;
 import com.telpoo.hotpic.object.MenuOj;
 import com.telpoo.hotpic.object.MyObject;
@@ -28,10 +25,10 @@ public class ChanDaiParse {
 	public static ArrayList<BaseObject> Parse(BaseObject oj) throws IOException {
 		int typeCut = oj.getInt(MenuOj.TYPE_CUT);
 		String url = oj.get(MenuOj.URL);
-		int page= oj.getInt(MyObject.PAGE);
-		if(page>1) {// chen them trang de dung url (truong hop loadmore)
-			url=url+"/"+page;
-			url.replace("//", "/");  
+		int page = oj.getInt(MyObject.PAGE);
+		if (page > 1) {// chen them trang de dung url (truong hop loadmore)
+			url = url + "/" + page;
+			url.replace("//", "/");
 		}
 
 		if (typeCut == Constant.TYPE_CUT_ALBULM) { // cắt lấy ra albulm
@@ -113,63 +110,30 @@ public class ChanDaiParse {
 					continue;
 
 			}
-			
+
 		}
 		return albulmOjs;
 	}
 
 	public static String parseUrlImg(String urlImg) {
-		String html = null;
+		Document html = null;
 		try {
-			html = new exeTask().execute(urlImg).get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			html = Jsoup.connect(urlImg).userAgent(NetUtils.UserAgent.IPHONE4).get();
+		} catch (IOException e) {
+			Mlog.E("parseUrlImg="+e);
 		}
-		if(html==null)return null;
-		Document document= Jsoup.parse(html);
-		Elements links = document.select("img");
-		String url= links.attr("src");
-		return "http://chandai.tv/"+url;
-		
-	}
-	
-	public static String getUrlImgSync(String urlImg){
-		String html = "";
-		try {
-			 html=(new exeTask()).execute(urlImg).get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return html;
-	}
-	
-	  public static class exeTask extends AsyncTask<String, Void, String>{
+		String url;
+		Elements links ;
+		if(html!=null)
+		 links = html.select("img");
+		else return null;
+		if(links!=null)
+			 url = links.attr("src");
+		else return null;
+		return "http://chandai.tv/" + url;
 
-          @Override
-          protected String doInBackground(String... params) {
-                  // TODO Auto-generated method stub
-                  Document document = null;
-                  try {
-                          document = Jsoup.connect(params[0]).userAgent(NetUtils.UserAgent.IPHONE4).get();
-                          
-                          
-                  } catch (IOException e) {
-                          // TODO Auto-generated catch block
-                          e.printStackTrace();
-                  }
-                  return document.toString();
-          }
-          
-  }
+	}
+
 
 	public static ArrayList<BaseObject> getPicList(String url) throws IOException {
 		ArrayList<BaseObject> res = getAlbulmOjList(url);

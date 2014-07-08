@@ -13,18 +13,20 @@ import com.telpoo.hotpic.utils.Constant;
 public class ParseSupport {
 
 	public static ArrayList<BaseObject> parse(BaseObject oj) throws IOException {
-		
+		ArrayList<BaseObject> res = null;
 		int groupId = oj.getInt(MenuOj.GROUP_ID);
-
+		
+		
 		switch (groupId) {
 		case Constant.GroupSource.GROUP_CHANDAITV:  // cắt trang chandai.tv
-			return ChanDaiParse.Parse(oj);
+			 res = ChanDaiParse.Parse(oj);
 
 		default:
 			break;
 		}
+		
 
-		return null;
+		return res;
 
 	}
 	

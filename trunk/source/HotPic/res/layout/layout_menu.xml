@@ -52,6 +52,7 @@
         style="@style/form_ff"
         android:groupIndicator="@drawable/expand_indicator"
         android:cacheColorHint="#000000"
+        android:dividerHeight="0dp"
         android:layout_below="@+id/temp1" >
     </ExpandableListView>
 
