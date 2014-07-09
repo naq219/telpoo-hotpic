@@ -18,6 +18,7 @@ import com.telpoo.frame.model.BaseModel;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.home.MyFragment;
+import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.task.TaskNaq;
 import com.telpoo.hotpic.task.TaskType;
 
@@ -42,7 +43,11 @@ public class PhotoViewFragment extends MyFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.photo_view_fm, container, false);
 
+		// lay object anh chi tiet truyen tu listview
+		oj = getArguments().getParcelable(KEY_OBJ);
 		photoView = (PhotoView) rootView.findViewById(R.id.myphotoview);
+		//
+		
 		return rootView;
 	}
 
@@ -60,23 +65,22 @@ public class PhotoViewFragment extends MyFragment {
 		});
 		
 		
-		// lay object anh chi tiet truyen tu listview
-		oj = getArguments().getParcelable(KEY_OBJ);
-
+		
 		BaseModel model = new BaseModel() {
 			@Override
 			public void onSuccess(int taskType, ArrayList<?> list, String msg) {
 				super.onSuccess(taskType, list, msg);
-				String realUrl = (String) list.get(0);
+				final String realUrl = (String) list.get(0);
 				Mlog.T("realUrl=" + realUrl);
-				ImageLoader.getInstance().loadImage(realUrl, new SimpleImageLoadingListener() {
+				//LoadImage();
+				ImageLoader.getInstance().loadImage(oj.get(PicOj.URL_THUMBNAIL), new SimpleImageLoadingListener() {
 					@Override
 					public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 						super.onLoadingComplete(imageUri, view, loadedImage);
 						photoView.setImageBitmap(loadedImage);
-
+						LoadImage(realUrl);	
 					}
-				});
+				});						
 
 			}
 
@@ -92,5 +96,16 @@ public class PhotoViewFragment extends MyFragment {
 
 		TaskNaq taskNaq = new TaskNaq(model, TaskType.TASK_PARSE_DETAIL, arrSend, getActivity());
 		model.exeTask(null, taskNaq);
+	}
+	public void LoadImage(String url)
+	{
+		ImageLoader.getInstance().loadImage(url, new SimpleImageLoadingListener() {
+			@Override
+			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+				super.onLoadingComplete(imageUri, view, loadedImage);
+				photoView.setImageBitmap(loadedImage);
+				
+			}
+		});
 	}
 }
