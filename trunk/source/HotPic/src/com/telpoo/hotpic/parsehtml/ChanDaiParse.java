@@ -100,8 +100,6 @@ public class ChanDaiParse {
 						albulmOj.set(AlbulmOj.URL, linkWeb);
 						albulmOj.set(AlbulmOj.NAME, title);
 						albulmOj.set(AlbulmOj.COUNT, countSpan);
-						albulmOj.set(AlbulmOj.COUNT, countSpan);
-						albulmOj.set(AlbulmOj.TYPE_CUT, Constant.TYPE_CUT_ALBULM);
 						albulmOjs.add(albulmOj);
 					} else
 						continue;

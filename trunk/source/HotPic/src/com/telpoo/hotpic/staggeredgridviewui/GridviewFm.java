@@ -15,13 +15,14 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.Mlog;
-import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.adapter.HotStaggeredGridViewAdapter;
 import com.telpoo.hotpic.detail.DetailFm;
 import com.telpoo.hotpic.home.HomeActivity;
 import com.telpoo.hotpic.home.TabId;
+import com.telpoo.hotpic.object.MenuOj;
 import com.telpoo.hotpic.object.MyObject;
 import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.task.TaskNaq;
@@ -38,9 +39,14 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		String groupName=ojToParse.get(MenuOj.GROUP_NAME);
+		String name=ojToParse.get(MenuOj.NAME);
+		
+		if(name!=null&&groupName!=null)
+		HomeActivity.getInstance().setUptitle(groupName+"-"+name);
 
 		runTaskGetImage(ojToParse);
-
+		
 		adapter = new HotStaggeredGridViewAdapter(getActivity(), R.layout.image_item_grid, new ArrayList<BaseObject>());
 		gridView.setAdapter(adapter);
 
@@ -95,7 +101,7 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 		isLoadingMore = true;
 		loadMore.setVisibility(View.VISIBLE);
 		page++;
-		oj2.set(MyObject.PAGE, page);
+		oj2.set(MyObject.PAGE, page); // truyen them page vao object
 		ArrayList<BaseObject> list = new ArrayList<BaseObject>();
 		list.add(oj2);
 

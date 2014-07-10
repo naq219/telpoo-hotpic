@@ -1,9 +1,6 @@
 package com.telpoo.hotpic.detail;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import com.telpoo.frame.object.BaseObject;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

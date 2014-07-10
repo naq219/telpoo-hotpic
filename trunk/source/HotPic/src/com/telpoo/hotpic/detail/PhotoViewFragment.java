@@ -18,17 +18,19 @@ import com.telpoo.frame.model.BaseModel;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.home.MyFragment;
-import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.task.TaskNaq;
 import com.telpoo.hotpic.task.TaskType;
 
 public class PhotoViewFragment extends MyFragment {
-
+	BaseModel model ;
+	TaskNaq taskNaq;
 	private PhotoView photoView;
 	BaseObject oj;
 	public static String KEY_URL = "KEYURL";
 	public static String KEY_OBJ = "KEYOBJ";
 	private static Idelegate idelegate2;
+	
+	
 
 	public static PhotoViewFragment newInstance(BaseObject oj, Idelegate idelegate) {
 		idelegate2 = idelegate;
@@ -46,8 +48,9 @@ public class PhotoViewFragment extends MyFragment {
 		// lay object anh chi tiet truyen tu listview
 		oj = getArguments().getParcelable(KEY_OBJ);
 		photoView = (PhotoView) rootView.findViewById(R.id.myphotoview);
-		//
+
 		
+
 		return rootView;
 	}
 
@@ -56,32 +59,21 @@ public class PhotoViewFragment extends MyFragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		photoView.setOnViewTapListener(new OnViewTapListener() {
-			
+
 			@Override
 			public void onViewTap(View view, float x, float y) {
 				idelegate2.callBack(1, 1);
-				
+
 			}
 		});
 		
-		
-		
-		BaseModel model = new BaseModel() {
+		 model = new BaseModel() {
 			@Override
 			public void onSuccess(int taskType, ArrayList<?> list, String msg) {
 				super.onSuccess(taskType, list, msg);
 				final String realUrl = (String) list.get(0);
 				Mlog.T("realUrl=" + realUrl);
-				//LoadImage();
-				ImageLoader.getInstance().loadImage(oj.get(PicOj.URL_THUMBNAIL), new SimpleImageLoadingListener() {
-					@Override
-					public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-						super.onLoadingComplete(imageUri, view, loadedImage);
-						photoView.setImageBitmap(loadedImage);
-						LoadImage(realUrl);	
-					}
-				});						
-
+				LoadImage(realUrl);
 			}
 
 			@Override
@@ -90,21 +82,34 @@ public class PhotoViewFragment extends MyFragment {
 
 			}
 		};
-
+		
 		ArrayList<BaseObject> arrSend = new ArrayList<BaseObject>();
 		arrSend.add(oj);
+		 taskNaq = new TaskNaq(model, TaskType.TASK_PARSE_DETAIL, arrSend, getActivity());
 
-		TaskNaq taskNaq = new TaskNaq(model, TaskType.TASK_PARSE_DETAIL, arrSend, getActivity());
-		model.exeTask(null, taskNaq);
-	}
-	public void LoadImage(String url)
-	{
-		ImageLoader.getInstance().loadImage(url, new SimpleImageLoadingListener() {
+		
+		ImageLoader.getInstance().loadImage("https://www.google.com.vn/logos/doodles/2014/world-cup-2014-57-5105522332139520.2-hp.gif", new SimpleImageLoadingListener() {
 			@Override
 			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 				super.onLoadingComplete(imageUri, view, loadedImage);
 				photoView.setImageBitmap(loadedImage);
 				
+				model.exeTask(null, taskNaq);
+			}
+		});
+
+		
+
+			
+	}
+
+	public void LoadImage(String url) {
+		ImageLoader.getInstance().loadImage(url, new SimpleImageLoadingListener() {
+			@Override
+			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+				super.onLoadingComplete(imageUri, view, loadedImage);
+				photoView.setImageBitmap(loadedImage);
+
 			}
 		});
 	}
