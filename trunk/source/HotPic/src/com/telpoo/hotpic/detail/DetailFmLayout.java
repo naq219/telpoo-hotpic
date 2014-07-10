@@ -35,6 +35,7 @@ public class DetailFmLayout extends MyFragment {
 		share = (ImageView) v.findViewById(R.id.share);
 		popup= (View) v.findViewById(R.id.popup);
 		name= (TextView) v.findViewById(R.id.name);
+		
 	}
 
 }

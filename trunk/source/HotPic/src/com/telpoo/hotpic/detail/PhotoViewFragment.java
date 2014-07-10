@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.frame.delegate.Idelegate;
@@ -26,9 +27,11 @@ public class PhotoViewFragment extends MyFragment {
 	TaskNaq taskNaq;
 	private PhotoView photoView;
 	BaseObject oj;
+	private View viewLoadUrl;
 	public static String KEY_URL = "KEYURL";
 	public static String KEY_OBJ = "KEYOBJ";
 	private static Idelegate idelegate2;
+	
 	
 	
 
@@ -48,7 +51,7 @@ public class PhotoViewFragment extends MyFragment {
 		// lay object anh chi tiet truyen tu listview
 		oj = getArguments().getParcelable(KEY_OBJ);
 		photoView = (PhotoView) rootView.findViewById(R.id.myphotoview);
-		
+		viewLoadUrl= (View) rootView.findViewById(R.id.viewLoadUrl);
 
 		return rootView;
 	}
@@ -91,6 +94,7 @@ public class PhotoViewFragment extends MyFragment {
 
 				}
 			};
+			viewLoadUrl.setVisibility(View.VISIBLE);
 		 taskNaq = new TaskNaq(model, TaskType.TASK_PARSE_DETAIL, arrSend, getActivity());		
 		 model.exeTask(null, taskNaq);
 		
@@ -104,7 +108,13 @@ public class PhotoViewFragment extends MyFragment {
 			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 				super.onLoadingComplete(imageUri, view, loadedImage);
 				photoView.setImageBitmap(loadedImage);
-
+				viewLoadUrl.setVisibility(View.GONE);
+			}
+			
+			@Override
+			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+				super.onLoadingFailed(imageUri, view, failReason);
+				viewLoadUrl.setVisibility(View.VISIBLE);
 			}
 		});
 	}

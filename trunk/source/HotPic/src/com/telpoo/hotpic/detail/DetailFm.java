@@ -284,10 +284,11 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 						}
 					} else if (loadDetailType == 1) {
 						File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-						// File imagesFolder = new File(pictureFolder,
-						// "/hotpic");
-						FileSupport.copyfile(imageUri, pictureFolder.getAbsolutePath() + "/hot");
-						showToast(getContext().getString(R.string.anh_da_duoc_luu_vao) + pictureFolder.getAbsolutePath() + "/abc.png");
+						
+						String fileName = imageUri.substring( imageUri.lastIndexOf('/')+1, imageUri.length() );
+						String path=pictureFolder.getAbsolutePath() + "/hotpic/"+fileName+".png";
+						FileSupport.saveBitmap(loadedImage,path );
+						showToast(getContext().getString(R.string.anh_da_duoc_luu_vao) +path);
 
 					}
 

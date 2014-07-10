@@ -8,11 +8,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </uk.co.senab.photoview.PhotoView>
-    
-    <ImageView 
+
+    <ImageView
         android:id="@+id/iv"
-          android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/viewLoadUrl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/top_height"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:visibility="gone" >
+
+        <ProgressBar style="@style/progress" >
+        </ProgressBar>
+
+        <TextView
+            style="@style/text_white"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text="Đang tải ảnh chất lượng cao" />
+    </LinearLayout>
 
 </RelativeLayout>

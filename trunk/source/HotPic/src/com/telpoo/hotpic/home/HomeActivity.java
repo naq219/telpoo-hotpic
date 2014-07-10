@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.os.Bundle;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.telpoo.anhnong.hotgirl.R;
@@ -28,10 +29,9 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+
 		setting();
-		
-		
+
 		viewMenu = new ViewMenu(HomeActivity.this, this);
 		super.onCreate(savedInstanceState);
 		me = HomeActivity.this;
@@ -56,19 +56,20 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 
 	private void setting() {
 		setupImageLoader();
-		
+
 	}
+
 	protected void setupImageLoader() {
-		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration
-				.Builder(getBaseContext())
+		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getBaseContext())
 		.defaultDisplayImageOptions(Utils.loadImgOption())
+		.memoryCache(new WeakMemoryCache())
 		.build();
 
 		ImageLoader.getInstance().init(configuration);
 	}
 
 	private void loadDefault() {
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -102,9 +103,9 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 		this.iOnMenuClosed = iOnMenuClosed;
 
 	}
-	
-	public void setUptitle(String title){
-		tvTitle.setText(""+title);
+
+	public void setUptitle(String title) {
+		tvTitle.setText("" + title);
 	}
 
 }
