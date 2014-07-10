@@ -118,7 +118,14 @@ public class DepvdParse {
 								PicOj picOj = new PicOj();
 								picOj.set(MenuOj.GROUP_ID, Constant.GroupSource.GROUP_DEPVD);
 								picOj.set(PicOj.TYPE_CUT, Constant.TYPE_CUT_PICTURE);
-								picOj.set(PicOj.NAME, "Depvd");
+								String temp = getNameDepPic(html);
+								if(temp != null && !temp.equals(""))
+								{
+									picOj.set(PicOj.NAME, temp);
+								}
+								else
+									picOj.set(PicOj.NAME, "Depvd");
+								
 								picOj.set(PicOj.URL, imgURL);
 								picOj.set(PicOj.URL_THUMBNAIL, imgURL);
 								picOj.set(AlbulmOj.TYPE_CUT, Constant.TYPE_CUT_PICTURE);
@@ -134,8 +141,31 @@ public class DepvdParse {
 				break;
 			}
 		}
+		
 		return res;
 		
+	}
+	public static String getNameDepPic(Document html)
+	{
+		String name  = "";
+		Elements rootElements = html.select("p");
+		for(Element item : rootElements)
+		{
+			if(item.hasAttr("class"))
+			{
+				if(item.attr("class").equals("vd-model"))
+				{
+					Element a = item.select("a").get(0);
+					if(a != null)
+					{
+						name = a.select("span").get(0).text();
+					}
+					break;
+				}
+				
+			}
+		}
+		return name;
 	}
 
 }
