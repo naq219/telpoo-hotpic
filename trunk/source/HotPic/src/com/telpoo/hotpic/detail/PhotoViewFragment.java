@@ -48,7 +48,6 @@ public class PhotoViewFragment extends MyFragment {
 		// lay object anh chi tiet truyen tu listview
 		oj = getArguments().getParcelable(KEY_OBJ);
 		photoView = (PhotoView) rootView.findViewById(R.id.myphotoview);
-
 		
 
 		return rootView;
@@ -56,7 +55,7 @@ public class PhotoViewFragment extends MyFragment {
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+		super.onActivityCreated(savedInstanceState);		
 		
 		photoView.setOnViewTapListener(new OnViewTapListener() {
 
@@ -67,43 +66,39 @@ public class PhotoViewFragment extends MyFragment {
 			}
 		});
 		
-		 model = new BaseModel() {
-			@Override
-			public void onSuccess(int taskType, ArrayList<?> list, String msg) {
-				super.onSuccess(taskType, list, msg);
-				final String realUrl = (String) list.get(0);
-				Mlog.T("realUrl=" + realUrl);
-				LoadImage(realUrl);
-			}
-
-			@Override
-			public void onFail(int taskType, String msg) {
-				super.onFail(taskType, msg);
-
-			}
-		};
-		
 		ArrayList<BaseObject> arrSend = new ArrayList<BaseObject>();
 		arrSend.add(oj);
-		 taskNaq = new TaskNaq(model, TaskType.TASK_PARSE_DETAIL, arrSend, getActivity());
+		 model = new BaseModel() {
+				@Override
+				public void onSuccess(int taskType, ArrayList<?> list, String msg) {
+					super.onSuccess(taskType, list, msg);
+					final String realUrl = (String) list.get(0);
+					Mlog.T("realUrl=" + realUrl);
+					//LoadImage(realUrl);
+					ImageLoader.getInstance().loadImage("https://www.google.com.vn/logos/doodles/2014/world-cup-2014-57-5105522332139520.2-hp.gif", new SimpleImageLoadingListener() {
+						@Override
+						public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+							super.onLoadingComplete(imageUri, view, loadedImage);
+							photoView.setImageBitmap(loadedImage);				
+							LoadImage(realUrl);
+						}
+					});
+				}
 
+				@Override
+				public void onFail(int taskType, String msg) {
+					super.onFail(taskType, msg);
+
+				}
+			};
+		 taskNaq = new TaskNaq(model, TaskType.TASK_PARSE_DETAIL, arrSend, getActivity());		
+		 model.exeTask(null, taskNaq);
 		
-		ImageLoader.getInstance().loadImage("https://www.google.com.vn/logos/doodles/2014/world-cup-2014-57-5105522332139520.2-hp.gif", new SimpleImageLoadingListener() {
-			@Override
-			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-				super.onLoadingComplete(imageUri, view, loadedImage);
-				photoView.setImageBitmap(loadedImage);
-				
-				model.exeTask(null, taskNaq);
-			}
-		});
-
-		
-
 			
 	}
 
 	public void LoadImage(String url) {
+		
 		ImageLoader.getInstance().loadImage(url, new SimpleImageLoadingListener() {
 			@Override
 			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
