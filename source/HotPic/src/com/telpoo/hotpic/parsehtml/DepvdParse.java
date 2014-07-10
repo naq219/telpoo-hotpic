@@ -12,11 +12,38 @@ import com.telpoo.frame.net.NetUtils;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.object.AlbulmOj;
 import com.telpoo.hotpic.object.MenuOj;
+import com.telpoo.hotpic.object.MyObject;
 import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.utils.Constant;
-import com.telpoo.hotpic.utils.Utils;
 
 public class DepvdParse {
+	
+	
+	public static ArrayList<BaseObject> Parse(BaseObject oj) throws IOException {
+		int typeCut = oj.getInt(MenuOj.TYPE_CUT);
+		String url = oj.get(MenuOj.URL);
+		int page = oj.getInt(MyObject.PAGE);
+		if (page > 1) {// chen them trang de dung url (truong hop loadmore)
+			url = url + "/p" + page;
+			url.replace("//", "/");
+		}
+
+		if (typeCut == Constant.TYPE_CUT_ALBULM) { // cắt lấy ra albulm
+
+			return getAlbumDepvd(url);
+		}
+
+		if (typeCut == Constant.TYPE_CUT_PICTURE) {
+			return getPicDepvdParse(url);
+		}
+
+		else
+			return null;
+	}
+
+	public static String parseUrlDetail(String url){
+		return url;
+	}
 	
 	public static ArrayList<BaseObject> getAlbumDepvd(String url) throws IOException
 	{
@@ -37,18 +64,18 @@ public class DepvdParse {
 			{
 				if(imgElement.hasAttr("class") && imgElement.attr("class").equals("lazy") )
 				{
+					
 					title = imgElement.attr("alt");
 					linkThumbnail = imgElement.attr("src");
 					//
 					if (!linkThumbnail.equals("") && !linkWeb.equals("")) {
 						AlbulmOj albulmOj = new AlbulmOj();
 						albulmOj.set(AlbulmOj.TYPE_CUT, Constant.TYPE_CUT_ALBULM);
-						albulmOj.set(MenuOj.GROUP_ID, Constant.GroupSource.GROUP_CHANDAITV);
+						albulmOj.set(MenuOj.GROUP_ID, Constant.GroupSource.GROUP_DEPVD);
 						albulmOj.set(AlbulmOj.URL_THUMBNAIL, linkThumbnail);
 						albulmOj.set(AlbulmOj.URL, linkWeb);
 						albulmOj.set(AlbulmOj.NAME, title);					
 						albulmOj.set(AlbulmOj.COUNT, countSpan);
-						albulmOj.set(AlbulmOj.TYPE_CUT, Constant.TYPE_CUT_ALBULM);
 						res.add(albulmOj);
 				}
 					else
@@ -89,7 +116,7 @@ public class DepvdParse {
 								String imgURL = imgLink.attr("data-original");
 								//
 								PicOj picOj = new PicOj();
-								picOj.set(MenuOj.GROUP_ID, Constant.GroupSource.GROUP_CHANDAITV);
+								picOj.set(MenuOj.GROUP_ID, Constant.GroupSource.GROUP_DEPVD);
 								picOj.set(PicOj.TYPE_CUT, Constant.TYPE_CUT_PICTURE);
 								picOj.set(PicOj.NAME, "Depvd");
 								picOj.set(PicOj.URL, imgURL);

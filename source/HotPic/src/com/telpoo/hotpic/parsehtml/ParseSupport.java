@@ -20,7 +20,11 @@ public class ParseSupport {
 		switch (groupId) {
 		case Constant.GroupSource.GROUP_CHANDAITV:  // cắt trang chandai.tv
 			 res = ChanDaiParse.Parse(oj);
-
+			 break;
+			 
+		case Constant.GroupSource.GROUP_DEPVD:  // cắt trang depvd
+			 res = DepvdParse.Parse(oj);
+			 break;
 		default:
 			break;
 		}
@@ -36,6 +40,9 @@ public class ParseSupport {
 		switch (groupId) {
 		case Constant.GroupSource.GROUP_CHANDAITV:  // cắt trang chandai.tv
 			return ChanDaiParse.parseUrlImg(oj.get(PicOj.URL));
+			
+		case Constant.GroupSource.GROUP_DEPVD:  // cắt trang chandai.tv
+			return DepvdParse.parseUrlDetail(oj.get(PicOj.URL_THUMBNAIL));
 
 		default:
 			break;

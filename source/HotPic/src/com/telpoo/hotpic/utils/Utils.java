@@ -10,11 +10,13 @@ public class Utils {
 		DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
 		.cacheOnDisc(true)
 		.cacheInMemory(false)
-		.showImageOnFail(R.drawable.no_image)
-		.showImageOnLoading(R.drawable.no_image)
+		.showImageOnFail(R.drawable.ic_launcher)
+		.showImageOnLoading(R.drawable.load)
 		.imageScaleType(ImageScaleType.IN_SAMPLE_INT)
 		.build();
 		return displayImageOptions;
 	}
+	
+	
 
 }

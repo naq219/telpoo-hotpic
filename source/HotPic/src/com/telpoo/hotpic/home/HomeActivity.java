@@ -6,12 +6,14 @@ import android.os.Bundle;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.delegate.IOnMenuClosed;
 import com.telpoo.hotpic.menu.ViewMenu;
 import com.telpoo.hotpic.task.TaskMinh;
 import com.telpoo.hotpic.task.TaskType;
+import com.telpoo.hotpic.utils.Utils;
 
 public class HomeActivity extends MyHomeActivity implements TaskType {
 	TaskMinh taskMinh;
@@ -27,7 +29,7 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
-		
+		setting();
 		
 		
 		viewMenu = new ViewMenu(HomeActivity.this, this);
@@ -50,6 +52,19 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 		// load list anh mac dinh
 		loadDefault();
 
+	}
+
+	private void setting() {
+		setupImageLoader();
+		
+	}
+	protected void setupImageLoader() {
+		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration
+				.Builder(getBaseContext())
+		.defaultDisplayImageOptions(Utils.loadImgOption())
+		.build();
+
+		ImageLoader.getInstance().init(configuration);
 	}
 
 	private void loadDefault() {
@@ -86,6 +101,10 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 	public void setDelegateOnMenuClosed(IOnMenuClosed iOnMenuClosed) {
 		this.iOnMenuClosed = iOnMenuClosed;
 
+	}
+	
+	public void setUptitle(String title){
+		tvTitle.setText(""+title);
 	}
 
 }

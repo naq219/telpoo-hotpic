@@ -12,16 +12,8 @@ public class MyApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-		setupImageLoader();
 
 	}
 
-	protected void setupImageLoader() {
-		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration
-				.Builder(getBaseContext())
-		.defaultDisplayImageOptions(Utils.loadImgOption())
-		.build();
 
-		ImageLoader.getInstance().init(configuration);
-	}
 }
