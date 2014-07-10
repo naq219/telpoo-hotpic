@@ -8,7 +8,7 @@
     <ImageView
         style="@style/form_ff"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg4" />
+        android:src="@drawable/bg1" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -50,6 +50,7 @@
             <TextView
                 android:id="@+id/notifi"
                 style="@style/text"
+                android:visibility="gone"
                 android:layout_centerInParent="true"
                 android:background="@drawable/circle"
                 android:gravity="center"
