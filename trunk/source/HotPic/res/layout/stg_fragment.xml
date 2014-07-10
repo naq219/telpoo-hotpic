@@ -7,6 +7,7 @@
 
     <include
         layout="@layout/loading"
+        android:layout_marginTop="@dimen/top_height"
         android:padding="@dimen/space" />
 
     <LinearLayout
@@ -34,10 +35,11 @@
     <com.etsy.android.grid.StaggeredGridView
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
+          android:paddingTop="@dimen/top_height"
         android:layout_height="match_parent"
         android:layout_above="@+id/loadMore"
         android:layout_below="@+id/progress"
         app:column_count="2"
-        app:item_margin="8dp" />
+        app:item_margin="1dp" />
 
 </RelativeLayout>

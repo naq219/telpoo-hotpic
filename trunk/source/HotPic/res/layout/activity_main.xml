@@ -5,6 +5,26 @@
     android:layout_height="match_parent"
     android:background="#ededed" >
 
+    <ImageView
+        style="@style/form_ff"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg4" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/admobid" />
+
+    <FrameLayout
+        android:id="@+id/realTabContent"
+        style="@style/form_ff"
+      
+        android:layout_above="@+id/adView" >
+    </FrameLayout>
+
     <RelativeLayout
         android:id="@+id/fm_top"
         android:layout_width="fill_parent"
@@ -37,47 +57,15 @@
         </RelativeLayout>
     </RelativeLayout>
 
-  
-
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/admobid" />
-
-    <FrameLayout
-        android:id="@+id/realTabContent"
-        style="@style/form_ff"
-        android:layout_above="@+id/adView"
-        android:layout_below="@+id/fm_top" >
-    </FrameLayout>
-
-    <RelativeLayout
-        android:id="@+id/root_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/fm_top"
-        android:background="#000000"
-        android:visibility="gone" >
-    </RelativeLayout>
-    
-      <RelativeLayout
-        android:layout_width="fill_parent"
+    <ImageView
+        android:id="@+id/btnMenu"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/top_height"
-        android:paddingRight="7dp" >
-
-        <ImageView
-            android:id="@+id/btnMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:paddingBottom="5dp"
-            android:paddingLeft="3dp"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp"
-            android:src="@drawable/menu" />
-    </RelativeLayout>
+        android:layout_marginRight="7dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:src="@drawable/menu" />
 
 </RelativeLayout>

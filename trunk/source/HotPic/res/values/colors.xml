@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <!-- Sign-in Button Colors -->
-    <color name="bg_top">#3873af</color>
+    <color name="bg_top">#E63873af</color>
     
 </resources>
