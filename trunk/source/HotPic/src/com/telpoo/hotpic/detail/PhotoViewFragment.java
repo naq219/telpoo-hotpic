@@ -19,6 +19,7 @@ import com.telpoo.frame.model.BaseModel;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.home.MyFragment;
+import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.task.TaskNaq;
 import com.telpoo.hotpic.task.TaskType;
 
@@ -69,6 +70,17 @@ public class PhotoViewFragment extends MyFragment {
 			}
 		});
 		
+		ImageLoader.getInstance().loadImage(oj.get(PicOj.URL_THUMBNAIL), new SimpleImageLoadingListener() {
+			@Override
+			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+				super.onLoadingComplete(imageUri, view, loadedImage);
+				photoView.setImageBitmap(loadedImage);				
+				
+			}
+		});
+		
+		
+		
 		ArrayList<BaseObject> arrSend = new ArrayList<BaseObject>();
 		arrSend.add(oj);
 		 model = new BaseModel() {
@@ -77,21 +89,14 @@ public class PhotoViewFragment extends MyFragment {
 					super.onSuccess(taskType, list, msg);
 					final String realUrl = (String) list.get(0);
 					Mlog.T("realUrl=" + realUrl);
-					//LoadImage(realUrl);
-					ImageLoader.getInstance().loadImage("https://www.google.com.vn/logos/doodles/2014/world-cup-2014-57-5105522332139520.2-hp.gif", new SimpleImageLoadingListener() {
-						@Override
-						public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-							super.onLoadingComplete(imageUri, view, loadedImage);
-							photoView.setImageBitmap(loadedImage);				
-							LoadImage(realUrl);
-						}
-					});
+					LoadImage(realUrl);
+					
 				}
 
 				@Override
 				public void onFail(int taskType, String msg) {
 					super.onFail(taskType, msg);
-
+					viewLoadUrl.setVisibility(View.GONE);
 				}
 			};
 			viewLoadUrl.setVisibility(View.VISIBLE);
@@ -114,7 +119,7 @@ public class PhotoViewFragment extends MyFragment {
 			@Override
 			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 				super.onLoadingFailed(imageUri, view, failReason);
-				viewLoadUrl.setVisibility(View.VISIBLE);
+				viewLoadUrl.setVisibility(View.GONE);
 			}
 		});
 	}
