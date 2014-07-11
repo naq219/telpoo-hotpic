@@ -373,11 +373,11 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 					// and the post Id.
 					final String postId = values.getString("post_id");
 					if (postId != null) {
-						Toast.makeText(getActivity(), "Shared ", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "Chia sẻ thành công", Toast.LENGTH_SHORT).show();
 
 					} else {
 						// User clicked the Cancel button
-						Toast.makeText(getActivity().getApplicationContext(), "Publish cancelled", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity().getApplicationContext(), "Đã hủy chia sẻ", Toast.LENGTH_SHORT).show();
 					}
 				} else if (error instanceof FacebookOperationCanceledException) {
 					// User clicked the "x" button

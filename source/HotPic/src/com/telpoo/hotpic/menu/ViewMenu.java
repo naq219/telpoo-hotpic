@@ -19,15 +19,12 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
-import com.google.android.gms.internal.go;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.ui.BaseFragment;
-import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.adapter.ExLvAdapter;
 import com.telpoo.hotpic.db.DbSupport;
-import com.telpoo.hotpic.db.TableDb;
 import com.telpoo.hotpic.delegate.IOnMenuClosed;
 import com.telpoo.hotpic.home.HomeActivity;
 import com.telpoo.hotpic.home.TabId;
@@ -98,8 +95,8 @@ public class ViewMenu implements IOnMenuClosed {
 		setDataExpanableLv(listDataHeader, listChildData);
 		
 		//load default
-		ojClick = listChildData.get(listDataHeader.get(listChildData.size()-1)).get(0);
-		go();
+		//ojClick = listChildData.get(listDataHeader.get(listChildData.size()-1)).get(0);
+		//go();
 	}
 
 	// set indicator group expandlistview in right

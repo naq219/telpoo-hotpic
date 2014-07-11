@@ -9,9 +9,13 @@ import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.telpoo.anhnong.hotgirl.R;
+import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.delegate.IOnMenuClosed;
 import com.telpoo.hotpic.menu.ViewMenu;
+import com.telpoo.hotpic.object.MenuOj;
+import com.telpoo.hotpic.object.PicOj;
+import com.telpoo.hotpic.staggeredgridviewui.GridviewFm;
 import com.telpoo.hotpic.task.TaskMinh;
 import com.telpoo.hotpic.task.TaskType;
 import com.telpoo.hotpic.utils.Utils;
@@ -60,15 +64,24 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 	}
 
 	protected void setupImageLoader() {
-		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getBaseContext())
-		.defaultDisplayImageOptions(Utils.loadImgOption())
-		.memoryCache(new WeakMemoryCache())
-		.build();
+		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getBaseContext()).defaultDisplayImageOptions(Utils.loadImgOption())
+				.memoryCache(new WeakMemoryCache()).build();
 
 		ImageLoader.getInstance().init(configuration);
 	}
 
 	private void loadDefault() {
+
+		BaseObject oj = new BaseObject();
+		oj.set(MenuOj.GROUP_ID, 0);
+		oj.set(MenuOj.GROUP_NAME, "Chandai.tv");
+		oj.set(MenuOj.CATEGORY, 1);
+		oj.set(MenuOj.TYPE_CUT, 1);
+		oj.set(MenuOj.URL, "http://chandai.tv/diu-dang");
+		oj.set(MenuOj.NAME, "Mới");
+		GridviewFm fragment = new GridviewFm();
+		fragment.setData(oj);
+		HomeActivity.getInstance().pushFragments(TabId.home, fragment, true, null);
 
 	}
 
