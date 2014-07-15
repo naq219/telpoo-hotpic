@@ -10,13 +10,12 @@
         android:scaleType="centerCrop"
         android:src="@drawable/bg1" />
 
-    <com.google.android.gms.ads.AdView
+    <RelativeLayout
         android:id="@+id/adView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/admobid" />
+        />
 
     <FrameLayout
         android:id="@+id/realTabContent"
@@ -61,11 +60,11 @@
     <ImageView
         android:id="@+id/btnMenu"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/top_height"
+        android:layout_height="@dimen/top_height_menu"
         android:layout_marginRight="7dp"
-        android:paddingBottom="5dp"
+        android:paddingBottom="@dimen/top_height_menu_fix"
         android:paddingLeft="3dp"
-        android:paddingRight="10dp"
+        android:paddingRight="20dp"
         android:paddingTop="5dp"
         android:src="@drawable/menu" />
 

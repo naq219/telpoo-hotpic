@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.telpoo.anhnong.hotgirl.R;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.hotpic.home.MyFragment;
 
 public class DetailFmLayout extends MyFragment {
-	ImageView like, favorite, comment, download, setting, share;
+	ImageView like, favorite1, comment, download, setting, share;
 	ViewPager viewPager ;
 	View popup;
 	TextView name;
@@ -28,7 +28,7 @@ public class DetailFmLayout extends MyFragment {
 	public void onViewCreated(View v, Bundle savedInstanceState) {
 		super.onViewCreated(v, savedInstanceState);
 		like = (ImageView) v.findViewById(R.id.like);
-		favorite = (ImageView) v.findViewById(R.id.favorite);
+		favorite1 = (ImageView) v.findViewById(R.id.favorite1);
 		comment = (ImageView) v.findViewById(R.id.comment);
 		download = (ImageView) v.findViewById(R.id.download);
 		setting = (ImageView) v.findViewById(R.id.setting);

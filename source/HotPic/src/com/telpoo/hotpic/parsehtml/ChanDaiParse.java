@@ -141,12 +141,11 @@ public class ChanDaiParse {
 		for (BaseObject baseObject : res) {
 
 			PicOj picOj = new PicOj();
-			picOj.set(MenuOj.GROUP_ID, Constant.GroupSource.GROUP_CHANDAITV);
+			picOj.set(PicOj.GROUP_ID, Constant.GroupSource.GROUP_CHANDAITV);
 			picOj.set(PicOj.TYPE_CUT, Constant.TYPE_CUT_PICTURE);
 			picOj.set(PicOj.NAME, baseObject.get(AlbulmOj.NAME));
 			picOj.set(PicOj.URL, baseObject.get(AlbulmOj.URL));
 			picOj.set(PicOj.URL_THUMBNAIL, baseObject.get(AlbulmOj.URL_THUMBNAIL));
-			picOj.set(AlbulmOj.TYPE_CUT, Constant.TYPE_CUT_PICTURE);
 
 			ojs.add(picOj);
 

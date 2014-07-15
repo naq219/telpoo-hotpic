@@ -123,8 +123,8 @@ public class DepvdParse {
 								{
 									picOj.set(PicOj.NAME, temp);
 								}
-								else
-									picOj.set(PicOj.NAME, "Depvd");
+						/*		else
+									picOj.set(PicOj.NAME, "Depvd");*/
 								
 								picOj.set(PicOj.URL, imgURL);
 								picOj.set(PicOj.URL_THUMBNAIL, imgURL);

@@ -12,8 +12,10 @@ import android.os.Environment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -34,11 +36,14 @@ import com.facebook.widget.WebDialog.OnCompleteListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.telpoo.anhnong.hotgirl.R;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.FileSupport;
 import com.telpoo.frame.utils.ViewUtils;
+import com.telpoo.hotpic.db.DbSupport;
+import com.telpoo.hotpic.db.Mydb;
+import com.telpoo.hotpic.db.TableDb;
 import com.telpoo.hotpic.home.HomeActivity;
 import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.task.TaskNaq;
@@ -87,11 +92,21 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 
 	private void initView() {
 
-		ImageView[] imageViews = { like, favorite, comment, download, setting, share };
+		ImageView[] imageViews = { like, favorite1, comment, download, setting, share };
 		ViewUtils.HighlightImageView(imageViews, Color.parseColor("#b3100b"));
 
 		setting.setOnClickListener(this);
-		favorite.setOnClickListener(this);
+		favorite1.setOnClickListener(this);
+		
+//		favorite1.setOnTouchListener(new OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				showToast("sds");
+//				return true;
+//			}
+//		});
+		
 		share.setOnClickListener(this);
 		download.setOnClickListener(this);
 	}
@@ -101,7 +116,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 		super.onResume();
 		mUiFaceLifecycleHelper.onResume();
 		LoadListFragment();
-		adapter = new PTViewPageAdapter(getChildFragmentManager(), mListFragment);
+		adapter = new PTViewPageAdapter(getChildFragmentManager(), ojs,this);
 
 		viewPager.setAdapter(adapter);
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
@@ -197,6 +212,19 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	public void onClick(View v) {
 
 		switch (v.getId()) {
+		
+		case R.id.favorite1:
+			boolean status=DbSupport.addFabvorite(ojPage,getActivity());
+			if(!status){
+				showToast("Đã xóa khỏi yêu thích");
+				favorite1.setImageResource(R.drawable.ic_chitiet_favprite_normal);
+			}
+			else {
+				showToast("Đã thêm vào yêu thích");
+				favorite1.setImageResource(R.drawable.ic_chitiet_favprite_select);
+			}
+			break;
+		
 		case R.id.setting:
 			loadDetailType = 0;
 
@@ -218,7 +246,8 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 
 			break;
 		case R.id.share:
-			final String linkImage = ojs.get(viewPager.getCurrentItem()).get(PicOj.URL_THUMBNAIL);
+			final String linkImage = ojPage.get(PicOj.URL_THUMBNAIL);
+			final String des = ojPage.get(PicOj.NAME);
 			final String urlAppPlayStore = "https://play.google.com/store/apps/details?id=" + getActivity().getApplicationContext().getPackageName();
 			if (linkImage != null) {
 				Session.openActiveSession(getActivity(), DetailFm.this, true, new Session.StatusCallback() {
@@ -231,15 +260,12 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 							// make request to the /me API
 							Request.newMeRequest(session, new Request.GraphUserCallback() {
 
-								// callback after Graph API response with user
-								// object
-
 								@Override
 								public void onCompleted(GraphUser user, Response response) {
 									if (user != null) {
 										// ShareFaceDialog("via Viet Foodie",
 										// data.getTitle(), faceShare, "", "");
-										publishFeedDialog("HOT PIC-Vẻ đẹp tạo hóa", "HOTPIC", "Pramaticteam", linkImage, urlAppPlayStore);
+										publishFeedDialog("" + des, "App hot girl for Android", "Wallpaper, picture", linkImage, urlAppPlayStore);
 									}
 								}
 							}).executeAsync();
@@ -284,11 +310,11 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 						}
 					} else if (loadDetailType == 1) {
 						File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-						
-						String fileName = imageUri.substring( imageUri.lastIndexOf('/')+1, imageUri.length() );
-						String path=pictureFolder.getAbsolutePath() + "/hotpic/"+fileName+".png";
-						FileSupport.saveBitmap(loadedImage,path );
-						showToast(getContext().getString(R.string.anh_da_duoc_luu_vao) +path);
+
+						String fileName = imageUri.substring(imageUri.lastIndexOf('/') + 1, imageUri.length());
+						String path = pictureFolder.getAbsolutePath() + "/hotpic/" + fileName + ".png";
+						FileSupport.saveBitmap(loadedImage, path);
+						showToast(getContext().getString(R.string.anh_da_duoc_luu_vao) + path);
 
 					}
 
@@ -298,6 +324,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 					super.onLoadingFailed(imageUri, view, failReason);
 					showToast(getContext().getString(R.string.loi_ket_noi));
+					System.gc();
 				}
 			});
 

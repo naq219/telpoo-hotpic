@@ -11,18 +11,18 @@
     <string name="danhgia">Đánh giá</string>
     <string name="lienhe">Liên hệ</string>
     <string name="ungdungkhac">Ứng dụng khác</string>
-    <string name="url_app_google">https://play.google.com/store/apps/details?id=com.telpoo.clip360</string>
-    <string name="admobid">a1530b43b8d7d37</string>
+    <string name="admobid">ca-app-pub-9176218815538135/6613325697</string>
     <string name="no_network_try_again">Hiện tại không có kết nối mạng. Hãy thử lại sau.</string>
     <string name="thulai">Thử lại</string>
     <string name="no_network">Không có kết nối internet</string>
     <string name="khong_co_anh_nao">Không có ảnh nào</string>
     <string name="loading_more">Đang tải thêm</string>
     <string name="dang_tai_anh">Đang tải ảnh</string>
-    <string name="APP_ID">496883337088413</string>
+    <string name="APP_ID">269772563207172</string>
     <string name="loi_ket_noi">Lỗi kết nối!</string>
     <string name="anh_da_duoc_luu_vao">"Ảnh đã được lưu vào: "</string>
     <string name="da_cai_lam_hinh_nen">Đã cài làm hình nền</string>
+    <string name="dathemvaoyeuthich">Đã thêm vào yêu thích</string>
     
 
 </resources>

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.etsy.android.grid.StaggeredGridView;
-import com.telpoo.anhnong.hotgirl.R;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.hotpic.home.MyFragment;
 
 public class GridviewFmLayout extends MyFragment {
