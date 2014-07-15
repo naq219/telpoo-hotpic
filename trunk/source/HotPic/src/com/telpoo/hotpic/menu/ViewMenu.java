@@ -15,11 +15,13 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.TextView;
 
-import com.telpoo.anhnong.hotgirl.R;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.ui.BaseFragment;
@@ -39,6 +41,9 @@ public class ViewMenu implements IOnMenuClosed {
 	ExpandableListView elv;
 	BaseObject ojClick;
 	private BaseFragment fmPush;
+	ArrayList<BaseObject> ojFv = new ArrayList<BaseObject>();
+	TextView favorite;
+	View layFavorite;
 
 	public ViewMenu(Context context1, Idelegate idelegate1) {
 		this.context = context1;
@@ -46,11 +51,31 @@ public class ViewMenu implements IOnMenuClosed {
 
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		v = inflater.inflate(R.layout.layout_menu, null);
-
+		favorite = (TextView) v.findViewById(R.id.favorite);
 		elv = (ExpandableListView) v.findViewById(R.id.elv);
-
+		layFavorite = v.findViewById(R.id.layFavorite);
 		((HomeActivity) context1).setDelegateOnMenuClosed(this);
+		updateFv();
+		layFavorite.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+
+				if(ojFv.size()==0) return;
+				
+				GridviewFm fragment = new GridviewFm();
+				fragment.setData(ojFv);
+				setupBeforeClose(fragment);
+				HomeActivity.getInstance().toggle();
+
+			}
+		});
+
+	}
+
+	public void updateFv() {
+		ojFv = DbSupport.getFabvorite();
+		favorite.setText("" + ojFv.size());
 	}
 
 	// truyen du lieu cua menu vao o day
@@ -93,10 +118,11 @@ public class ViewMenu implements IOnMenuClosed {
 		//
 		// set adapter view menu
 		setDataExpanableLv(listDataHeader, listChildData);
-		
-		//load default
-		//ojClick = listChildData.get(listDataHeader.get(listChildData.size()-1)).get(0);
-		//go();
+
+		// load default
+		// ojClick =
+		// listChildData.get(listDataHeader.get(listChildData.size()-1)).get(0);
+		// go();
 	}
 
 	// set indicator group expandlistview in right
@@ -139,7 +165,7 @@ public class ViewMenu implements IOnMenuClosed {
 		} else
 			setupBeforeClose(null);
 		HomeActivity.getInstance().toggle();
-		
+
 	}
 
 	public View getView() {
@@ -152,6 +178,8 @@ public class ViewMenu implements IOnMenuClosed {
 
 		if (fmPush != null)
 			HomeActivity.getInstance().pushFragments(TabId.home, fmPush, true, null);
+		
+		fmPush=null;
 
 	}
 

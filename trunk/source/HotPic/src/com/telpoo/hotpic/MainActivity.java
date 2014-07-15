@@ -3,7 +3,7 @@ package com.telpoo.hotpic;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
-import com.telpoo.anhnong.hotgirl.R;
+import com.hinhnen.anhnong.hotgirl.R;
 
 public class MainActivity extends Activity {
 

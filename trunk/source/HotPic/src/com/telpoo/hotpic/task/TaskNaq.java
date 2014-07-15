@@ -10,7 +10,8 @@ import com.telpoo.frame.model.TaskListener;
 import com.telpoo.frame.model.TaskParams;
 import com.telpoo.frame.net.BaseNetSupportBeta;
 import com.telpoo.frame.object.BaseObject;
-import com.telpoo.anhnong.hotgirl.R;
+import com.telpoo.frame.utils.FileSupport;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.hotpic.parsehtml.ParseSupport;
 
 public class TaskNaq extends BaseTask implements TaskType {
@@ -56,6 +57,7 @@ public class TaskNaq extends BaseTask implements TaskType {
 			ArrayList<String> arr=new ArrayList<String>();
 			if(realurl!=null&&realurl.length()!=0)
 			{
+				//FileSupport.imageLoaderCf(chance, context)
 				arr.add(realurl);
 				dataReturn=arr;
 				return TASK_DONE;

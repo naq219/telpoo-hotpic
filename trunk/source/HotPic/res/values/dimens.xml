@@ -24,7 +24,8 @@
 
     <dimen name="slidingmenu_offset">60dp</dimen>
     <dimen name="top_height">30dp</dimen>
-
+<dimen name="top_height_menu">50dp</dimen>
+<dimen name="top_height_menu_fix">25dp</dimen>
     <!-- slide menu -->
 
     <dimen name="sl_icon_w">20dp</dimen>

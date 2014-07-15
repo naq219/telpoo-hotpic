@@ -15,7 +15,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.telpoo.anhnong.hotgirl.R;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.adapter.HotStaggeredGridViewAdapter;
@@ -34,21 +34,30 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 	HotStaggeredGridViewAdapter adapter;
 	boolean isLoadingMore = false;
 	int page = 0; // tra da load
+	private ArrayList<BaseObject> ojFv;
 
 	@SuppressLint("NewApi")
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		String groupName=ojToParse.get(MenuOj.GROUP_NAME);
-		String name=ojToParse.get(MenuOj.NAME);
-		
-		if(name!=null&&groupName!=null)
-		HomeActivity.getInstance().setUptitle(groupName+"-"+name);
-
-		runTaskGetImage(ojToParse);
 		
 		adapter = new HotStaggeredGridViewAdapter(getActivity(), R.layout.image_item_grid, new ArrayList<BaseObject>());
 		gridView.setAdapter(adapter);
+		if (ojFv == null) { // lay tu menu item
+
+			String groupName = ojToParse.get(MenuOj.GROUP_NAME);
+			String name = ojToParse.get(MenuOj.NAME);
+			if (name != null && groupName != null)
+				HomeActivity.getInstance().setUptitle(groupName + "-" + name);
+			runTaskGetImage(ojToParse);
+		}
+		else { //lay tu fabvorite
+			
+			adapter.setData(ojFv);
+			adapter.notifyDataSetChanged();
+		}
+
+		
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -184,6 +193,11 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 		default:
 			break;
 		}
+
+	}
+
+	public void setData(ArrayList<BaseObject> ojFv) {
+		this.ojFv = ojFv;
 
 	}
 

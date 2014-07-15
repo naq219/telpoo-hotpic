@@ -64,13 +64,7 @@
             android:orientation="horizontal"
             android:padding="2dp" >
 
-            <ImageView
-                android:id="@+id/favorite"
-                style="@style/form_ww"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:src="@drawable/ic_chitiet_favprite_normal" />
+           
 
             <ImageView
                 android:id="@+id/download"
@@ -79,6 +73,13 @@
                 android:layout_weight="1"
                 android:padding="5dp"
                 android:src="@drawable/ic_chitiet_down_normal" />
+             <ImageView
+                android:id="@+id/favorite1"
+                style="@style/form_ww"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:src="@drawable/ic_chitiet_favprite_normal" />
 
             <ImageView
                 android:id="@+id/setting"

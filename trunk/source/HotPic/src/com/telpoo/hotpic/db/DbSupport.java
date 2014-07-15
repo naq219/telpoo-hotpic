@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.object.MenuOj;
+import com.telpoo.hotpic.object.PicOj;
 
 import android.content.Context;
+import android.widget.Toast;
 
 public class DbSupport {
 
@@ -24,7 +26,21 @@ public class DbSupport {
 		return Mydb.getAllOfTable(TableDb.TABLE_VIEW_MENU, MenuOj.keys);
 	}
 	
+	public static boolean addFabvorite(BaseObject oj,Context ct){
+		ArrayList<BaseObject> ojs=new ArrayList<BaseObject>();
+		ojs.add(oj);
+		boolean status=Mydb.addToTable(ojs, TableDb.TABLE_FAVORITE);
+		if(!status){
+			Mydb.deleteRowInTable(TableDb.TABLE_FAVORITE, PicOj.URL_THUMBNAIL, oj.get(PicOj.URL_THUMBNAIL));
+		}
+		
+		return status;
+		
+	}
 	
+	public static ArrayList<BaseObject> getFabvorite(){
+		return Mydb.getAllOfTable(TableDb.TABLE_FAVORITE, PicOj.keys);
+	}
 	
 
 }

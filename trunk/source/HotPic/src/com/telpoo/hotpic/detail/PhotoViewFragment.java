@@ -6,6 +6,7 @@ import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher.OnViewTapListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import android.view.ViewGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.telpoo.anhnong.hotgirl.R;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.model.BaseModel;
 import com.telpoo.frame.object.BaseObject;
@@ -24,7 +25,7 @@ import com.telpoo.hotpic.task.TaskNaq;
 import com.telpoo.hotpic.task.TaskType;
 
 public class PhotoViewFragment extends MyFragment {
-	BaseModel model ;
+	BaseModel model;
 	TaskNaq taskNaq;
 	private PhotoView photoView;
 	BaseObject oj;
@@ -32,9 +33,7 @@ public class PhotoViewFragment extends MyFragment {
 	public static String KEY_URL = "KEYURL";
 	public static String KEY_OBJ = "KEYOBJ";
 	private static Idelegate idelegate2;
-	
-	
-	
+	boolean finishLoadUrl = false;
 
 	public static PhotoViewFragment newInstance(BaseObject oj, Idelegate idelegate) {
 		idelegate2 = idelegate;
@@ -52,15 +51,15 @@ public class PhotoViewFragment extends MyFragment {
 		// lay object anh chi tiet truyen tu listview
 		oj = getArguments().getParcelable(KEY_OBJ);
 		photoView = (PhotoView) rootView.findViewById(R.id.myphotoview);
-		viewLoadUrl= (View) rootView.findViewById(R.id.viewLoadUrl);
+		viewLoadUrl = (View) rootView.findViewById(R.id.viewLoadUrl);
 
 		return rootView;
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);		
-		
+		super.onActivityCreated(savedInstanceState);
+
 		photoView.setOnViewTapListener(new OnViewTapListener() {
 
 			@Override
@@ -69,58 +68,75 @@ public class PhotoViewFragment extends MyFragment {
 
 			}
 		});
-		
+
 		ImageLoader.getInstance().loadImage(oj.get(PicOj.URL_THUMBNAIL), new SimpleImageLoadingListener() {
 			@Override
 			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 				super.onLoadingComplete(imageUri, view, loadedImage);
-				photoView.setImageBitmap(loadedImage);				
-				
+				photoView.setImageBitmap(loadedImage);
+
 			}
 		});
-		
-		
-		
+
 		ArrayList<BaseObject> arrSend = new ArrayList<BaseObject>();
 		arrSend.add(oj);
-		 model = new BaseModel() {
-				@Override
-				public void onSuccess(int taskType, ArrayList<?> list, String msg) {
-					super.onSuccess(taskType, list, msg);
-					final String realUrl = (String) list.get(0);
-					Mlog.T("realUrl=" + realUrl);
-					LoadImage(realUrl);
-					
-				}
+		model = new BaseModel() {
+			@Override
+			public void onSuccess(int taskType, ArrayList<?> list, String msg) {
+				super.onSuccess(taskType, list, msg);
+				final String realUrl = (String) list.get(0);
+				Mlog.T("realUrl=" + realUrl);
+				LoadImage(realUrl);
+				finishLoadUrl = true;
 
-				@Override
-				public void onFail(int taskType, String msg) {
-					super.onFail(taskType, msg);
-					viewLoadUrl.setVisibility(View.GONE);
-				}
-			};
-			viewLoadUrl.setVisibility(View.VISIBLE);
-		 taskNaq = new TaskNaq(model, TaskType.TASK_PARSE_DETAIL, arrSend, getActivity());		
-		 model.exeTask(null, taskNaq);
-		
-			
+			}
+
+			@Override
+			public void onFail(int taskType, String msg) {
+				super.onFail(taskType, msg);
+				viewLoadUrl.setVisibility(View.GONE);
+				finishLoadUrl = true;
+			}
+		};
+
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				if (!finishLoadUrl)
+					viewLoadUrl.setVisibility(View.VISIBLE);
+			}
+		}, 2000);
+		taskNaq = new TaskNaq(model, TaskType.TASK_PARSE_DETAIL, arrSend, getActivity());
+		model.exeTask(null, taskNaq);
+
 	}
 
 	public void LoadImage(String url) {
-		
+
 		ImageLoader.getInstance().loadImage(url, new SimpleImageLoadingListener() {
 			@Override
 			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 				super.onLoadingComplete(imageUri, view, loadedImage);
 				photoView.setImageBitmap(loadedImage);
 				viewLoadUrl.setVisibility(View.GONE);
+				finishLoadUrl = true;
 			}
-			
+
 			@Override
 			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 				super.onLoadingFailed(imageUri, view, failReason);
 				viewLoadUrl.setVisibility(View.GONE);
+				finishLoadUrl = true;
+				System.gc();
+			}
+
+			@Override
+			public void onLoadingCancelled(String imageUri, View view) {
+				super.onLoadingCancelled(imageUri, view);
+				viewLoadUrl.setVisibility(View.GONE);
 			}
 		});
 	}
+
 }

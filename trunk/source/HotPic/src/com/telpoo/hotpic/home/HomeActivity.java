@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import android.os.Bundle;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.telpoo.anhnong.hotgirl.R;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.delegate.IOnMenuClosed;
 import com.telpoo.hotpic.menu.ViewMenu;
 import com.telpoo.hotpic.object.MenuOj;
-import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.staggeredgridviewui.GridviewFm;
 import com.telpoo.hotpic.task.TaskMinh;
 import com.telpoo.hotpic.task.TaskType;
@@ -26,7 +25,7 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 
 	private static HomeActivity me;
 	IOnMenuClosed iOnMenuClosed;
-
+	
 	public static HomeActivity getInstance() {
 		return me;
 	}
@@ -39,7 +38,7 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 		viewMenu = new ViewMenu(HomeActivity.this, this);
 		super.onCreate(savedInstanceState);
 		me = HomeActivity.this;
-		DbSupport.init(getBaseContext());
+
 		taskMinh = new TaskMinh(model, TASK_UPDATE_MENU, null, this);
 		model.exeTask(null, taskMinh);
 
@@ -52,6 +51,16 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 
 			}
 		});
+		
+		getSlidingMenu().setOnOpenedListener(new OnOpenedListener() {
+			
+			@Override
+			public void onOpened() {
+				viewMenu.updateFv();
+				
+			}
+		});
+		
 
 		// load list anh mac dinh
 		loadDefault();
@@ -60,13 +69,15 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 
 	private void setting() {
 		setupImageLoader();
-
+		DbSupport.init(getBaseContext());
 	}
 
 	protected void setupImageLoader() {
-		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getBaseContext()).defaultDisplayImageOptions(Utils.loadImgOption())
-				.memoryCache(new WeakMemoryCache()).build();
-
+		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getBaseContext())
+		.defaultDisplayImageOptions(Utils.loadImgOption())
+		
+			.build();
+		
 		ImageLoader.getInstance().init(configuration);
 	}
 

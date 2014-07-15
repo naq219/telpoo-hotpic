@@ -1,7 +1,7 @@
 package com.telpoo.hotpic.utils;
 
 public class Constant {
-	public static String URL_MENU="http://naq.name.vn/f/menu.json";
+	public static String URL_MENU="http://naq.name.vn/ws/hotpic/menu.php";
 	
 	public class GroupSource{
 		public static final int GROUP_CHANDAITV =0;

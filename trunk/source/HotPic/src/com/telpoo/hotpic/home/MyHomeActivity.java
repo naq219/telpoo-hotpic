@@ -2,24 +2,23 @@ package com.telpoo.hotpic.home;
 
 import java.util.ArrayList;
 
-import android.R.color;
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.ui.BaseFragmentActivity;
-import com.telpoo.frame.utils.Mlog;
-import com.telpoo.anhnong.hotgirl.R;
 import com.telpoo.hotpic.menu.ViewMenu;
 
 public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate, OnClickListener {
@@ -31,9 +30,7 @@ public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate
 	ImageView btnMenu;
 	View fm_top;
 	TextView tvTitle, tvnotifi;
-
 	AdView adView;
-
 	public MyHomeActivity() {
 		super(tabids, R.id.realTabContent, "Bấm thêm lần nữa để thoát");
 	}
@@ -45,11 +42,20 @@ public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate
 		initView();
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 		StrictMode.setThreadPolicy(policy);
+		initAds();
+	}
 
+	private void initAds() {
+		adView=new AdView(getBaseContext());
+		adView.setAdUnitId(getString(R.string.admobid));
+		adView.setAdSize(AdSize.SMART_BANNER);
+		((RelativeLayout)findViewById(R.id.adView)).addView(adView);
+		adView.loadAd(new AdRequest.Builder().build());
+		
 	}
 
 	private void setupTracking() {
-		setTrackingId("UA-48151387-2");
+		setTrackingId("UA-33222928-5");
 
 	}
 
@@ -73,12 +79,6 @@ public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
 		tvnotifi = (TextView) findViewById(R.id.notifi);
 
-		int a = 3;
-		int b = 3;
-		b += 1;
-		if ((a > b ? a > b : a < b))
-			a++;
-		Mlog.E("a=" + a);
 
 	}
 
@@ -143,13 +143,14 @@ public class MyHomeActivity extends SlidingFragmentActivity implements Idelegate
 
 	}
 
-	@SuppressLint("ResourceAsColor")
 	public void showtop() {
 		fm_top.setVisibility(View.VISIBLE);
+		findViewById(R.id.adView).setVisibility(View.VISIBLE);
 	}
 
 	public void hidetop() {
 		fm_top.setVisibility(View.GONE);
+		findViewById(R.id.adView).setVisibility(View.GONE);
 	}
 
 }
