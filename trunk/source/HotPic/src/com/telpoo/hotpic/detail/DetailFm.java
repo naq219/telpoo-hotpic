@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -33,17 +32,16 @@ import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.FacebookDialog.PendingCall;
 import com.facebook.widget.WebDialog;
 import com.facebook.widget.WebDialog.OnCompleteListener;
+import com.hinhnen.anhnong.hotgirl.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.FileSupport;
+import com.telpoo.frame.utils.IntentSupport;
 import com.telpoo.frame.utils.ViewUtils;
 import com.telpoo.hotpic.db.DbSupport;
-import com.telpoo.hotpic.db.Mydb;
-import com.telpoo.hotpic.db.TableDb;
 import com.telpoo.hotpic.home.HomeActivity;
 import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.task.TaskNaq;
@@ -296,24 +294,23 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 					super.onLoadingStarted(imageUri, view);
 					showToast(getContext().getString(R.string.dang_tai_anh));
 				}
+				
 
 				@Override
 				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 					super.onLoadingComplete(imageUri, view, loadedImage);
+					File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
+					String fileName = imageUri.substring(imageUri.lastIndexOf('/') + 1, imageUri.length());
+					String path = pictureFolder.getAbsolutePath() + "/hotpic/" + fileName + ".png";
+					FileSupport.saveBitmap(loadedImage, path);
+					
+					
+					
 					if (loadDetailType == 0) {
-						try {
-							WallpaperManager.getInstance(getActivity()).setBitmap(loadedImage);
-							showToast(getContext().getString(R.string.da_cai_lam_hinh_nen));
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+						IntentSupport.cropImage(Uri.fromFile(new File(path)), 1231, getActivity());
 					} else if (loadDetailType == 1) {
-						File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
-						String fileName = imageUri.substring(imageUri.lastIndexOf('/') + 1, imageUri.length());
-						String path = pictureFolder.getAbsolutePath() + "/hotpic/" + fileName + ".png";
-						FileSupport.saveBitmap(loadedImage, path);
+						
 						showToast(getContext().getString(R.string.anh_da_duoc_luu_vao) + path);
 
 					}
@@ -365,21 +362,42 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 
 	public void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Session.getActiveSession().onActivityResult(getActivity(), requestCode, resultCode, data);
-		mUiFaceLifecycleHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
-
-			@Override
-			public void onError(PendingCall pendingCall, Exception error, Bundle data) {
-				// TODO Auto-generated method stub
-				Log.e("Activity", String.format("Error: %s", error.toString()));
+		
+		if(requestCode==1231){ //crop image
+			Bitmap loadedImage = IntentSupport.getIntentCropImage(data);
+			
+			try {
+				WallpaperManager.getInstance(getActivity()).setBitmap(loadedImage);
+				showToast(getContext().getString(R.string.da_cai_lam_hinh_nen));
+			} catch (IOException e) {
+				e.printStackTrace();
+				showToast(getContext().getString(R.string.have_error));
 			}
+		}
+		
+		else{ //share
+			Session.getActiveSession().onActivityResult(getActivity(), requestCode, resultCode, data);
+			mUiFaceLifecycleHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
 
-			@Override
-			public void onComplete(PendingCall pendingCall, Bundle data) {
-				// TODO Auto-generated method stub
-				Log.i("Activity", "Success!");
-			}
-		});
+				@Override
+				public void onError(PendingCall pendingCall, Exception error, Bundle data) {
+					// TODO Auto-generated method stub
+					Log.e("Activity", String.format("Error: %s", error.toString()));
+				}
+
+				@Override
+				public void onComplete(PendingCall pendingCall, Bundle data) {
+					// TODO Auto-generated method stub
+					Log.i("Activity", "Success!");
+				}
+			});
+		}
+		
+	
+		
+		
+		
+		
 	};
 
 	private void publishFeedDialog(String name, String caption, String description, String pictureLink, String link) {

@@ -23,6 +23,7 @@
     <string name="anh_da_duoc_luu_vao">"Ảnh đã được lưu vào: "</string>
     <string name="da_cai_lam_hinh_nen">Đã cài làm hình nền</string>
     <string name="dathemvaoyeuthich">Đã thêm vào yêu thích</string>
+    <string name="have_error">Có lỗi xảy ra!</string>
     
 
 </resources>
