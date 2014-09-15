@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.hinhnen.anhnong.hotgirl.R;
+import com.wallpaper.beautifulpicture.R;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.model.BaseModel;
 import com.telpoo.frame.object.BaseObject;

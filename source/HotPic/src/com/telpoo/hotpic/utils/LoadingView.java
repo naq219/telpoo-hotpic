@@ -1,6 +1,6 @@
 package com.telpoo.hotpic.utils;
 
-import com.hinhnen.anhnong.hotgirl.R;
+import com.wallpaper.beautifulpicture.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

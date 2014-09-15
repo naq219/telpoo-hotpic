@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -14,11 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.etsy.android.grid.util.DynamicHeightImageView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.wallpaper.beautifulpicture.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.hinhnen.anhnong.hotgirl.R;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.object.AlbulmOj;
+import com.telpoo.hotpic.utils.Utils;
 
 public class HotStaggeredGridViewAdapter extends ArrayAdapter<BaseObject> {
 
@@ -44,20 +47,18 @@ public class HotStaggeredGridViewAdapter extends ArrayAdapter<BaseObject> {
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		final ViewHolder holder;
-		// View v = convertView;
-		if (convertView == null) {
+		//if (convertView == null) {
 
 			convertView = inflater.inflate(R.layout.image_item_grid, parent, false);
 			holder = new ViewHolder();
 			holder.dynamicHeightImageView = (DynamicHeightImageView) convertView.findViewById(R.id.imgViewGrid);
 			holder.textViewTittle = (TextView) convertView.findViewById(R.id.tittleImageGrid);
 			//
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
+			//convertView.setTag(holder);
+		//} else {
+			//holder = (ViewHolder) convertView.getTag();
+		//}
 		double positionHeight = getPositionRatio(position);
 
 		String imgLink = objects.get(position).get(AlbulmOj.URL_THUMBNAIL);
@@ -68,20 +69,32 @@ public class HotStaggeredGridViewAdapter extends ArrayAdapter<BaseObject> {
 			holder.textViewTittle.setVisibility(View.GONE);
 		Log.d("testSTG", imgLink);
 
-		// ImageLoader.getInstance().loadImage(imgLink, Utils.loadImgOption(),
-		// new SimpleImageLoadingListener() {
-		// @Override
-		// public void onLoadingComplete(String imageUri, View view, Bitmap
-		// loadedImage) {
-		// super.onLoadingComplete(imageUri, view, loadedImage);
-		// if(objects.get(position).get(AlbulmOj.URL_THUMBNAIL).equalsIgnoreCase(imageUri))
-		// holder.dynamicHeightImageView.setImageBitmap(loadedImage);
-		// }
-		// });
+		ImageLoader.getInstance().loadImage(imgLink, Utils.loadImgOption(), new SimpleImageLoadingListener() {
+			@Override
+			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+				super.onLoadingComplete(imageUri, view, loadedImage);
+				if (objects.get(position).get(AlbulmOj.URL_THUMBNAIL).equalsIgnoreCase(imageUri))
+					holder.dynamicHeightImageView.setImageBitmap(loadedImage);
+			}
+			
+			@Override
+			public void onLoadingStarted(String imageUri, View view) {
+				//holder.dynamicHeightImageView.setImageResource(R.drawable.ic_launcher);
+				super.onLoadingStarted(imageUri, view);
+			}
+			
+			@Override
+			public void onLoadingCancelled(String imageUri, View view) {
+				super.onLoadingCancelled(imageUri, view);
+			}
+			
+			@Override
+			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+				super.onLoadingFailed(imageUri, view, failReason);
+			}
+		});
 
-		ImageLoader.getInstance().displayImage(imgLink, holder.dynamicHeightImageView, new DisplayImageOptions.Builder().build());
 		holder.dynamicHeightImageView.setHeightRatio(positionHeight);
-		// notifyDataSetChanged();
 		return convertView;
 	}
 

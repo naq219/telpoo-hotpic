@@ -9,6 +9,7 @@ import org.json.JSONException;
 import android.content.Context;
 import android.util.Log;
 
+import com.telpoo.frame.model.BaseModel;
 import com.telpoo.frame.model.BaseTask;
 import com.telpoo.frame.model.TaskListener;
 import com.telpoo.frame.model.TaskParams;
@@ -19,11 +20,12 @@ import com.telpoo.hotpic.parsehtml.DepvdParse;
 
 public class TaskMinh extends BaseTask implements TaskType{
 
-	public TaskMinh(TaskListener taskListener, int taskType, ArrayList<?> list,
-			Context context) {
-		super(taskListener, taskType, list, context);
-	}
 	
+	public TaskMinh(BaseModel baseModel, int taskType, ArrayList<?> list, Context context) {
+		super(baseModel, taskType, list, context);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	protected Boolean doInBackground(TaskParams... params) {
 		

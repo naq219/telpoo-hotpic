@@ -4,7 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.app.WallpaperManager;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -32,21 +37,23 @@ import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.FacebookDialog.PendingCall;
 import com.facebook.widget.WebDialog;
 import com.facebook.widget.WebDialog.OnCompleteListener;
-import com.hinhnen.anhnong.hotgirl.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.telpoo.frame.delegate.Idelegate;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.FileSupport;
 import com.telpoo.frame.utils.IntentSupport;
+import com.telpoo.frame.utils.Mlog;
+import com.telpoo.frame.utils.ScreenUtils;
 import com.telpoo.frame.utils.ViewUtils;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.home.HomeActivity;
 import com.telpoo.hotpic.object.PicOj;
 import com.telpoo.hotpic.task.TaskNaq;
 import com.telpoo.hotpic.task.TaskType;
+import com.wallpaper.beautifulpicture.R;
 
+@SuppressLint("NewApi")
 public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListener {
 	// PhoToViewAdapter phoToViewAdapter;
 	private ArrayList<BaseObject> ojs;
@@ -56,7 +63,8 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	private UiLifecycleHelper mUiFaceLifecycleHelper;
 	private ArrayList<PhotoViewFragment> mListFragment;
 	private PTViewPageAdapter adapter;
-	private int loadDetailType;
+
+	// private int loadDetailType;
 
 	public static DetailFm newInstance(int sectionNumber) {
 		DetailFm fragment = new DetailFm();
@@ -95,16 +103,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 
 		setting.setOnClickListener(this);
 		favorite1.setOnClickListener(this);
-		
-//		favorite1.setOnTouchListener(new OnTouchListener() {
-//			
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) {
-//				showToast("sds");
-//				return true;
-//			}
-//		});
-		
+
 		share.setOnClickListener(this);
 		download.setOnClickListener(this);
 	}
@@ -114,7 +113,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 		super.onResume();
 		mUiFaceLifecycleHelper.onResume();
 		LoadListFragment();
-		adapter = new PTViewPageAdapter(getChildFragmentManager(), ojs,this);
+		adapter = new PTViewPageAdapter(getChildFragmentManager(), ojs, this);
 
 		viewPager.setAdapter(adapter);
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
@@ -210,21 +209,20 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-		
+
 		case R.id.favorite1:
-			boolean status=DbSupport.addFabvorite(ojPage,getActivity());
-			if(!status){
+			boolean status = DbSupport.addFabvorite(ojPage, getActivity());
+			if (!status) {
 				showToast("Đã xóa khỏi yêu thích");
 				favorite1.setImageResource(R.drawable.ic_chitiet_favprite_normal);
-			}
-			else {
+			} else {
 				showToast("Đã thêm vào yêu thích");
 				favorite1.setImageResource(R.drawable.ic_chitiet_favprite_select);
 			}
 			break;
-		
+
 		case R.id.setting:
-			loadDetailType = 0;
+			HomeActivity.getInstance().loadDetailType = 0;
 
 			ArrayList<BaseObject> arrSend = new ArrayList<BaseObject>();
 			arrSend.add(ojPage);
@@ -235,7 +233,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 			break;
 
 		case R.id.download:
-			loadDetailType = 1;
+			HomeActivity.getInstance().loadDetailType = 1;
 			ArrayList<BaseObject> arrSend1 = new ArrayList<BaseObject>();
 			arrSend1.add(ojPage);
 
@@ -263,7 +261,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 									if (user != null) {
 										// ShareFaceDialog("via Viet Foodie",
 										// data.getTitle(), faceShare, "", "");
-										publishFeedDialog("" + des, "App hot girl for Android", "Wallpaper, picture", linkImage, urlAppPlayStore);
+										publishFeedDialog("" + des, "App hot picture for Android", "Wallpaper, picture", linkImage, urlAppPlayStore);
 									}
 								}
 							}).executeAsync();
@@ -287,43 +285,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 		switch (taskType) {
 		case TaskType.TASK_PARSE_DETAIL:
 			String urlDetail = (String) list.get(0);
-			ImageLoader.getInstance().loadImage(urlDetail, new SimpleImageLoadingListener() {
-
-				@Override
-				public void onLoadingStarted(String imageUri, View view) {
-					super.onLoadingStarted(imageUri, view);
-					showToast(getContext().getString(R.string.dang_tai_anh));
-				}
-				
-
-				@Override
-				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-					super.onLoadingComplete(imageUri, view, loadedImage);
-					File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
-					String fileName = imageUri.substring(imageUri.lastIndexOf('/') + 1, imageUri.length());
-					String path = pictureFolder.getAbsolutePath() + "/hotpic/" + fileName + ".png";
-					FileSupport.saveBitmap(loadedImage, path);
-					
-					
-					
-					if (loadDetailType == 0) {
-						IntentSupport.cropImage(Uri.fromFile(new File(path)), 1231, getActivity());
-					} else if (loadDetailType == 1) {
-						
-						showToast(getContext().getString(R.string.anh_da_duoc_luu_vao) + path);
-
-					}
-
-				}
-
-				@Override
-				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-					super.onLoadingFailed(imageUri, view, failReason);
-					showToast(getContext().getString(R.string.loi_ket_noi));
-					System.gc();
-				}
-			});
+			HomeActivity.getInstance().doDownload(urlDetail);
 
 			break;
 
@@ -334,8 +296,8 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 
 	@Override
 	public void onFail(int taskType, String msg) {
-		// TODO Auto-generated method stub
 		super.onFail(taskType, msg);
+		showToast(msg);
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------------
@@ -362,20 +324,12 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 
 	public void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
-		if(requestCode==1231){ //crop image
-			Bitmap loadedImage = IntentSupport.getIntentCropImage(data);
-			
-			try {
-				WallpaperManager.getInstance(getActivity()).setBitmap(loadedImage);
-				showToast(getContext().getString(R.string.da_cai_lam_hinh_nen));
-			} catch (IOException e) {
-				e.printStackTrace();
-				showToast(getContext().getString(R.string.have_error));
-			}
+
+		if (requestCode == 1231) { // crop image
+
 		}
-		
-		else{ //share
+
+		else { // share
 			Session.getActiveSession().onActivityResult(getActivity(), requestCode, resultCode, data);
 			mUiFaceLifecycleHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
 
@@ -392,12 +346,7 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 				}
 			});
 		}
-		
-	
-		
-		
-		
-		
+
 	};
 
 	private void publishFeedDialog(String name, String caption, String description, String pictureLink, String link) {
@@ -418,11 +367,11 @@ public class DetailFm extends DetailFmLayout implements Idelegate, OnClickListen
 					// and the post Id.
 					final String postId = values.getString("post_id");
 					if (postId != null) {
-						Toast.makeText(getActivity(), "Chia sẻ thành công", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), R.string.share_success, Toast.LENGTH_SHORT).show();
 
 					} else {
 						// User clicked the Cancel button
-						Toast.makeText(getActivity().getApplicationContext(), "Đã hủy chia sẻ", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity().getApplicationContext(), R.string.share_cancel, Toast.LENGTH_SHORT).show();
 					}
 				} else if (error instanceof FacebookOperationCanceledException) {
 					// User clicked the "x" button

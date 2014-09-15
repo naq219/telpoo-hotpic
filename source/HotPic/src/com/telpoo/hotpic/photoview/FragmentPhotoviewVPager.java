@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.telpoo.frame.ui.BaseFragment;
-import com.hinhnen.anhnong.hotgirl.R;
+import com.wallpaper.beautifulpicture.R;
 
 public class FragmentPhotoviewVPager extends BaseFragment{	
 	@Override

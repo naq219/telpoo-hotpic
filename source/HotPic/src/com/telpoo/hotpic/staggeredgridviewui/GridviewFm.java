@@ -15,7 +15,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.hinhnen.anhnong.hotgirl.R;
+import com.wallpaper.beautifulpicture.R;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.frame.utils.Mlog;
 import com.telpoo.hotpic.adapter.HotStaggeredGridViewAdapter;
@@ -35,27 +35,32 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 	boolean isLoadingMore = false;
 	int page = 0; // tra da load
 	private ArrayList<BaseObject> ojFv;
+	private ArrayList<BaseObject> saveData;
 
 	@SuppressLint("NewApi")
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		adapter = new HotStaggeredGridViewAdapter(getActivity(), R.layout.image_item_grid, new ArrayList<BaseObject>());
-		gridView.setAdapter(adapter);
-		if (ojFv == null) { // lay tu menu item
-
-			String groupName = ojToParse.get(MenuOj.GROUP_NAME);
-			String name = ojToParse.get(MenuOj.NAME);
-			if (name != null && groupName != null)
-				HomeActivity.getInstance().setUptitle(groupName + "-" + name);
-			runTaskGetImage(ojToParse);
-		}
-		else { //lay tu fabvorite
+		if(adapter==null){
 			
-			adapter.setData(ojFv);
-			adapter.notifyDataSetChanged();
+			adapter = new HotStaggeredGridViewAdapter(getActivity(), R.layout.image_item_grid, new ArrayList<BaseObject>());
+			gridView.setAdapter(adapter);
+			if (ojFv == null&&ojToParse!=null) { // lay tu menu item
+				
+				String groupName = ojToParse.get(MenuOj.GROUP_NAME);
+				String name = ojToParse.get(MenuOj.NAME);
+				if (name != null && groupName != null)
+					HomeActivity.getInstance().setUptitle(groupName + "-" + name);
+				runTaskGetImage(ojToParse);
+			}
+			else { //lay tu fabvorite
+				
+				adapter.setData(ojFv);
+				adapter.notifyDataSetChanged();
+			}
 		}
+		else gridView.setAdapter(adapter);
 
 		
 
@@ -95,7 +100,7 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-				if (totalItemCount - firstVisibleItem - visibleItemCount < 1) {
+				if (totalItemCount - firstVisibleItem - visibleItemCount < 10) {
 					if (!isLoadingMore) { // khong co task loadmore nao ca
 						runTaskLoadMore(ojToParse);
 					}
@@ -152,14 +157,16 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 			ArrayList<BaseObject> ojsRes = (ArrayList<BaseObject>) list;
 			adapter.setData(ojsRes);
 			adapter.notifyDataSetChanged();
+			
+			saveData=ojsRes;
 
 			break;
 
 		case TASK_GET_LIST_IMAGE_LOADMORE:
 			isLoadingMore = false;
-
 			loadMore.setVisibility(View.GONE);
-			Mlog.T("list.size()=" + list.size());
+			if(list==null)return ;
+			
 			if (list.size() == 0) {
 				isLoadingMore = true; // khong con anh de loadmore nua
 				return;

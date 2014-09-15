@@ -3,8 +3,11 @@ package com.telpoo.hotpic.parsehtml;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.JSONException;
+
 import android.content.Context;
 
+import com.google.android.gms.internal.hd;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.object.MenuOj;
 import com.telpoo.hotpic.object.PicOj;
@@ -12,7 +15,7 @@ import com.telpoo.hotpic.utils.Constant;
 
 public class ParseSupport {
 
-	public static ArrayList<BaseObject> parse(BaseObject oj) throws IOException {
+	public static ArrayList<BaseObject> parse(BaseObject oj) throws IOException, JSONException {
 		ArrayList<BaseObject> res = null;
 		int groupId = oj.getInt(MenuOj.GROUP_ID);
 		
@@ -25,6 +28,9 @@ public class ParseSupport {
 		case Constant.GroupSource.GROUP_DEPVD:  // cắt trang depvd
 			 res = DepvdParse.Parse(oj);
 			 break;
+			 
+		case Constant.GroupSource.GROUP_HDWALL:
+			res= HdWallParse.Parse1(oj);
 		default:
 			break;
 		}
@@ -43,6 +49,9 @@ public class ParseSupport {
 			
 		case Constant.GroupSource.GROUP_DEPVD:  // cắt trang chandai.tv
 			return DepvdParse.parseUrlDetail(oj.get(PicOj.URL_THUMBNAIL));
+			
+		case Constant.GroupSource.GROUP_HDWALL:  // cắt trang chandai.tv
+			return HdWallParse.parseUrlDetail(oj.get(PicOj.URL));
 
 		default:
 			break;
