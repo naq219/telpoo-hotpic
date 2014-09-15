@@ -1,0 +1,68 @@
+<resources>
+
+    <string name="msg_no_network">"No network avaible!"</string>
+    <string name="loading">"Завантаження..."</string>
+
+    <!-- login register -->
+
+    <string name="username">"Username"</string>
+    <string name="password">"Пароль "</string>
+    <string name="login">"Увійти"</string>
+    <string name="register">"Register"</string>
+    <string name="ask_register">"New user? Register here"</string>
+    <string name="email">"Електронна пошта "</string>
+    <string name="fullname">"Full name"</string>
+    <string name="help_ppt">"User volume key up and down to control"</string>
+    <string name="shutdown">"Shutdown"</string>
+    <string name="cancel_shutdown">"Cancel shutdown"</string>
+    <string name="app_name">"Remote PC"</string>
+    <string name="hello_world">"Hello world!"</string>
+    <string name="menu_ppt">"Control PPT"</string>
+
+    <!-- START PPT -->
+    <string name="ngatketnoi">"Відключити"</string>
+    <string name="ketnoilai">"Reconnect"</string>
+    <string name="ghinho">"Remember"</string>
+    <string name="chuacotk">"Register account"</string>
+    <string name="matkhau">"Пароль "</string>
+    <string name="hoten">"Full name"</string>
+    <string name="dangnhap">"Увійти"</string>
+    <string name="dangky">"Register"</string>
+    <string name="dangthuchien">"Завантаження..."</string>
+    <string name="thanhcong">"Register sucess"</string>
+    <string name="thatbai">"This Email exist"</string>
+    <!-- END PPT -->
+    <string name="internet_connection_error">"Internet Connection Error"</string>
+    <string name="please_connect_to_working_internet_connection">"Please connect to working Internet connection"</string>
+    <string name="configuration_error_">"Configuration Error!"</string>
+    <string name="please_set_your_server_url_and_gcm_sender_id">"Please set your Server URL and GCM Sender ID"</string>
+    <string name="registration_error_">"Registration Error!"</string>
+    <string name="have_error_">"Have error!"</string>
+    <string name="connect_error">"Connect error!"</string>
+    <string name="playlist_received_connect_to_computer_now">"Playlist received, connect to computer now"</string>
+    <string name="please_enter_your_details">"Please enter enough the information"</string>
+    <string name="click_back_again_to_exit_app">"Click back again to exit app"</string>
+
+    <!-- thừa không dùng đến -->
+
+    <string name="title_activity_main">"Push Notifications"</string>
+    <string name="error_config">"Please set the %1$s constant and recompile the app."</string>
+    <string name="already_registered">"Device is already registered on server."</string>
+    <string name="gcm_registered">"From GCM: device successfully registered!"</string>
+    <string name="gcm_unregistered">"From GCM: device successfully unregistered!"</string>
+    <string name="gcm_message">"From GCM: you got message!"</string>
+    <string name="gcm_error">"From GCM: error (%1$s)."</string>
+    <string name="gcm_recoverable_error">"From GCM: recoverable error (%1$s)."</string>
+    <string name="gcm_deleted">"From GCM: server deleted %1$d pending messages!"</string>
+    <string name="server_registering">"Trying (attempt %1$d/%2$d) to register device on Demo Server."</string>
+    <string name="server_registered">"From Demo Server: successfully added device!"</string>
+    <string name="server_unregistered">"From Demo Server: successfully removed device!"</string>
+    <string name="server_register_error">"Could not register device on Demo Server after %1$d attempts."</string>
+    <string name="server_unregister_error">"Could not unregister device on Demo Server (%1$s)."</string>
+    <string name="options_register">"Register"</string>
+    <string name="options_unregister">"Unregister"</string>
+    <string name="options_clear">"Безхмарно"</string>
+    <string name="options_exit">"Вихід"</string>
+    <string name="registed_gcm">"Your device registred with GCM"</string>
+
+</resources>
