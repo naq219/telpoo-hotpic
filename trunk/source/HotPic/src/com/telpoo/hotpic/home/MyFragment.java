@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.telpoo.frame.ui.BaseFragment;
-import com.hinhnen.anhnong.hotgirl.R;
+import com.wallpaper.beautifulpicture.R;
 import com.telpoo.hotpic.utils.LoadingView;
 
 public class MyFragment extends BaseFragment{

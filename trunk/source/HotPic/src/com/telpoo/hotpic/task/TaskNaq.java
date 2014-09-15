@@ -1,23 +1,23 @@
 package com.telpoo.hotpic.task;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
 
+import com.telpoo.frame.model.BaseModel;
 import com.telpoo.frame.model.BaseTask;
-import com.telpoo.frame.model.TaskListener;
 import com.telpoo.frame.model.TaskParams;
 import com.telpoo.frame.net.BaseNetSupportBeta;
 import com.telpoo.frame.object.BaseObject;
-import com.telpoo.frame.utils.FileSupport;
-import com.hinhnen.anhnong.hotgirl.R;
 import com.telpoo.hotpic.parsehtml.ParseSupport;
+import com.wallpaper.beautifulpicture.R;
 
 public class TaskNaq extends BaseTask implements TaskType {
 
-	public TaskNaq(TaskListener taskListener, int taskType, ArrayList<?> list, Context context) {
-		super(taskListener, taskType, list, context);
+	
+
+	public TaskNaq(BaseModel baseModel, int taskType, ArrayList<?> list, Context context) {
+		super(baseModel, taskType, list, context);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -38,7 +38,7 @@ public class TaskNaq extends BaseTask implements TaskType {
 			ArrayList<BaseObject> ojStrageList = null;
 			try {
 				ojStrageList = ParseSupport.parse(ojList);  
-			} catch (IOException e) {
+			} catch (Exception e) {
 				msg = context.getString(R.string.khong_co_anh_nao);
 				return TASK_FAILED;
 			}

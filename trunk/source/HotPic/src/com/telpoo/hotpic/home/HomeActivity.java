@@ -2,13 +2,19 @@ package com.telpoo.hotpic.home;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 
+import com.wallpaper.beautifulpicture.R;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.hinhnen.anhnong.hotgirl.R;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.telpoo.frame.object.BaseObject;
 import com.telpoo.hotpic.db.DbSupport;
 import com.telpoo.hotpic.delegate.IOnMenuClosed;
@@ -17,6 +23,7 @@ import com.telpoo.hotpic.object.MenuOj;
 import com.telpoo.hotpic.staggeredgridviewui.GridviewFm;
 import com.telpoo.hotpic.task.TaskMinh;
 import com.telpoo.hotpic.task.TaskType;
+import com.telpoo.hotpic.utils.Constant;
 import com.telpoo.hotpic.utils.Utils;
 
 public class HomeActivity extends MyHomeActivity implements TaskType {
@@ -25,7 +32,7 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 
 	private static HomeActivity me;
 	IOnMenuClosed iOnMenuClosed;
-	
+
 	public static HomeActivity getInstance() {
 		return me;
 	}
@@ -51,16 +58,15 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 
 			}
 		});
-		
+
 		getSlidingMenu().setOnOpenedListener(new OnOpenedListener() {
-			
+
 			@Override
 			public void onOpened() {
 				viewMenu.updateFv();
-				
+
 			}
 		});
-		
 
 		// load list anh mac dinh
 		loadDefault();
@@ -74,22 +80,27 @@ public class HomeActivity extends MyHomeActivity implements TaskType {
 
 	protected void setupImageLoader() {
 		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getBaseContext())
+		.threadPoolSize(5)
+    	.memoryCacheExtraOptions(480, 800) // max width, max height
+		.threadPoolSize(3)
+		.threadPriority(Thread.NORM_PRIORITY - 1)
+		.denyCacheImageMultipleSizesInMemory()
+		.memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // You can pass your own memory cache implementation
+		.discCacheFileNameGenerator(new HashCodeFileNameGenerator())
+		.tasksProcessingOrder(QueueProcessingType.FIFO)
 		.defaultDisplayImageOptions(Utils.loadImgOption())
-		
-			.build();
-		
+		.build();
+		            
+
 		ImageLoader.getInstance().init(configuration);
 	}
 
 	private void loadDefault() {
 
 		BaseObject oj = new BaseObject();
-		oj.set(MenuOj.GROUP_ID, 0);
-		oj.set(MenuOj.GROUP_NAME, "Chandai.tv");
+		oj.set(MenuOj.GROUP_ID, Constant.GroupSource.GROUP_HDWALL);
 		oj.set(MenuOj.CATEGORY, 1);
-		oj.set(MenuOj.TYPE_CUT, 1);
-		oj.set(MenuOj.URL, "http://chandai.tv/diu-dang");
-		oj.set(MenuOj.NAME, "Mới");
+		oj.set(MenuOj.NAME, "Home");
 		GridviewFm fragment = new GridviewFm();
 		fragment.setData(oj);
 		HomeActivity.getInstance().pushFragments(TabId.home, fragment, true, null);
