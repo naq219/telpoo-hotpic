@@ -1,0 +1,30 @@
+<resources>
+
+    <string name="app_name">"Wallpaper HD"</string>
+    <string name="action_settings">"对不起！无法取得壁纸（S）。验证应用程序设置或设备没有互联网连接。"</string>
+    <string name="video_yeu_thich">"收藏"</string>
+    <string name="danh_muc">"菜单"</string>
+    <string name="luot_xem">"查看"</string>
+    <string name="co_loi_xay_ra">"Have an error"</string>
+    <string name="danhgia">"评级"</string>
+    <string name="lienhe">"联系人"</string>
+    <string name="ungdungkhac">"Other app"</string>
+    <string name="admobid">"ca-app-pub-9176218815538135/6613325697"</string>
+    <string name="no_network_try_again">"No network available, please try again later"</string>
+    <string name="thulai">"重试"</string>
+    <string name="no_network">"No network available"</string>
+    <string name="khong_co_anh_nao">"No image"</string>
+    <string name="loading_more">"Loading more"</string>
+    <string name="dang_tai_anh">"页面加载中"</string>
+    <string name="APP_ID">"269772563207172"</string>
+    <string name="loi_ket_noi">"Connect error!"</string>
+    <string name="anh_da_duoc_luu_vao">"Image saved: "</string>
+    <string name="da_cai_lam_hinh_nen">"成功"</string>
+    <string name="dathemvaoyeuthich">"Added to favorite"</string>
+    <string name="have_error">"Have an error!"</string>
+    <string name="da_huy">"Canceled"</string>
+    <string name="share_success">"Share success"</string>
+    <string name="share_cancel">"Cancelled sharing"</string>
+    
+
+</resources>
