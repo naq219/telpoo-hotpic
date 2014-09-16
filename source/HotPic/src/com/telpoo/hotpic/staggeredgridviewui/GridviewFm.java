@@ -83,7 +83,7 @@ public class GridviewFm extends GridviewFmLayout implements TaskType {
 				} else { // picoj
 					DetailFm fm = new DetailFm();
 					fm.setData(adapter.getAll(), position);
-					HomeActivity.getInstance().pushFragments(TabId.home, fm, true, null);
+					HomeActivity.getInstance().pushFragments(TabId.home, fm, false, null);
 				}
 
 			}
